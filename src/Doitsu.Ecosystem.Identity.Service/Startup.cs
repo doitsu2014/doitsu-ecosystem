@@ -40,20 +40,20 @@ namespace Doitsu.Ecosystem.Identity.Service
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-                .AddTestUsers(TestUsers.Users)
-                // this adds the config data from DB (clients, resources, CORS)
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
-                })
-                // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
+            .AddTestUsers(TestUsers.Users)
+            // this adds the config data from DB (clients, resources, CORS)
+            .AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
+            })
+            // this adds the operational data from DB (codes, tokens, consents)
+            .AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
 
-                    // this enables automatic token cleanup. this is optional.
-                    options.EnableTokenCleanup = true;
-                });
+                // this enables automatic token cleanup. this is optional.
+                options.EnableTokenCleanup = true;
+            });
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
