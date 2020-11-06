@@ -1,0 +1,2440 @@
+[14:21:31 Information 1] 
+Starting host...
+
+[14:21:31 Information 1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[14:21:31 Information 1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[14:57:39-Information-1] 
+Seeding database...
+
+[14:58:15-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): The size (8000) given to the column 'Data' exceeds the maximum allowed for any data type (8000).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 47
+ClientConnectionId:82963d1b-f032-4e3f-bc15-3ddd4e9ebf96
+Error Number:131,State:2,Class:15
+
+[15:00:08-Information-1] 
+Seeding database...
+
+[15:00:10-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:57a38c1f-a34d-4b6f-9a84-8fd522b5cd80
+Error Number:2716,State:1,Class:16
+
+[15:01:28-Information-1] 
+Seeding database...
+
+[15:01:29-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:1ef26ab7-b4e0-4bc4-85a3-e4d30ef9dc55
+Error Number:2716,State:1,Class:16
+
+[15:13:26-Information-1] 
+Seeding database...
+
+[15:13:28-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:9e9ca077-eaa2-4525-a2ff-64b9075bddd7
+Error Number:2716,State:1,Class:16
+
+[15:24:45-Information-1] 
+Seeding database...
+
+[15:24:49-Debug-1] 
+Clients being populated
+
+[15:24:50-Debug-1] 
+IdentityResources being populated
+
+[15:24:50-Debug-1] 
+ApiScopes being populated
+
+[15:24:50-Information-1] 
+Done seeding database.
+
+[15:43:57-Information-1] 
+Seeding database...
+
+[15:43:59-Debug-1] 
+Clients already populated
+
+[15:43:59-Debug-1] 
+IdentityResources already populated
+
+[15:43:59-Debug-1] 
+ApiScopes being populated
+
+[15:44:00-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.ApiScopes' with unique index 'IX_ApiScopes_Name'. The duplicate key value is (blogpost-all-services).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:7cc84a00-2566-450f-a61e-64db1bf1ba4d
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(DbContext _, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(ConfigurationDbContext context) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 78
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 37
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+
+[15:45:49-Information-1] 
+Seeding database...
+
+[15:45:51-Debug-1] 
+Clients being populated
+
+[15:45:52-Debug-1] 
+IdentityResources being populated
+
+[15:45:52-Debug-1] 
+ApiScopes being populated
+
+[15:45:52-Information-1] 
+Done seeding database.
+
+[15:46:01-Information-1] 
+Starting host...
+
+[15:46:01-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[15:46:01-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[15:46:01-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[15:46:01-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[15:46:01-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[15:46:01-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[15:46:01-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Error Url: /home/error
+
+[15:46:16-Debug-4] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[15:46:16-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:46:16-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:46:16-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:46:16-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:46:22-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /.well-known/openid-configuration matched to endpoint type Discovery
+
+[15:46:22-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+
+[15:46:22-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+
+[15:46:22-Debug-8] IdentityServer4.Endpoints.DiscoveryEndpoint
+Start discovery request
+
+[15:46:23-Debug-13] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["profile","openid","blogpost-all-external-services","blogpost-all-services"] as all scopes, and [] as API resources
+
+[15:47:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/authorize matched to endpoint type Authorize
+
+[15:47:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+
+[15:47:34-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+
+[15:47:34-Debug-7] IdentityServer4.Endpoints.AuthorizeEndpoint
+Start authorize request
+
+[15:48:12-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:48:12-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:48:12-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:48:12-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:48:41-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:48:41-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:48:41-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:48:41-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:49:02-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:49:02-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:49:02-Information-12] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:49:02-Debug-12] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[15:49:02-Debug-12] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[15:49:02-Debug-12] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[15:49:02-Debug-12] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[15:49:02-Debug-12] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[15:49:02-Debug-12] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[15:49:03-Debug-4] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[15:49:03-Debug-4] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[15:49:03-Information-4] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[15:49:03-Debug-4] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[15:49:03-Information-4] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM4261M92P3H:00000005","TimeStamp":"2020-11-06T08:49:03.0000000Z","ProcessId":15560,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationFailureEvent"}
+
+[15:49:03-Error-4] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[15:49:07-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:49:07-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:49:07-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:49:07-Debug-7] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[15:49:07-Debug-7] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[15:49:07-Debug-7] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[15:49:07-Debug-7] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[15:49:07-Debug-7] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[15:49:07-Debug-7] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[15:49:07-Debug-7] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[15:49:07-Debug-7] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[15:49:07-Information-7] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[15:49:07-Debug-7] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[15:49:07-Information-7] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM4261M92P3H:00000006","TimeStamp":"2020-11-06T08:49:07.0000000Z","ProcessId":15560,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationFailureEvent"}
+
+[15:49:07-Error-7] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[15:49:28-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:49:28-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:49:28-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:49:28-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:49:50-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:49:50-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:49:50-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:49:50-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:08-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:08-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:08-Information-11] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:08-Warning-11] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:14-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:14-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:14-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:14-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:20-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:20-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:20-Information-12] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:20-Warning-12] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:30-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:30-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:30-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:30-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:31-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:31-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:31-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:31-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:50:58-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:50:58-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:50:58-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:50:58-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:51:10-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:51:10-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:51:10-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:51:10-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[15:59:58-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[15:59:58-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[15:59:58-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[15:59:58-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:01-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:01-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:01-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:01-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:33-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:33-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:33-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:33-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:36-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:36-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:36-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:36-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:49-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:49-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:49-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:49-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:49-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:49-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:49-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:49-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:01:54-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:01:54-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:01:54-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:01:54-Debug-8] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:01:54-Debug-8] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:01:54-Debug-8] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:01:54-Debug-8] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:01:54-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:01:54-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:01:56-Debug-8] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:01:56-Debug-8] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:01:56-Information-8] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[16:01:56-Debug-8] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[16:01:56-Information-8] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM4261M92P3H:00000017","TimeStamp":"2020-11-06T09:01:56.0000000Z","ProcessId":15560,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationFailureEvent"}
+
+[16:01:56-Error-8] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[16:02:01-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:02:01-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:02:01-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:02:01-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:02:14-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:02:14-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:02:14-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:02:14-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:02:32-Debug-26] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:02:32-Debug-26] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:02:32-Information-26] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:02:32-Warning-26] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:02:34-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:02:34-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:02:34-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:02:34-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:02:36-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:02:36-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:02:36-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:02:36-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:03:56-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:03:56-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:03:56-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:03:56-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:06:37-Information-1] 
+Starting host...
+
+[16:06:37-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:06:37-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:06:37-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:06:37-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:06:37-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:06:37-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:06:37-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:06:37-Fatal-1] Microsoft.AspNetCore.Server.Kestrel
+Unable to start Kestrel.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+
+[16:06:37-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 50
+
+[16:08:52-Information-1] 
+Starting host...
+
+[16:08:52-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:08:53-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:08:53-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:08:53-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:08:53-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:08:53-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:08:53-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:08:53-Fatal-1] Microsoft.AspNetCore.Server.Kestrel
+Unable to start Kestrel.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+
+[16:08:53-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 50
+
+[16:09:25-Information-1] 
+Starting host...
+
+[16:09:25-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:09:25-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:09:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:09:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:09:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:09:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:09:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:09:25-Fatal-1] Microsoft.AspNetCore.Server.Kestrel
+Unable to start Kestrel.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+
+[16:09:25-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 50
+
+[16:10:17-Information-1] 
+Starting host...
+
+[16:10:18-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:10:18-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:10:18-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:10:18-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:10:18-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:10:18-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:10:18-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:10:18-Fatal-1] Microsoft.AspNetCore.Server.Kestrel
+Unable to start Kestrel.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+
+[16:10:18-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: A path base can only be configured using IApplicationBuilder.UsePathBase().
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.ParseAddress(String address, Boolean& https)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IServerAddressesFeature addresses, KestrelServerOptions serverOptions, ILogger logger, Func`2 createBinding)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.RunAsync(IHost host, CancellationToken token)
+   at Microsoft.Extensions.Hosting.HostingAbstractionsHostExtensions.Run(IHost host)
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 49
+
+[16:10:25-Information-1] 
+Starting host...
+
+[16:10:25-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:10:25-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:10:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:10:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:10:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:10:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:10:25-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:10:31-Debug-7] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:10:31-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:10:31-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:10:31-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:10:31-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:10:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:10:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:10:34-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:10:34-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:10:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:10:34-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:10:34-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:10:34-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:10:35-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:10:35-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:10:35-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:10:35-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:10:51-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:10:51-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:10:51-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:10:51-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:11:03-Information-1] 
+Starting host...
+
+[16:11:03-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:11:03-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:11:03-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:11:03-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:11:03-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:11:03-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:11:03-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:11:04-Debug-7] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:11:04-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:11:04-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:11:04-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:11:04-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:11:05-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:11:05-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:11:05-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:11:05-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:11:51-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:11:51-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:11:51-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:11:51-Warning-8] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:12:31-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:12:31-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:12:31-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:12:31-Debug-8] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:12:31-Debug-8] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:12:31-Debug-8] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:12:31-Debug-8] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:12:31-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:12:31-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:12:33-Debug-9] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:12:33-Debug-9] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:12:33-Information-9] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[16:12:33-Debug-9] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[16:12:33-Information-9] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM426FHLVSL6:00000004","TimeStamp":"2020-11-06T09:12:33.0000000Z","ProcessId":13912,"LocalIpAddress":"127.0.0.1:5000","RemoteIpAddress":"127.0.0.1","$type":"ClientAuthenticationFailureEvent"}
+
+[16:12:33-Error-9] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[16:12:43-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:12:43-Debug-8] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:12:43-Information-8] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:12:43-Debug-8] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:12:43-Debug-8] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:12:43-Debug-8] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:12:43-Debug-8] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:12:43-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:12:43-Debug-8] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:12:43-Debug-4] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:12:43-Debug-4] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:12:43-Information-4] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[16:12:43-Debug-4] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[16:12:43-Information-4] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM426FHLVSL6:00000005","TimeStamp":"2020-11-06T09:12:43.0000000Z","ProcessId":13912,"LocalIpAddress":"127.0.0.1:5000","RemoteIpAddress":"127.0.0.1","$type":"ClientAuthenticationFailureEvent"}
+
+[16:12:43-Error-4] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[16:12:52-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:12:52-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:12:52-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:12:52-Debug-4] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:12:52-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:12:52-Debug-4] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:12:52-Debug-4] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:12:52-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:12:52-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:12:53-Debug-17] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:12:53-Debug-17] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:12:53-Information-17] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[16:12:53-Debug-17] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[16:12:53-Information-17] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM426FHLVSL6:00000006","TimeStamp":"2020-11-06T09:12:53.0000000Z","ProcessId":13912,"LocalIpAddress":"127.0.0.1:5000","RemoteIpAddress":"127.0.0.1","$type":"ClientAuthenticationFailureEvent"}
+
+[16:12:53-Error-17] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[16:12:59-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:12:59-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:12:59-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:12:59-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:13:20-Information-1] 
+Starting host...
+
+[16:13:20-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:13:20-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:13:20-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:13:20-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:13:20-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:13:20-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:13:20-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:13:27-Debug-4] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:13:27-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:27-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:27-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:27-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:13:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:28-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:28-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:13:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:28-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:28-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:13:31-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:31-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:31-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:31-Debug-13] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:13:31-Debug-13] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:13:31-Debug-13] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:13:31-Debug-13] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:13:31-Debug-13] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:13:31-Debug-13] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:13:33-Debug-7] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:13:33-Debug-7] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:13:33-Information-7] IdentityServer4.Validation.HashedSharedSecretValidator
+Secret: no description uses invalid hashing algorithm.
+
+[16:13:33-Debug-7] IdentityServer4.Validation.ISecretsListValidator
+Secret validators could not validate secret
+
+[16:13:33-Information-7] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","Category":"Authentication","Name":"Client Authentication Failure","EventType":"Failure","Id":1011,"Message":"Invalid client secret","ActivityId":"0HM426GSB6KQM:00000004","TimeStamp":"2020-11-06T09:13:33.0000000Z","ProcessId":11844,"LocalIpAddress":"::1:5000","RemoteIpAddress":"::1","$type":"ClientAuthenticationFailureEvent"}
+
+[16:13:33-Error-7] IdentityServer4.Validation.ClientSecretValidator
+Client secret validation failed for client: m2m.client.
+
+[16:13:35-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:35-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:35-Information-11] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:35-Warning-11] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:13:36-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:13:36-Debug-12] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:13:36-Information-12] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:13:36-Warning-12] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:14:38-Information-1] 
+Starting host...
+
+[16:14:38-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:14:38-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:14:38-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:14:38-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:14:38-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:14:38-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:14:38-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:14:39-Debug-4] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:14:46-Debug-11] IdentityServerHost.Quickstart.UI.ExternalController
+External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 104433443651127810380","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Hữu Đức Trần","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Hữu Đức","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Trần","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: thd1152015@gmail.com"]
+
+[16:14:46-Debug-11] IdentityServer4.Hosting.IdentityServerAuthenticationService
+Augmenting SignInContext
+
+[16:14:46-Debug-11] IdentityServer4.Hosting.IdentityServerAuthenticationService
+Adding amr claim with value: external
+
+[16:14:46-Debug-11] IdentityServer4.Hosting.IdentityServerAuthenticationService
+Adding auth_time claim with value: 1604654086
+
+[16:14:46-Information-11] IdentityServer4.Events.DefaultEventService
+{"Username":null,"Provider":"Google","ProviderUserId":"104433443651127810380","SubjectId":"7A413847C9D8326F06C62F65D3A31D19EE8A9D21B09EFECB87EDE88FF3016C02","DisplayName":"Hữu Đức Trần","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HM426HHKJ9JB:0000001D","TimeStamp":"2020-11-06T09:14:46.0000000Z","ProcessId":31908,"LocalIpAddress":"127.0.0.1:5001","RemoteIpAddress":"127.0.0.1","$type":"UserLoginSuccessEvent"}
+
+[16:14:57-Debug-9] IdentityServer4.EntityFramework.Stores.PersistedGrantStore
+0 persisted grants found for {"SubjectId":"7A413847C9D8326F06C62F65D3A31D19EE8A9D21B09EFECB87EDE88FF3016C02","SessionId":null,"ClientId":null,"Type":null,"$type":"PersistedGrantFilter"}
+
+[16:15:04-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /.well-known/openid-configuration matched to endpoint type Discovery
+
+[16:15:04-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+
+[16:15:04-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+
+[16:15:04-Debug-7] IdentityServer4.Endpoints.DiscoveryEndpoint
+Start discovery request
+
+[16:15:05-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["profile","openid","blogpost-all-external-services","blogpost-all-services"] as all scopes, and [] as API resources
+
+[16:16:40-Information-1] 
+Seeding database...
+
+[16:16:42-Debug-1] 
+Clients already populated
+
+[16:16:42-Debug-1] 
+IdentityResources already populated
+
+[16:16:42-Debug-1] 
+ApiScopes being populated
+
+[16:16:42-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.ApiScopes' with unique index 'IX_ApiScopes_Name'. The duplicate key value is (blogpost-all-services).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:75cd0388-d737-41cc-8425-470cc28e505a
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(DbContext _, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(ConfigurationDbContext context) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 78
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 37
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 43
+
+[16:17:21-Information-1] 
+Seeding database...
+
+[16:17:23-Debug-1] 
+Clients already populated
+
+[16:17:23-Debug-1] 
+IdentityResources already populated
+
+[16:17:23-Debug-1] 
+ApiScopes being populated
+
+[16:17:23-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.ApiScopes' with unique index 'IX_ApiScopes_Name'. The duplicate key value is (blogpost-all-services).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:287ead36-0330-45a0-95cf-0c5c9abaf423
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(DbContext _, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(ConfigurationDbContext context) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 78
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 37
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 43
+
+[16:17:37-Information-1] 
+Seeding database...
+
+[16:17:38-Debug-1] 
+Clients already populated
+
+[16:17:38-Debug-1] 
+IdentityResources already populated
+
+[16:17:38-Debug-1] 
+ApiScopes being populated
+
+[16:17:39-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.ApiScopes' with unique index 'IX_ApiScopes_Name'. The duplicate key value is (blogpost-all-services).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:8791d99a-0d28-4c51-abf6-2cd480d9e413
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(DbContext _, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(ConfigurationDbContext context) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 78
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 37
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 43
+
+[16:17:54-Information-1] 
+Seeding database...
+
+[16:17:56-Debug-1] 
+Clients already populated
+
+[16:17:56-Debug-1] 
+IdentityResources already populated
+
+[16:17:56-Debug-1] 
+ApiScopes being populated
+
+[16:17:56-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.ApiScopes' with unique index 'IX_ApiScopes_Name'. The duplicate key value is (blogpost-all-services).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+ClientConnectionId:18c025fd-b1f2-4699-ad67-c21302dd6e7d
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(DbContext _, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(ConfigurationDbContext context) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 78
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 37
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 43
+
+[16:20:36-Information-1] 
+Seeding database...
+
+[16:20:38-Debug-1] 
+Clients being populated
+
+[16:20:39-Debug-1] 
+IdentityResources being populated
+
+[16:20:39-Debug-1] 
+ApiScopes being populated
+
+[16:20:39-Information-1] 
+Done seeding database.
+
+[16:20:49-Information-1] 
+Starting host...
+
+[16:20:49-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:20:49-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:20:49-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:20:49-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:20:49-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:20:49-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:20:49-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:21:28-Debug-7] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:21:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:28-Debug-7] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:28-Information-7] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:28-Warning-7] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:28-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:28-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:28-Information-11] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:28-Warning-11] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:29-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:29-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:29-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:29-Warning-13] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:29-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:29-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:29-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:29-Warning-13] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:30-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:30-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:30-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:30-Warning-13] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:30-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:30-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:30-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:30-Warning-13] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:21:31-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:21:31-Debug-13] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:21:31-Information-13] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:21:31-Warning-13] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:24:26-Information-1] 
+Starting host...
+
+[16:24:27-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:24:27-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:24:27-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:24:27-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:24:27-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:24:27-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:24:27-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Login Url: /Account/Login
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Login Return Url Parameter: ReturnUrl
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Logout Url: /Account/Logout
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+ConsentUrl Url: /consent
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Consent Return Url Parameter: returnUrl
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Error Url: /home/error
+
+[16:24:36-Debug-4] IdentityServer4.Startup
+Error Id Parameter: errorId
+
+[16:24:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:24:36-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:24:36-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:24:36-Warning-4] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:24:46-Debug-9] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:24:46-Debug-9] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:24:46-Information-9] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:24:46-Warning-9] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:24:46-Debug-9] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:24:46-Debug-9] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:24:46-Information-9] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:24:46-Warning-9] IdentityServer4.Endpoints.TokenEndpoint
+Invalid HTTP request for token endpoint
+
+[16:25:26-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:25:26-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:25:26-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:25:26-Debug-4] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:25:26-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:25:26-Debug-4] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:25:26-Debug-4] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:25:26-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:25:26-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:25:28-Debug-4] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:25:28-Debug-4] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:25:28-Debug-4] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:25:28-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:25:28-Information-4] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000003","TimeStamp":"2020-11-06T09:25:28.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:25:28-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:25:28-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:25:28-Debug-4] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:25:28-Debug-9] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:25:28-Debug-9] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:25:28-Debug-9] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:25:29-Information-9] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:25:29-Debug-9] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:25:29-Information-9] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****O5AQ","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000003","TimeStamp":"2020-11-06T09:25:29.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:25:29-Debug-9] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:25:33-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:25:33-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:25:33-Information-11] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:25:33-Debug-11] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:25:33-Debug-11] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:25:33-Debug-11] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:25:33-Debug-11] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:25:33-Debug-11] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:25:33-Debug-11] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:25:34-Debug-18] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:25:34-Debug-18] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:25:34-Debug-18] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:25:34-Debug-18] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:25:34-Information-18] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000004","TimeStamp":"2020-11-06T09:25:34.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:25:34-Debug-18] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:25:34-Debug-18] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:25:34-Debug-18] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:25:34-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:25:34-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:25:34-Debug-11] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:25:34-Information-11] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:25:34-Debug-11] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:25:34-Information-11] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****fuwg","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000004","TimeStamp":"2020-11-06T09:25:34.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:25:34-Debug-11] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:25:48-Debug-15] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:25:48-Debug-15] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:25:48-Information-15] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:25:48-Debug-15] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:25:48-Debug-15] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:25:48-Debug-15] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:25:48-Debug-15] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:25:48-Debug-15] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:25:48-Debug-15] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:25:49-Debug-4] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:25:49-Debug-4] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:25:49-Debug-4] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:25:49-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:25:49-Information-4] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000005","TimeStamp":"2020-11-06T09:25:49.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:25:49-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:25:49-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:25:49-Debug-4] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:25:49-Debug-4] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:25:49-Debug-15] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:25:49-Debug-15] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:25:49-Information-15] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:25:49-Debug-15] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:25:49-Information-15] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****R9fg","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000005","TimeStamp":"2020-11-06T09:25:49.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:25:49-Debug-15] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:26:04-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:26:04-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:26:04-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:26:04-Debug-4] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:26:04-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:26:04-Debug-4] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:26:04-Debug-4] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:26:04-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:26:04-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:26:04-Debug-11] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:26:04-Debug-11] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:26:04-Debug-11] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:26:04-Debug-11] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:26:04-Information-11] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000006","TimeStamp":"2020-11-06T09:26:04.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:26:04-Debug-11] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:26:04-Debug-11] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:26:04-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:26:04-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:26:04-Debug-11] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:26:04-Debug-11] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:26:04-Information-11] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:26:04-Debug-11] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:26:04-Information-11] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****uZKA","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000006","TimeStamp":"2020-11-06T09:26:04.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:26:04-Debug-11] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:26:24-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:26:24-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:26:24-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:26:24-Debug-4] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:26:24-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:26:24-Debug-4] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:26:24-Debug-4] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:26:24-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:26:24-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:26:25-Debug-4] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:26:25-Debug-4] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:26:25-Debug-4] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:26:25-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:26:25-Information-4] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000007","TimeStamp":"2020-11-06T09:26:25.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:26:25-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:26:25-Debug-4] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:26:25-Debug-4] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:26:25-Debug-4] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:26:25-Debug-15] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:26:25-Debug-15] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:26:25-Information-15] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:26:25-Debug-15] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:26:25-Information-15] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****ZT5w","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000007","TimeStamp":"2020-11-06T09:26:25.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:26:25-Debug-15] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:26:40-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Request path /connect/token matched to endpoint type Token
+
+[16:26:40-Debug-4] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+
+[16:26:40-Information-4] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+
+[16:26:40-Debug-4] IdentityServer4.Endpoints.TokenEndpoint
+Start token request.
+
+[16:26:40-Debug-4] IdentityServer4.Validation.ClientSecretValidator
+Start client validation
+
+[16:26:40-Debug-4] IdentityServer4.Validation.BasicAuthenticationSecretParser
+Start parsing Basic Authentication secret
+
+[16:26:40-Debug-4] IdentityServer4.Validation.PostBodySecretParser
+Start parsing for secret in post body
+
+[16:26:40-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Parser found secret: PostBodySecretParser
+
+[16:26:40-Debug-4] IdentityServer4.Validation.ISecretsListParser
+Secret id found: m2m.client
+
+[16:26:41-Debug-7] IdentityServer4.EntityFramework.Stores.ClientStore
+m2m.client found in database: true
+
+[16:26:41-Debug-7] IdentityServer4.Stores.ValidatingClientStore
+client configuration validation for client m2m.client succeeded.
+
+[16:26:41-Debug-7] IdentityServer4.Validation.ISecretsListValidator
+Secret validator success: HashedSharedSecretValidator
+
+[16:26:41-Debug-7] IdentityServer4.Validation.ClientSecretValidator
+Client validation success
+
+[16:26:41-Information-7] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HM426N3KB6IN:00000008","TimeStamp":"2020-11-06T09:26:41.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+
+[16:26:41-Debug-7] IdentityServer4.Validation.TokenRequestValidator
+Start token request validation
+
+[16:26:41-Debug-7] IdentityServer4.Validation.TokenRequestValidator
+Start client credentials token request validation
+
+[16:26:41-Debug-7] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] identity scopes in database
+
+[16:26:41-Debug-7] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found [] API resources in database
+
+[16:26:41-Debug-7] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["blogpost-all-services"] scopes in database
+
+[16:26:41-Debug-7] IdentityServer4.Validation.TokenRequestValidator
+m2m.client credentials token request validation success
+
+[16:26:41-Information-7] IdentityServer4.Validation.TokenRequestValidator
+Token request validation success, {"ClientId":"m2m.client","ClientName":"Client Credentials Client","GrantType":"client_credentials","Scopes":"blogpost-all-services","AuthorizationCode":null,"RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"m2m.client","client_secret":"***REDACTED***","grant_type":"client_credentials","scope":"blogpost-all-services"},"$type":"TokenRequestValidationLog"}
+
+[16:26:41-Debug-7] IdentityServer4.Services.DefaultClaimsService
+Getting claims for access token for client: m2m.client
+
+[16:26:41-Information-7] IdentityServer4.Events.DefaultEventService
+{"ClientId":"m2m.client","ClientName":"Client Credentials Client","RedirectUri":null,"Endpoint":"Token","SubjectId":null,"Scopes":"blogpost-all-services","GrantType":"client_credentials","Tokens":[{"TokenType":"access_token","TokenValue":"****-_qw","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HM426N3KB6IN:00000008","TimeStamp":"2020-11-06T09:26:41.0000000Z","ProcessId":20056,"LocalIpAddress":"::1:5001","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+
+[16:26:41-Debug-7] IdentityServer4.Endpoints.TokenEndpoint
+Token request success.
+
+[16:27:07-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Request path /.well-known/openid-configuration matched to endpoint type Discovery
+
+[16:27:07-Debug-11] IdentityServer4.Hosting.EndpointRouter
+Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+
+[16:27:07-Information-11] IdentityServer4.Hosting.IdentityServerMiddleware
+Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+
+[16:27:07-Debug-11] IdentityServer4.Endpoints.DiscoveryEndpoint
+Start discovery request
+
+[16:27:07-Debug-7] IdentityServer4.EntityFramework.Stores.ResourceStore
+Found ["profile","openid","blogpost-all-external-services","blogpost-all-services"] as all scopes, and [] as API resources
+
+[16:31:28-Information-1] 
+Starting host...
+
+[16:31:28-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:31:28-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:33:04-Information-1] 
+Starting host...
+
+[16:33:04-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:33:04-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:48:22-Information-1] 
+Starting host...
+
+[16:48:22-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:48:22-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:49:00-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: X509 certificate does not have a private key.
+   at Microsoft.Extensions.DependencyInjection.IdentityServerBuilderExtensionsCrypto.AddSigningCredential(IIdentityServerBuilder builder, X509Certificate2 certificate, String signingAlgorithm)
+   at Doitsu.Ecosystem.Identity.Service.Startup.ConfigureServices(IServiceCollection services) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Startup.cs:line 69
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.InvokeCore(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass9_0.<Invoke>g__Startup|0(IServiceCollection serviceCollection)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass8_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.UseStartup(Type startupType, HostBuilderContext context, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.<>c__DisplayClass12_0.<UseStartup>b__0(HostBuilderContext context, IServiceCollection services)
+   at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+   at Microsoft.Extensions.Hosting.HostBuilder.Build()
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 36
+
+[16:55:51-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: X509 certificate does not have a private key.
+   at Microsoft.Extensions.DependencyInjection.IdentityServerBuilderExtensionsCrypto.AddSigningCredential(IIdentityServerBuilder builder, X509Certificate2 certificate, String signingAlgorithm)
+   at Doitsu.Ecosystem.Identity.Service.Startup.ConfigureServices(IServiceCollection services) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Startup.cs:line 70
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.InvokeCore(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass9_0.<Invoke>g__Startup|0(IServiceCollection serviceCollection)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass8_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.UseStartup(Type startupType, HostBuilderContext context, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.<>c__DisplayClass12_0.<UseStartup>b__0(HostBuilderContext context, IServiceCollection services)
+   at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+   at Microsoft.Extensions.Hosting.HostBuilder.Build()
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 36
+
+[16:56:28-Information-1] 
+Starting host...
+
+[16:56:29-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:56:29-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+

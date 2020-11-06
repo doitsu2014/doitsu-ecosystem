@@ -1,1 +1,1 @@
-doitsu-ecosystem-identity-service
+# Microservices POC project of Doitsu Technology
