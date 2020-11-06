@@ -55,8 +55,11 @@ namespace Doitsu.Ecosystem.Identity.Service
                 options.EnableTokenCleanup = true;
             });
 
-            // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            if (Environment.IsDevelopment())
+            {
+                // not recommended for production - you need to store your key material somewhere secure
+                builder.AddDeveloperSigningCredential();
+            }
 
             services.AddAuthentication()
                 .AddGoogle(options =>
@@ -79,6 +82,7 @@ namespace Doitsu.Ecosystem.Identity.Service
                 app.UseDatabaseErrorPage();
             }
 
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

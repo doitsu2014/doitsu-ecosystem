@@ -34,7 +34,7 @@ namespace Doitsu.Ecosystem.Identity.Service
                     ClientName = "Client Credentials Client",
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret(Guid.NewGuid().ToString().Sha256()) },
+                    ClientSecrets = { new Secret("4MmLsfum857WQa4PktUy6yc9mNe5UgtmGMxQ9zf1Jeg=") },
 
                     AllowedScopes = { "blogpost-all-services" }
                 },
@@ -43,7 +43,7 @@ namespace Doitsu.Ecosystem.Identity.Service
                 new Client
                 {
                     ClientId = "interactive",
-                    ClientSecrets = { new Secret(Guid.NewGuid().ToString().Sha256()) },
+                    ClientSecrets = { new Secret("4MmLsfum857WQa4PktUy6yc9mNe5UgtmGMxQ9zf1Jeg=") },
 
                     AllowedGrantTypes = GrantTypes.Code,
 

@@ -23,7 +23,6 @@ namespace Doitsu.Ecosystem.Identity.Service
                         .AddJsonFile("appSettings.json", false)
                         .Build()
                 )
-                
                 .CreateLogger();
 
             try
