@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Doitsu.Ecosystem.Identity.Service.Migrations.PersistedGrantDb
 {
-    public partial class Grants : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

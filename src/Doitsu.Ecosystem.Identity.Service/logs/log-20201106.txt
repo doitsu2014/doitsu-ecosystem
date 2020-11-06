@@ -1,0 +1,131 @@
+[14:21:31 Information 1] 
+Starting host...
+
+[14:21:31 Information 1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[14:21:31 Information 1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[14:21:31 Debug 1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[14:57:39-Information-1] 
+Seeding database...
+
+[14:58:15-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): The size (8000) given to the column 'Data' exceeds the maximum allowed for any data type (8000).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 47
+ClientConnectionId:82963d1b-f032-4e3f-bc15-3ddd4e9ebf96
+Error Number:131,State:2,Class:15
+
+[15:00:08-Information-1] 
+Seeding database...
+
+[15:00:10-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:57a38c1f-a34d-4b6f-9a84-8fd522b5cd80
+Error Number:2716,State:1,Class:16
+
+[15:01:28-Information-1] 
+Seeding database...
+
+[15:01:29-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:1ef26ab7-b4e0-4bc4-85a3-e4d30ef9dc55
+Error Number:2716,State:1,Class:16
+
+[15:13:26-Information-1] 
+Seeding database...
+
+[15:13:28-Fatal-1] 
+Host terminated unexpectedly.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Column, parameter, or variable #1: Cannot specify a column width on data type text.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean isAsync, Int32 timeout, Boolean asyncWrite)
+   at Microsoft.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String methodName)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(DatabaseFacade databaseFacade)
+   at Doitsu.Ecosystem.Identity.Service.SeedData.EnsureSeedData(String connectionString) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\SeedData.cs:line 33
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 44
+ClientConnectionId:9e9ca077-eaa2-4525-a2ff-64b9075bddd7
+Error Number:2716,State:1,Class:16
+
+[15:24:45-Information-1] 
+Seeding database...
+
+[15:24:49-Debug-1] 
+Clients being populated
+
+[15:24:50-Debug-1] 
+IdentityResources being populated
+
+[15:24:50-Debug-1] 
+ApiScopes being populated
+
+[15:24:50-Information-1] 
+Done seeding database.
+

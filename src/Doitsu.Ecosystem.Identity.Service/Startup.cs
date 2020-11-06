@@ -44,12 +44,12 @@ namespace Doitsu.Ecosystem.Identity.Service
             // this adds the config data from DB (clients, resources, CORS)
             .AddConfigurationStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
+                options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
             })
             // this adds the operational data from DB (codes, tokens, consents)
             .AddOperationalStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlite(connectionString);
+                options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
 
                 // this enables automatic token cleanup. this is optional.
                 options.EnableTokenCleanup = true;
@@ -66,8 +66,8 @@ namespace Doitsu.Ecosystem.Identity.Service
                     // register your IdentityServer with Google at https://console.developers.google.com
                     // enable the Google+ API
                     // set the redirect URI to https://localhost:5001/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
+                    options.ClientId = Configuration["GoogleCredential:ClientId"];
+                    options.ClientSecret = Configuration["GoogleCredential:ClientSecret"];
                 });
         }
 
