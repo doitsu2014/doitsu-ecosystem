@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using IdentityServerHost.Quickstart.UI;
+using Microsoft.IdentityModel.Tokens;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Doitsu.Ecosystem.Identity.Service
 {
@@ -59,6 +62,12 @@ namespace Doitsu.Ecosystem.Identity.Service
             {
                 // not recommended for production - you need to store your key material somewhere secure
                 builder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                var x509 = new X509Certificate2(File.ReadAllBytes(Configuration["Certificate:FileName"]), Configuration["Certificate:Password"]);
+                builder.AddSigningCredential(x509);
+                builder.AddValidationKey(x509);
             }
 
             services.AddAuthentication()

@@ -2308,3 +2308,133 @@ Start discovery request
 [16:27:07-Debug-7] IdentityServer4.EntityFramework.Stores.ResourceStore
 Found ["profile","openid","blogpost-all-external-services","blogpost-all-services"] as all scopes, and [] as API resources
 
+[16:31:28-Information-1] 
+Starting host...
+
+[16:31:28-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:31:28-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:31:28-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:33:04-Information-1] 
+Starting host...
+
+[16:33:04-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:33:04-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:33:04-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:48:22-Information-1] 
+Starting host...
+
+[16:48:22-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:48:22-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:48:22-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
+[16:49:00-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: X509 certificate does not have a private key.
+   at Microsoft.Extensions.DependencyInjection.IdentityServerBuilderExtensionsCrypto.AddSigningCredential(IIdentityServerBuilder builder, X509Certificate2 certificate, String signingAlgorithm)
+   at Doitsu.Ecosystem.Identity.Service.Startup.ConfigureServices(IServiceCollection services) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Startup.cs:line 69
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.InvokeCore(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass9_0.<Invoke>g__Startup|0(IServiceCollection serviceCollection)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass8_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.UseStartup(Type startupType, HostBuilderContext context, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.<>c__DisplayClass12_0.<UseStartup>b__0(HostBuilderContext context, IServiceCollection services)
+   at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+   at Microsoft.Extensions.Hosting.HostBuilder.Build()
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 36
+
+[16:55:51-Fatal-1] 
+Host terminated unexpectedly.
+System.InvalidOperationException: X509 certificate does not have a private key.
+   at Microsoft.Extensions.DependencyInjection.IdentityServerBuilderExtensionsCrypto.AddSigningCredential(IIdentityServerBuilder builder, X509Certificate2 certificate, String signingAlgorithm)
+   at Doitsu.Ecosystem.Identity.Service.Startup.ConfigureServices(IServiceCollection services) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Startup.cs:line 70
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.InvokeCore(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass9_0.<Invoke>g__Startup|0(IServiceCollection serviceCollection)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.Invoke(Object instance, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.ConfigureServicesBuilder.<>c__DisplayClass8_0.<Build>b__0(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.UseStartup(Type startupType, HostBuilderContext context, IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.<>c__DisplayClass12_0.<UseStartup>b__0(HostBuilderContext context, IServiceCollection services)
+   at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+   at Microsoft.Extensions.Hosting.HostBuilder.Build()
+   at Doitsu.Ecosystem.Identity.Service.Program.Main(String[] args) in C:\Workspace\doitsu-ecosystem\src\Doitsu.Ecosystem.Identity.Service\Program.cs:line 36
+
+[16:56:28-Information-1] 
+Starting host...
+
+[16:56:29-Information-1] IdentityServer4.Startup
+Starting IdentityServer4 version 4.0.0+1acafade44176bf817412aa4309d5dff6587a741
+
+[16:56:29-Information-1] IdentityServer4.Startup
+Using the default authentication scheme idsrv for IdentityServer
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for authentication
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-in
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for sign-out
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for challenge
+
+[16:56:29-Debug-1] IdentityServer4.Startup
+Using idsrv as default ASP.NET Core scheme for forbid
+
