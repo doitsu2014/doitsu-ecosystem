@@ -3,12 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1236F37E-0337-47EC-A265-925BDC6EA04A}"
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogPost.Service", "BlogPost.Service.Api\BlogPost.Service.Api.csproj", "{6A54310F-2FEB-4C02-8839-5DC438EC9412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doitsu.Ecosystem.Identity.Service", "src\Doitsu.Ecosystem.Identity.Service\Doitsu.Ecosystem.Identity.Service.csproj", "{6A54310F-2FEB-4C02-8839-5DC438EC9412}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doitsu.Ecosystem.BlogPost.Service", "src\Doitsu.Ecosystem.BlogPost.Service\Doitsu.Ecosystem.BlogPost.Service.csproj", "{FF3A1E70-8D42-42F3-AC15-9D8BEAC48E19}"
-EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
