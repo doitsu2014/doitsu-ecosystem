@@ -20,7 +20,7 @@ namespace Doitsu.Ecosystem.Identity.Service
                 .ReadFrom.Configuration(
                     new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appSettings.json", false)
+                        .AddJsonFile("appsettings.json", false)
                         .Build()
                 )
                 .CreateLogger();
