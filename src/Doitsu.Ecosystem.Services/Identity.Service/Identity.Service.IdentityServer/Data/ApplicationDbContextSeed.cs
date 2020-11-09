@@ -69,9 +69,9 @@ namespace Identity.Service.IdentityServer.Data
             try
             {
                 string[] requiredHeaders = {
-                    "cardholdername", "cardnumber", "cardtype", "city", "country",
-                    "email", "expiration", "lastname", "name", "phonenumber",
-                    "username", "zipcode", "state", "street", "securitynumber",
+                    "city", "country",
+                    "email", "lastname", "name", "phonenumber",
+                    "username", "zipcode", "state", "street",
                     "normalizedemail", "normalizedusername", "password"
                 };
                 csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
@@ -133,26 +133,25 @@ namespace Identity.Service.IdentityServer.Data
 
         private IEnumerable<ApplicationUser> GetDefaultUser()
         {
-            var user =
-            new ApplicationUser()
+            var user = new ApplicationUser()
             {
+                Id = Guid.NewGuid().ToString(),
                 City = "Redmond",
                 Country = "U.S.",
-                Email = "demouser@microsoft.com",
-                Id = Guid.NewGuid().ToString(),
-                LastName = "DemoLastName",
-                Name = "DemoUser",
-                PhoneNumber = "1234567890",
-                UserName = "demouser@microsoft.com",
+                Email = "thd1152015@gmail.com",
+                LastName = "Tran",
+                Name = "Huu Duc",
+                PhoneNumber = "0946680600",
+                UserName = "thd1152015@gmail.com",
                 ZipCode = "98052",
                 State = "WA",
                 Street = "15703 NE 61st Ct",
-                NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
-                NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
+                NormalizedEmail = "THD1152015@GMAIL.COM",
+                NormalizedUserName = "THD1152015@GMAIL.COM",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
             };
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
+            user.PasswordHash = _passwordHasher.HashPassword(user, "zaQ@1234");
 
             return new List<ApplicationUser>()
             {

@@ -40,13 +40,13 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Street = table.Column<string>(maxLength: 256, nullable: false),
-                    City = table.Column<string>(maxLength: 64, nullable: false),
-                    State = table.Column<string>(maxLength: 32, nullable: false),
-                    Country = table.Column<string>(maxLength: 32, nullable: false),
-                    ZipCode = table.Column<string>(maxLength: 32, nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: false),
-                    LastName = table.Column<string>(maxLength: 256, nullable: false)
+                    Street = table.Column<string>(maxLength: 256, nullable: true),
+                    City = table.Column<string>(maxLength: 64, nullable: true),
+                    State = table.Column<string>(maxLength: 32, nullable: true),
+                    Country = table.Column<string>(maxLength: 32, nullable: true),
+                    ZipCode = table.Column<string>(maxLength: 32, nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    LastName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {

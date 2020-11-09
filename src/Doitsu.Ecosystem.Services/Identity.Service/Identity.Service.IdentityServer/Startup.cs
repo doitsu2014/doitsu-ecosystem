@@ -9,16 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using IdentityServerHost.Quickstart.UI;
-using Microsoft.IdentityModel.Tokens;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Identity.Service.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Identity.Service.IdentityServer.Data;
 using Identity.Service.IdentityServer;
-using System.Reflection;
 using System;
+using System.Reflection;
 
 namespace Doitsu.Ecosystem.Identity.Service
 {
@@ -42,13 +40,14 @@ namespace Doitsu.Ecosystem.Identity.Service
             var csApplicationDb = Configuration.GetConnectionString(ApplicationConstants.CS_APPLICATION_DB);
             var csConfigurationDb = Configuration.GetConnectionString(ApplicationConstants.CS_CONFIGURATION_DB);
             var csPersistedDb = Configuration.GetConnectionString(ApplicationConstants.CS_PERSISTEDGRANT_DB);
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(csApplicationDb, sqlServerOptionsAction: sqlOptions =>
                {
-                   sqlOptions.MigrationsAssembly(typeof(Startup).Assembly.FullName);
-                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                   sqlOptions.MigrationsAssembly(migrationsAssembly);
+                   //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                   sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                }));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -69,12 +68,12 @@ namespace Doitsu.Ecosystem.Identity.Service
             // this adds the config data from DB (clients, resources, CORS)
             .AddConfigurationStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlServer(csConfigurationDb, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+                options.ConfigureDbContext = builder => builder.UseSqlServer(csConfigurationDb, b => b.MigrationsAssembly(migrationsAssembly));
             })
             // this adds the operational data from DB (codes, tokens, consents)
             .AddOperationalStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlServer(csPersistedDb, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+                options.ConfigureDbContext = builder => builder.UseSqlServer(csPersistedDb, b => b.MigrationsAssembly(migrationsAssembly));
 
                 // this enables automatic token cleanup. this is optional.
                 options.EnableTokenCleanup = true;
@@ -103,6 +102,7 @@ namespace Doitsu.Ecosystem.Identity.Service
                     options.ClientId = Configuration["GoogleCredential:ClientId"];
                     options.ClientSecret = Configuration["GoogleCredential:ClientSecret"];
                 });
+
         }
 
         public void Configure(IApplicationBuilder app)
@@ -113,8 +113,8 @@ namespace Doitsu.Ecosystem.Identity.Service
                 app.UseDatabaseErrorPage();
             }
 
-            // app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseForwardedHeaders();
 
             app.UseRouting();
             app.UseIdentityServer();

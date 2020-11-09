@@ -28,7 +28,6 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
@@ -37,7 +36,6 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
@@ -49,7 +47,6 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -60,7 +57,6 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -85,12 +81,10 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -102,7 +96,6 @@ namespace Identity.Service.IdentityServer.Migrations.ApplicationDb
                         .HasMaxLength(256);
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
