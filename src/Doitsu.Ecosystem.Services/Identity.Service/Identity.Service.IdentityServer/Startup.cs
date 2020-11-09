@@ -13,11 +13,18 @@ using IdentityServerHost.Quickstart.UI;
 using Microsoft.IdentityModel.Tokens;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using Identity.Service.IdentityServer.Models;
+using Microsoft.AspNetCore.Identity;
+using Identity.Service.IdentityServer.Data;
+using Identity.Service.IdentityServer;
+using System.Reflection;
+using System;
 
 namespace Doitsu.Ecosystem.Identity.Service
 {
     public class Startup
     {
+
         public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
@@ -30,8 +37,23 @@ namespace Doitsu.Ecosystem.Identity.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.Configure<AppSettings>(Configuration);
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var csApplicationDb = Configuration.GetConnectionString(ApplicationConstants.CS_APPLICATION_DB);
+            var csConfigurationDb = Configuration.GetConnectionString(ApplicationConstants.CS_CONFIGURATION_DB);
+            var csPersistedDb = Configuration.GetConnectionString(ApplicationConstants.CS_PERSISTEDGRANT_DB);
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(csApplicationDb, sqlServerOptionsAction: sqlOptions =>
+               {
+                   sqlOptions.MigrationsAssembly(typeof(Startup).Assembly.FullName);
+                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+               }));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -43,16 +65,16 @@ namespace Doitsu.Ecosystem.Identity.Service
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-            .AddTestUsers(TestUsers.Users)
+            .AddAspNetIdentity<ApplicationUser>()
             // this adds the config data from DB (clients, resources, CORS)
             .AddConfigurationStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+                options.ConfigureDbContext = builder => builder.UseSqlServer(csConfigurationDb, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
             })
             // this adds the operational data from DB (codes, tokens, consents)
             .AddOperationalStore(options =>
             {
-                options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+                options.ConfigureDbContext = builder => builder.UseSqlServer(csPersistedDb, b => b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
 
                 // this enables automatic token cleanup. this is optional.
                 options.EnableTokenCleanup = true;
