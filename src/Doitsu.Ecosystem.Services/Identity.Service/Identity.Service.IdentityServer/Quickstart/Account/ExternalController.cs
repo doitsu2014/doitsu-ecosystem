@@ -1,3 +1,4 @@
+using Identity.Service.IdentityServer.Constants;
 using Identity.Service.IdentityServer.Models;
 using IdentityModel;
 using IdentityServer4;
@@ -206,21 +207,26 @@ namespace IdentityServerHost.Quickstart.UI
                 }
             }
 
+            var user = new ApplicationUser
+            {
+                UserName = Guid.NewGuid().ToString(),
+            };
+            user.NormalizedUserName = user.UserName.ToUpper();
+
             // email
             var email = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email)?.Value ??
                claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             if (email != null)
             {
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
+                user.Email = email;
+                user.NormalizedEmail = email;
             }
 
-            var user = new ApplicationUser
-            {
-                UserName = Guid.NewGuid().ToString(),
-            };
             var identityResult = await _userManager.CreateAsync(user);
-            if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
+            await _userManager.AddToRoleAsync(user, UserRolesConstant.CUSTOMER);
 
+            if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
             if (filtered.Any())
             {
                 identityResult = await _userManager.AddClaimsAsync(user, filtered);
