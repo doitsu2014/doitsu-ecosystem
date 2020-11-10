@@ -22,11 +22,11 @@ namespace Identity.Service.IdentityServer
         {
             var principal = await base.CreateAsync(user);
             var listAdditionalClaims = new (string key, string value)[] {
-                (ApplicationUserClaimConstant.ADDRESS_STREET, user.Street),
-                (ApplicationUserClaimConstant.ADDRESS_COUNTRY, user.Country),
-                (ApplicationUserClaimConstant.ADDRESS_STATE, user.State),
-                (ApplicationUserClaimConstant.ADDRESS_CITY, user.City),
-                (ApplicationUserClaimConstant.ADDRESS_ZIP_CODE, user.ZipCode),
+                (ApplicationUserClaimConstants.ADDRESS_STREET, user.Street),
+                (ApplicationUserClaimConstants.ADDRESS_COUNTRY, user.Country),
+                (ApplicationUserClaimConstants.ADDRESS_STATE, user.State),
+                (ApplicationUserClaimConstants.ADDRESS_CITY, user.City),
+                (ApplicationUserClaimConstants.ADDRESS_ZIP_CODE, user.ZipCode),
             }
             .Where(kv => !string.IsNullOrEmpty(kv.value))
             .Select(kv => new Claim(kv.key, kv.value))

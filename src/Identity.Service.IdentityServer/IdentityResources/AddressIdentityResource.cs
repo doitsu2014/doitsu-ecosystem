@@ -1,5 +1,4 @@
 using Identity.Service.IdentityServer.Constants;
-using IdentityModel;
 using IdentityServer4.Models;
 
 namespace Identity.Service.IdentityServer.Profiles
@@ -8,15 +7,15 @@ namespace Identity.Service.IdentityServer.Profiles
     {
         public AddressIdentityResource()
         {
-            this.Name = "address";
-            this.DisplayName = "Address Identity Resource";
+            this.Name = StandardScopeConstants.ADDRESS;
+            this.DisplayName = "Address identity resource";
             this.UserClaims = new string[]
             {
-                ApplicationUserClaimConstant.ADDRESS_CITY,
-                ApplicationUserClaimConstant.ADDRESS_COUNTRY,
-                ApplicationUserClaimConstant.ADDRESS_STATE,
-                ApplicationUserClaimConstant.ADDRESS_STREET,
-                ApplicationUserClaimConstant.ADDRESS_ZIP_CODE
+                ApplicationUserClaimConstants.ADDRESS_CITY,
+                ApplicationUserClaimConstants.ADDRESS_COUNTRY,
+                ApplicationUserClaimConstants.ADDRESS_STATE,
+                ApplicationUserClaimConstants.ADDRESS_STREET,
+                ApplicationUserClaimConstants.ADDRESS_ZIP_CODE
             };
         }
     }

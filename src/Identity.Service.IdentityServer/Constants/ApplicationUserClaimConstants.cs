@@ -1,6 +1,6 @@
 namespace Identity.Service.IdentityServer.Constants
 {
-    public static class ApplicationUserClaimConstant
+    public static class ApplicationUserClaimConstants
     {
         public const string ADDRESS_CITY = "address_city";
         public const string ADDRESS_COUNTRY = "address_country";

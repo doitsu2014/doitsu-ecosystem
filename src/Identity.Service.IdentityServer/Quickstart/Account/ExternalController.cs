@@ -224,7 +224,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             var identityResult = await _userManager.CreateAsync(user);
-            await _userManager.AddToRoleAsync(user, UserRolesConstant.CUSTOMER);
+            await _userManager.AddToRoleAsync(user, UserRolesConstants.CUSTOMER);
 
             if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
             if (filtered.Any())

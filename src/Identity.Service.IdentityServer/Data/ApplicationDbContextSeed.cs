@@ -45,13 +45,13 @@ namespace Identity.Service.IdentityServer.Data
                     {
                         new IdentityRole() {
                             Id = Guid.NewGuid().ToString(),
-                            Name = UserRolesConstant.ADMIN,
-                            NormalizedName = UserRolesConstant.ADMIN.ToUpper()
+                            Name = UserRolesConstants.ADMIN,
+                            NormalizedName = UserRolesConstants.ADMIN.ToUpper()
                         },
                         new IdentityRole() {
                             Id = Guid.NewGuid().ToString(),
-                            Name = UserRolesConstant.CUSTOMER,
-                            NormalizedName = UserRolesConstant.CUSTOMER.ToUpper()
+                            Name = UserRolesConstants.CUSTOMER,
+                            NormalizedName = UserRolesConstants.CUSTOMER.ToUpper()
                         }
                     };
 

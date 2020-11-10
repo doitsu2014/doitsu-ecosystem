@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Identity.Service.IdentityServer.Constants;
 using Identity.Service.IdentityServer.IdentityResources;
 using Identity.Service.IdentityServer.Profiles;
 using IdentityServer4;
@@ -180,85 +181,6 @@ namespace Doitsu.Ecosystem.Identity.Service
                 },
                 new Client
                 {
-                    ClientId = "mvctest",
-                    ClientName = "MVC Client Test",
-                    ClientSecrets = new List<Secret>
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    ClientUri = $"{clientsUrl["Mvc"]}",                             // public uri of the client
-                    AllowedGrantTypes = GrantTypes.Hybrid,
-                    AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false,
-                    AllowOfflineAccess = true,
-                    RedirectUris = new List<string>
-                    {
-                        $"{clientsUrl["Mvc"]}/signin-oidc"
-                    },
-                    PostLogoutRedirectUris = new List<string>
-                    {
-                        $"{clientsUrl["Mvc"]}/signout-callback-oidc"
-                    },
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "orders",
-                        "basket",
-                        "locations",
-                        "marketing",
-                        "webshoppingagg",
-                        "webhooks"
-                    },
-                },
-                new Client
-                {
-                    ClientId = "locationsswaggerui",
-                    ClientName = "Locations Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "locations"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "marketingswaggerui",
-                    ClientName = "Marketing Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "marketing"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "basketswaggerui",
-                    ClientName = "Basket Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "basket"
-                    }
-                },
-                new Client
-                {
                     ClientId = "orderingswaggerui",
                     ClientName = "Ordering Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
@@ -318,33 +240,6 @@ namespace Doitsu.Ecosystem.Identity.Service
                         "webhooks"
                     }
                 },
-                  // m2m client credentials flow client
-                new Client
-                {
-                    ClientId = "m2m.client",
-                    ClientName = "Client Credentials Client",
-
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("4MmLsfum857WQa4PktUy6yc9mNe5UgtmGMxQ9zf1Jeg=") },
-
-                    AllowedScopes = { "blogpost-all-services" }
-                },
-
-                // interactive client using code flow + pkce
-                new Client
-                {
-                    ClientId = "interactive",
-                    ClientSecrets = { new Secret("4MmLsfum857WQa4PktUy6yc9mNe5UgtmGMxQ9zf1Jeg=") },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-
-                    RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "blogpost-all-external-services" }
-                },
                 new Client
                 {
                     ClientId = "blazor",
@@ -353,10 +248,14 @@ namespace Doitsu.Ecosystem.Identity.Service
                     RequireClientSecret = false,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AlwaysSendClientClaims = true,
-                    AllowedCorsOrigins = { "https://localhost:6001" },
-                    AllowedScopes = { "openid", "profile" },
-                    RedirectUris = { "https://localhost:6001/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:6001/" }
+                    AllowedCorsOrigins = { $"{clientsUrl["BlazorClient"]}" },
+                    AllowedScopes = { 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        StandardScopeConstants.ADDRESS
+                    },
+                    RedirectUris = { $"{clientsUrl["BlazorClient"]}/authentication/login-callback" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["BlazorClient"]}/" }
                 }
             };
         }

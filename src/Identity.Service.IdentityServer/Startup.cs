@@ -17,8 +17,6 @@ using Identity.Service.IdentityServer.Data;
 using Identity.Service.IdentityServer;
 using System;
 using System.Reflection;
-using IdentityServer4.Services;
-using Identity.Service.IdentityServer.Services;
 
 namespace Doitsu.Ecosystem.Identity.Service
 {
