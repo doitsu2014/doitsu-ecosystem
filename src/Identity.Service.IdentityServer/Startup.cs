@@ -17,6 +17,7 @@ using Identity.Service.IdentityServer.Data;
 using Identity.Service.IdentityServer;
 using System;
 using System.Reflection;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Doitsu.Ecosystem.Identity.Service
 {
@@ -31,11 +32,24 @@ namespace Doitsu.Ecosystem.Identity.Service
             Environment = environment;
             Configuration = configuration;
         }
+        
+        private bool IsClusterEnv()
+        {
+            return Configuration.GetValue<bool>("IsClusterEnv");
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
             services.Configure<AppSettings>(Configuration);
+            if(IsClusterEnv())
+            {
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                });
+            }
+
 
             var csApplicationDb = Configuration.GetConnectionString(ApplicationConstants.CS_APPLICATION_DB);
             var csConfigurationDb = Configuration.GetConnectionString(ApplicationConstants.CS_CONFIGURATION_DB);
@@ -117,6 +131,15 @@ namespace Doitsu.Ecosystem.Identity.Service
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+            }
+
+            if(IsClusterEnv())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
             }
 
             app.UseStaticFiles();
