@@ -56,6 +56,8 @@ namespace Doitsu.Ecosystem.Identity.Service
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimPrincipalFactory>();
+
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -92,7 +94,10 @@ namespace Doitsu.Ecosystem.Identity.Service
                 builder.AddSigningCredential(x509);
                 builder.AddValidationKey(x509);
             }
-            builder.Services.AddTransient<IProfileService, ProfileService>();
+
+
+            // Override with custom ProfileService
+            // builder.Services.AddTransient<IProfileService, ProfileService>();
 
             services.AddAuthentication()
                 .AddGoogle(options =>

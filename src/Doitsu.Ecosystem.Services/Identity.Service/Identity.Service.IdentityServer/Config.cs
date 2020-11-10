@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Identity.Service.IdentityServer.IdentityResources;
+using Identity.Service.IdentityServer.Profiles;
 using IdentityServer4;
 using IdentityServer4.Models;
 using System;
@@ -41,7 +43,8 @@ namespace Doitsu.Ecosystem.Identity.Service
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new ProfileWithRoleIdentityResource(),
+                new AddressIdentityResource()
             };
         }
 

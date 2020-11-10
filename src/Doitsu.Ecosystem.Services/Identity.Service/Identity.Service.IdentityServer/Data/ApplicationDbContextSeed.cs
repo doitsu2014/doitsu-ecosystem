@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Identity.Service.IdentityServer.Constants;
 using Identity.Service.IdentityServer.Extensions;
 using Identity.Service.IdentityServer.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,40 @@ namespace Identity.Service.IdentityServer.Data
                     context.Users.AddRange(useCustomizationData
                         ? GetUsersFromFile(contentRootPath, logger)
                         : GetDefaultUser());
+
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.Roles.Any() && context.Users.Any())
+                {
+                    var listDefaultRoles = new List<IdentityRole>()
+                    {
+                        new IdentityRole() {
+                            Id = Guid.NewGuid().ToString(),
+                            Name = UserRolesConstant.ADMIN,
+                            NormalizedName = UserRolesConstant.ADMIN.ToUpper()
+                        },
+                        new IdentityRole() {
+                            Id = Guid.NewGuid().ToString(),
+                            Name = UserRolesConstant.CUSTOMER,
+                            NormalizedName = UserRolesConstant.CUSTOMER.ToUpper()
+                        }
+                    };
+
+                    context.Roles.AddRange(
+                        listDefaultRoles
+                    );
+
+                    context.Users.Select(x => x.Id).ToList()
+                        .ForEach(uid =>
+                        {
+                            var userRoles = listDefaultRoles.Select(role => new IdentityUserRole<string>()
+                            {
+                                RoleId = role.Id,
+                                UserId = uid
+                            });
+                            context.UserRoles.AddRange(userRoles);
+                        });
 
                     await context.SaveChangesAsync();
                 }
@@ -138,21 +173,19 @@ namespace Identity.Service.IdentityServer.Data
                 Id = Guid.NewGuid().ToString(),
                 City = "Redmond",
                 Country = "U.S.",
-                Email = "thd1152015@gmail.com",
+                Email = "duc.tran@doitsu.tech",
                 LastName = "Tran",
                 Name = "Huu Duc",
                 PhoneNumber = "0946680600",
-                UserName = "thd1152015@gmail.com",
+                UserName = "duc.tran@doitsu.tech",
                 ZipCode = "98052",
                 State = "WA",
                 Street = "15703 NE 61st Ct",
-                NormalizedEmail = "THD1152015@GMAIL.COM",
-                NormalizedUserName = "THD1152015@GMAIL.COM",
-                SecurityStamp = Guid.NewGuid().ToString("D"),
+                NormalizedEmail = "DUC.TRAN@DOITSU.TECH",
+                NormalizedUserName = "DUC.TRAN@DOITSU.TECH",
+                SecurityStamp = Guid.NewGuid().ToString("D")
             };
-
             user.PasswordHash = _passwordHasher.HashPassword(user, "zaQ@1234");
-
             return new List<ApplicationUser>()
             {
                 user
