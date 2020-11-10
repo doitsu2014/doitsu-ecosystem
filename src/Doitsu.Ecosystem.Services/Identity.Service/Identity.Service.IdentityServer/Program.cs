@@ -57,28 +57,6 @@ namespace Doitsu.Ecosystem.Identity.Service
                 host.Run();
 
                 return 0;
-
-
-                // var seed = args.Contains("/seed");
-                // if (seed)
-                // {
-                //     args = args.Except(new[] { "/seed" }).ToArray();
-                // }
-
-                // var host = CreateHostBuilder(args).Build();
-
-                // if (seed)
-                // {
-                //     Log.Information("Seeding database...");
-                //     var config = host.Services.GetRequiredService<IConfiguration>();
-                //     SeedData.EnsureSeedData(config.GetConnectionString(ApplicationConstants.CS_CONFIGURATION_DB), config.GetConnectionString(ApplicationConstants.CS_PERSISTEDGRANT_DB));
-                //     Log.Information("Done seeding database.");
-                //     return 0;
-                // }
-
-                // Log.Information("Starting host...");
-                // host.Run();
-                // return 0;
             }
             catch (Exception ex)
             {

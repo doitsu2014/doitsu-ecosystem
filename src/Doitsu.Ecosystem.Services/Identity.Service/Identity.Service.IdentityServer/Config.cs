@@ -342,6 +342,19 @@ namespace Doitsu.Ecosystem.Identity.Service
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "blogpost-all-external-services" }
                 },
+                new Client
+                {
+                    ClientId = "blazor",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true,
+                    AllowedCorsOrigins = { "https://localhost:6001" },
+                    AllowedScopes = { "openid", "profile" },
+                    RedirectUris = { "https://localhost:6001/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:6001/" }
+                }
             };
         }
 
