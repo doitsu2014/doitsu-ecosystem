@@ -14,3 +14,4 @@ services:
       - ./project-volume/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./project-volume/ASP.NET/Https/:/root/.aspnet/https:ro
       - ./project-volume/appsettings.json:/app/appsettings.json
+      - ./project-volume/logs:/app/logs
