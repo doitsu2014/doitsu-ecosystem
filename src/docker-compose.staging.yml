@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  identity-server:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:80"
+    volumes:
+      - ./project-volume/appsettings.json:/app/appsettings.json
+      - ./project-volume/logs:/app/logs
