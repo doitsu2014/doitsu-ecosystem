@@ -10,7 +10,7 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Identity.Service.OpenIdServer
 {
-        public class Worker : IHostedService
+    public class Worker : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -31,7 +31,7 @@ namespace Identity.Service.OpenIdServer
             {
                 var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
 
-                if(await manager.FindByClientIdAsync("blazor") is null)
+                if (await manager.FindByClientIdAsync("blazor") is null)
                 {
                     await manager.CreateAsync(new OpenIddictApplicationDescriptor
                     {
@@ -42,7 +42,7 @@ namespace Identity.Service.OpenIdServer
                         DisplayNames = {
                             [CultureInfo.GetCultureInfo("vn-VN")] = "Ứng dụng Blazor"
                         },
-                        PostLogoutRedirectUris = 
+                        PostLogoutRedirectUris =
                         {
                             new Uri("https://localhost:6001/authentication/login-callback")
                         },
