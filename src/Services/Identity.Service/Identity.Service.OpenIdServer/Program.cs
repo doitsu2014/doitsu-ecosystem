@@ -22,8 +22,11 @@ namespace Identity.Service.OpenIdServer
             try
             {
                 Log.Information("Starting Webhost...", AppName);
-                Log.Logger = CreateSerilogLogger(configuration);
-                CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args)
+                    .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+                    .UseSerilog()
+                    .Build()
+                    .Run();
                 return 0;
             }
             catch (Exception ex)

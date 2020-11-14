@@ -31,6 +31,41 @@ namespace Identity.Service.OpenIdServer
             {
                 var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
 
+                if(await manager.FindByClientIdAsync("blazor") is null)
+                {
+                    await manager.CreateAsync(new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "blazor",
+                        ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654",
+                        ConsentType = ConsentTypes.Explicit,
+                        DisplayName = "Blazor App",
+                        DisplayNames = {
+                            [CultureInfo.GetCultureInfo("vn-VN")] = "Ứng dụng Blazor"
+                        },
+                        PostLogoutRedirectUris = 
+                        {
+                            new Uri("https://localhost:6001/authentication/login-callback")
+                        },
+                        Permissions =
+                        {
+                            Permissions.Endpoints.Authorization,
+                            Permissions.Endpoints.Logout,
+                            Permissions.Endpoints.Token,
+                            Permissions.GrantTypes.AuthorizationCode,
+                            Permissions.GrantTypes.RefreshToken,
+                            Permissions.ResponseTypes.Code,
+                            Permissions.Scopes.Email,
+                            Permissions.Scopes.Profile,
+                            Permissions.Scopes.Roles,
+                            Permissions.Prefixes.Scope + "demo_api"
+                        },
+                        Requirements =
+                        {
+                            Requirements.Features.ProofKeyForCodeExchange
+                        }
+                    });
+                }
+
                 if (await manager.FindByClientIdAsync("mvc") is null)
                 {
                     await manager.CreateAsync(new OpenIddictApplicationDescriptor
