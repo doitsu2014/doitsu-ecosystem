@@ -2,7 +2,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Data;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OpenIddict.Abstractions;
@@ -30,21 +32,24 @@ namespace Identity.Service.OpenIdServer
             static async Task RegisterApplicationsAsync(IServiceProvider provider)
             {
                 var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var applicationSection = configuration.GetSection("ApplicationManager");
 
-                if (await manager.FindByClientIdAsync("blazor") is null)
+                if (await manager.FindByClientIdAsync("blogpost-blazor-client") is null)
                 {
                     await manager.CreateAsync(new OpenIddictApplicationDescriptor
                     {
-                        ClientId = "blazor",
-                        ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654",
+                        ClientId = "blogpost-blazor-client",
                         ConsentType = ConsentTypes.Explicit,
-                        DisplayName = "Blazor App",
-                        DisplayNames = {
-                            [CultureInfo.GetCultureInfo("vn-VN")] = "Ứng dụng Blazor"
-                        },
+                        DisplayName = "Blazor client application",
+                        Type = ClientTypes.Public,
                         PostLogoutRedirectUris =
                         {
-                            new Uri("https://localhost:6001/authentication/login-callback")
+                            new Uri($"{applicationSection["BlazorClient:Uri"]}/authentication/logout-callback")
+                        },
+                        RedirectUris =
+                        {
+                            new Uri($"{applicationSection["BlazorClient:Uri"]}/authentication/login-callback")
                         },
                         Permissions =
                         {
@@ -57,7 +62,7 @@ namespace Identity.Service.OpenIdServer
                             Permissions.Scopes.Email,
                             Permissions.Scopes.Profile,
                             Permissions.Scopes.Roles,
-                            Permissions.Prefixes.Scope + "demo_api"
+                            $"{Permissions.Prefixes.Scope}{ScopeNameConstants.BLOGPOST_ALL_SERVICES}"
                         },
                         Requirements =
                         {
@@ -97,7 +102,7 @@ namespace Identity.Service.OpenIdServer
                             Permissions.Scopes.Email,
                             Permissions.Scopes.Profile,
                             Permissions.Scopes.Roles,
-                            Permissions.Prefixes.Scope + "demo_api"
+                            $"{Permissions.Prefixes.Scope}demo_api"
                         },
                         Requirements =
                         {
@@ -161,6 +166,19 @@ namespace Identity.Service.OpenIdServer
                         Resources =
                         {
                             "resource_server"
+                        }
+                    });
+                }
+
+                if (await manager.FindByNameAsync(ScopeNameConstants.BLOGPOST_ALL_SERVICES) is null)
+                {
+                    await manager.CreateAsync(new OpenIddictScopeDescriptor
+                    {
+                        DisplayName = "Access all services of BlogPost services",
+                        Name = ScopeNameConstants.BLOGPOST_ALL_SERVICES,
+                        Resources =
+                        {
+                            ResourceNameConstants.BLOGPOST_RESOURCE
                         }
                     });
                 }
