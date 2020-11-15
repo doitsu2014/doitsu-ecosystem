@@ -1,13 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Identity.Service.OpenIdServer.Constants;
+using Identity.Service.OpenIdServer.Custom;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,10 +23,14 @@ namespace Identity.Service.OpenIdServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-            => Configuration = configuration;
-
         public IConfiguration Configuration { get; }
+        public IHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IHostEnvironment env)
+        {
+            Configuration = configuration;
+            Environment = env;
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -32,7 +39,9 @@ namespace Identity.Service.OpenIdServer
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityDatabase"));
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityDatabase"), options =>
+                    options.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
+                        .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null));
 
                 // Register the entity sets needed by OpenIddict.
                 // Note: use the generic overload if you need
@@ -44,6 +53,8 @@ namespace Identity.Service.OpenIdServer
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
@@ -105,11 +116,21 @@ namespace Identity.Service.OpenIdServer
                            .AllowRefreshTokenFlow();
 
                     // Mark the "email", "profile", "roles" and "demo_api" scopes as supported scopes.
-                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles, "demo_api");
+                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles, "demo_api", ScopeNameConstants.BLOGPOST_ALL_SERVICES);
 
-                    // Register the signing and encryption credentials.
-                    options.AddDevelopmentEncryptionCertificate()
-                           .AddDevelopmentSigningCertificate();
+                    if (Environment.IsDevelopment())
+                    {
+                        // Register the signing and encryption credentials.
+                        options.AddDevelopmentEncryptionCertificate()
+                            .AddDevelopmentSigningCertificate();
+                    }
+                    else
+                    {
+                        var certSection = Configuration.GetSection("Certificate");
+                        var x509 = new X509Certificate2(File.ReadAllBytes(certSection["FileName"]), certSection["Password"]);
+                        options.AddSigningCertificate(x509)
+                            .AddEncryptionCertificate(x509);
+                    }
 
                     // Force client applications to use Proof Key for Code Exchange (PKCE).
                     options.RequireProofKeyForCodeExchange();
@@ -149,6 +170,7 @@ namespace Identity.Service.OpenIdServer
                 })
 
                 // Register the OpenIddict validation components.
+                // If unnecessory remove it
                 .AddValidation(options =>
                 {
                     // Configure the audience accepted by this resource server.
@@ -184,23 +206,63 @@ namespace Identity.Service.OpenIdServer
                    options.ClientId = Configuration["Authentication:Google:ClientId"];
                    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                });
+
+            if (IsCluster())
+            {
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                });
+            }
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseDeveloperExceptionPage();
+            if (Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // Enforce https during production
+                //var rewriteOptions = new RewriteOptions()
+                //    .AddRedirectToHttps();
+                //app.UseRewriter(rewriteOptions);
+                app.UseExceptionHandler("/Home/Error");
+            }
+            if (IsCluster())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
+            }
 
             app.UseStaticFiles();
-
             app.UseStatusCodePagesWithReExecute("/error");
-
             app.UseRouting();
-
             app.UseRequestLocalization(options =>
             {
                 options.AddSupportedCultures("en-US", "fr-FR");
                 options.AddSupportedUICultures("en-US", "fr-FR");
                 options.SetDefaultCulture("en-US");
+            });
+
+            var allowedOrigins = Configuration["AllowedOrigins"].Split(";");
+            app.UseCors(x =>
+            {
+                if (allowedOrigins.Contains("*"))
+                {
+                    x.AllowAnyOrigin();
+                }
+                else
+                {
+                    x.WithOrigins(allowedOrigins);
+                }
+                x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
 
             app.UseAuthentication();
@@ -210,5 +272,11 @@ namespace Identity.Service.OpenIdServer
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}"));
         }
+
+        private bool IsCluster()
+        {
+            return Configuration.GetValue<bool>("Operation:IsCluster");
+        }
     }
+
 }

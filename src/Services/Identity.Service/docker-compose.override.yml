@@ -15,3 +15,4 @@ services:
       - ./Volumes/https:/root/.aspnet/https:ro
       - ./Volumes/appsettings.json:/app/appsettings.json
       - ./Volumes/logs:/app/logs
+

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.ViewModels.Authorization;
@@ -529,32 +530,28 @@ namespace Identity.Service.OpenIdServer
             switch (claim.Type)
             {
                 case Claims.Name:
+                case ClaimTypeConstants.AVATAR:
+                case ClaimTypeConstants.ADDRESS_CITY:
+                case ClaimTypeConstants.ADDRESS_COUNTRY:
+                case ClaimTypeConstants.ADDRESS_STATE:
+                case ClaimTypeConstants.ADDRESS_STREET:
+                case ClaimTypeConstants.ADDRESS_ZIP_CODE:
                     yield return Destinations.AccessToken;
-
                     if (principal.HasScope(Scopes.Profile))
                         yield return Destinations.IdentityToken;
-
                     yield break;
-
                 case Claims.Email:
                     yield return Destinations.AccessToken;
-
                     if (principal.HasScope(Scopes.Email))
                         yield return Destinations.IdentityToken;
-
                     yield break;
-
                 case Claims.Role:
                     yield return Destinations.AccessToken;
-
                     if (principal.HasScope(Scopes.Roles))
                         yield return Destinations.IdentityToken;
-
                     yield break;
-
                 // Never include the security stamp in the access and identity tokens, as it's a secret value.
                 case "AspNet.Identity.SecurityStamp": yield break;
-
                 default:
                     yield return Destinations.AccessToken;
                     yield break;

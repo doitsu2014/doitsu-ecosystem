@@ -37,3 +37,4 @@ msbuild.wrn
 .vs/
 logs/
 Volumes/
+node_modules/

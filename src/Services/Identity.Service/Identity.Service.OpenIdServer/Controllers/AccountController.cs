@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.Services;
@@ -108,6 +109,7 @@ namespace Identity.Service.OpenIdServer.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, IdentityRoleConstants.CUSTOMER);
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -203,6 +205,8 @@ namespace Identity.Service.OpenIdServer.Controllers
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, IdentityRoleConstants.CUSTOMER);
+                    
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
