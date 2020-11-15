@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  identity-server:
+    image: doitsu2014/identity-service:latest
+    build:
+      context: .
+      dockerfile: Identity.Service.OpenIdServer/Dockerfile
+
