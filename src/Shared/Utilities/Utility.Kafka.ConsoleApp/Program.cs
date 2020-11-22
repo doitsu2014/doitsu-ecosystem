@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 namespace Utility.Kafka.ConsoleApp
 {
 
-    public class StudentSerializer : ISerializer<Student>
+    public class StudentSerializer : ISerializer<Student>, IDeserializer<Student>
     {
+        public Student Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
+        {
+            return JsonSerializer.Deserialize<Student>(data);
+        }
+
         public byte[] Serialize(Student data, SerializationContext context)
         {
             return JsonSerializer.SerializeToUtf8Bytes(data);
@@ -37,7 +42,7 @@ namespace Utility.Kafka.ConsoleApp
 
             var config = new ClientConfig
             {
-                BootstrapServers = "kafka-broker.doitsu.tech:9092",
+                BootstrapServers = "kafka-broker.doitsu.tech:9093",
                 ClientId = Dns.GetHostName()
             };
 
@@ -48,6 +53,21 @@ namespace Utility.Kafka.ConsoleApp
                 var result = await producer.ProduceAsync("StudentAdded", new Message<string, Student> { Key = student.Id.ToString(), Value = student });
             }
 
+            var consumerConfig = new ConsumerConfig
+            {
+                BootstrapServers = "kafka-broker.doitsu.tech:9093",
+                GroupId = "foo",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+            var consumerBuilder = new ConsumerBuilder<string, Student>(consumerConfig);
+            consumerBuilder.SetValueDeserializer(new StudentSerializer());
+            using (var consumer = consumerBuilder.Build())
+            {
+                consumer.Subscribe(new string[] { "StudentAdded" });
+                var consumeResult = consumer.Consume();
+                // System.Console.WriteLine(JsonSerializer.Serialize(consumeResult));
+                consumer.Close();
+            }
 
 
             // config.ProduceMessage<string, Student>("StudentAdded", new Message<string, Student>{Key = student.Id.ToString() ,Value = student}, valueSerializer: new StudentSerializer())
