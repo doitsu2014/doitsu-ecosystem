@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Faker.Net" Version="1.3.93" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Configurations\" />
   </ItemGroup>
 

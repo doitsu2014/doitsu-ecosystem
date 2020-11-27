@@ -1,10 +1,13 @@
-﻿using System;
+﻿using System.Net.Http.Headers;
+using System;
 using System.Net;
 using Confluent.Kafka;
 using Utility.Extensions;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Confluent.Kafka.Admin;
 
 namespace Utility.Kafka.ConsoleApp
 {
@@ -33,48 +36,114 @@ namespace Utility.Kafka.ConsoleApp
     {
         public static async Task Main(string[] args)
         {
-            var student = new Student()
+            // var students = new List<Student>();
+            // for (var i = 0; i < 2; ++i)
+            //     students.Add(new Student()
+            //     {
+            //         Id = Guid.NewGuid(),
+            //         Name = (Faker.Name.FullName()),
+            //         Gpa = Faker.RandomNumber.Next(1, 10)
+            //     });
+
+            var bootstrapServers = "localhost:9093";
+
+            var adminConfig = new AdminClientConfig()
             {
-                Id = Guid.NewGuid(),
-                Name = "Doitsu2014",
-                Gpa = (float)10.0
+                BootstrapServers = bootstrapServers
+            };
+            var adminBuilder = new AdminClientBuilder(adminConfig);
+            using (var adminClient = adminBuilder.Build())
+            {
+                try
+                {
+                    (adminClient.DeleteTopicsAsync(new string[] { "topicname3" })).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message);
+                }
+
+                try
+                {
+                    adminClient.CreateTopicsAsync(new TopicSpecification[] {
+                        new TopicSpecification()
+                        {
+                            ReplicationFactor = 2,
+                            NumPartitions = 2,
+                            Name = "topicname3"
+                        }
+                    }).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message);
+                }
+
+                try
+                {
+                    adminClient.CreatePartitionsAsync(new PartitionsSpecification[] {
+                        new PartitionsSpecification()
+                        {
+                            IncreaseTo = 4,
+                            Topic = "topicname3"
+                        }
+                    }).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message);
+                }
+            }
+
+            var producerConfig = new ProducerConfig
+            {
+                BootstrapServers = bootstrapServers,
+                Partitioner = Partitioner.Random
             };
 
-            var boostrapServers = "localhost:9093";
-            var config = new ProducerConfig()
-            {
-                BootstrapServers = boostrapServers,
-                SaslMechanism = SaslMechanism.Plain,
-                SaslUsername = "user",
-                SaslPassword = "zaQ@1234",
-                SslKeystoreLocation = "Configurations/kafka.truststore.jks",
-                SslKeystorePassword = "zaQ@1234",
-                SecurityProtocol = SecurityProtocol.SaslSsl 
-            };
 
-            var builder = new ProducerBuilder<string, Student>(config);
-            builder.SetValueSerializer(new StudentSerializer());
+
+            var builder = new ProducerBuilder<Null, string>(producerConfig);
+            // builder.SetValueSerializer(new StudentSerializer());
             using (var producer = builder.Build())
             {
-                var result = await producer.ProduceAsync("StudentAdded", new Message<string, Student> { Key = student.Id.ToString(), Value = student });
+                for (var i = 0; i < 10; ++i)
+                {
+                    try
+                    {
+                        var message = new Message<Null, string> { Value = "ducth" };
+                        var result = await producer.ProduceAsync($"topicname3", message);
+                        System.Console.WriteLine($"produce successfully message {message.Value} to partition {result.TopicPartition}");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine(ex.Message);
+
+                    }
+                }
             }
 
-            var consumerConfig = new ConsumerConfig
-            {
-                BootstrapServers = "localhost:9093",
-                GroupId = "foo",
-                AutoOffsetReset = AutoOffsetReset.Earliest
-            };
-            var consumerBuilder = new ConsumerBuilder<string, Student>(consumerConfig);
-            consumerBuilder.SetValueDeserializer(new StudentSerializer());
-            using (var consumer = consumerBuilder.Build())
-            {
-                consumer.Subscribe(new string[] { "StudentAdded" });
-                var consumeResult = consumer.Consume();
-                // System.Console.WriteLine(JsonSerializer.Serialize(consumeResult));
-                consumer.Close();
-            }
+            // var consumerConfig = new ConsumerConfig
+            // {
+            //     BootstrapServers = bootstrapServers,
+            //     GroupId = "foo",
+            //     AutoOffsetReset = AutoOffsetReset.Earliest
+            // };
 
+            // var consumerBuilder = new ConsumerBuilder<string, Student>(consumerConfig);
+            // consumerBuilder.SetValueDeserializer(new StudentSerializer());
+            // using (var consumer = consumerBuilder.Build())
+            // {
+            //     consumer.Subscribe(new string[] { "StudentAdded" });
+            //     ConsumeResult<string, Student> consumeResult;
+            //     do
+            //     {
+            //         consumeResult = consumer.Consume();
+            //         System.Console.WriteLine(consumeResult.Message.Value.Name);
+            //     }
+            //     while (consumeResult != null);
+            //     consumer.Close();
+            // }
 
             // config.ProduceMessage<string, Student>("StudentAdded", new Message<string, Student>{Key = student.Id.ToString() ,Value = student}, valueSerializer: new StudentSerializer())
             //     .Subscribe(
