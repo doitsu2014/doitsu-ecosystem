@@ -40,10 +40,16 @@ namespace Utility.Kafka.ConsoleApp
                 Gpa = (float)10.0
             };
 
-            var config = new ClientConfig
+            var boostrapServers = "localhost:9093";
+            var config = new ProducerConfig()
             {
-                BootstrapServers = "kafka-broker.doitsu.tech:9093",
-                ClientId = Dns.GetHostName()
+                BootstrapServers = boostrapServers,
+                SaslMechanism = SaslMechanism.Plain,
+                SaslUsername = "user",
+                SaslPassword = "zaQ@1234",
+                SslKeystoreLocation = "Configurations/kafka.truststore.jks",
+                SslKeystorePassword = "zaQ@1234",
+                SecurityProtocol = SecurityProtocol.SaslSsl 
             };
 
             var builder = new ProducerBuilder<string, Student>(config);
@@ -55,7 +61,7 @@ namespace Utility.Kafka.ConsoleApp
 
             var consumerConfig = new ConsumerConfig
             {
-                BootstrapServers = "kafka-broker.doitsu.tech:9093",
+                BootstrapServers = "localhost:9093",
                 GroupId = "foo",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
