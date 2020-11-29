@@ -1,13 +1,11 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Text.RegularExpressions;
 using System;
-using System.Net;
 using Confluent.Kafka;
-using Utility.Extensions;
-using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Confluent.Kafka.Admin;
+using Utility.Settings;
+using System.Collections.Generic;
 
 namespace Utility.Kafka.ConsoleApp
 {
@@ -36,27 +34,47 @@ namespace Utility.Kafka.ConsoleApp
     {
         public static async Task Main(string[] args)
         {
-            // var students = new List<Student>();
-            // for (var i = 0; i < 2; ++i)
-            //     students.Add(new Student()
-            //     {
-            //         Id = Guid.NewGuid(),
-            //         Name = (Faker.Name.FullName()),
-            //         Gpa = Faker.RandomNumber.Next(1, 10)
-            //     });
-
-            var bootstrapServers = "localhost:9093";
-
-            var adminConfig = new AdminClientConfig()
+            var bootstrapServers = "localhost:19093,localhost:29093,localhost:39093";
+            var settings = new KafkaSettings()
             {
-                BootstrapServers = bootstrapServers
+                AdminClientConfig = new AdminClientConfig()
+                {
+                    BootstrapServers = bootstrapServers,
+                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
+                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
+                    SslKeyLocation = "Configurations/kafkacat.client.key",
+                    SslKeyPassword = "zaQ@1234",
+                    SecurityProtocol = SecurityProtocol.Ssl
+                },
+                ConsumerConfig = new ConsumerConfig()
+                {
+                    BootstrapServers = bootstrapServers,
+                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
+                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
+                    SslKeyLocation = "Configurations/kafkacat.client.key",
+                    SslKeyPassword = "zaQ@1234",
+                    SecurityProtocol = SecurityProtocol.Ssl,
+                    GroupId = "group-default-01",
+                    AutoOffsetReset = AutoOffsetReset.Earliest,
+                },
+                ProducerConfig = new ProducerConfig()
+                {
+                    BootstrapServers = bootstrapServers,
+                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
+                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
+                    SslKeyLocation = "Configurations/kafkacat.client.key",
+                    SslKeyPassword = "zaQ@1234",
+                    SecurityProtocol = SecurityProtocol.Ssl,
+                    Partitioner = Partitioner.Random
+                }
             };
-            var adminBuilder = new AdminClientBuilder(adminConfig);
+            var topicName = "studentAdded";
+            var adminBuilder = new AdminClientBuilder(settings.AdminClientConfig);
             using (var adminClient = adminBuilder.Build())
             {
                 try
                 {
-                    (adminClient.DeleteTopicsAsync(new string[] { "topicname3" })).GetAwaiter().GetResult();
+                    (adminClient.DeleteTopicsAsync(new string[] { topicName })).ConfigureAwait(true).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -68,26 +86,11 @@ namespace Utility.Kafka.ConsoleApp
                     adminClient.CreateTopicsAsync(new TopicSpecification[] {
                         new TopicSpecification()
                         {
-                            ReplicationFactor = 2,
-                            NumPartitions = 2,
-                            Name = "topicname3"
+                            ReplicationFactor = 3,
+                            NumPartitions = 3,
+                            Name = topicName
                         }
-                    }).GetAwaiter().GetResult();
-                }
-                catch (Exception ex)
-                {
-                    System.Console.WriteLine(ex.Message);
-                }
-
-                try
-                {
-                    adminClient.CreatePartitionsAsync(new PartitionsSpecification[] {
-                        new PartitionsSpecification()
-                        {
-                            IncreaseTo = 4,
-                            Topic = "topicname3"
-                        }
-                    }).GetAwaiter().GetResult();
+                    }).ConfigureAwait(true).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -95,25 +98,29 @@ namespace Utility.Kafka.ConsoleApp
                 }
             }
 
-            var producerConfig = new ProducerConfig
+
+            var listStudents = new List<Student>();
+            for (var i = 0; i < 10; ++i)
             {
-                BootstrapServers = bootstrapServers,
-                Partitioner = Partitioner.Random
-            };
+                listStudents.Add(new Student()
+                {
+                    Id = Guid.NewGuid(),
+                    Gpa = Faker.RandomNumber.Next(0, 10),
+                    Name = Faker.Name.FullName()
+                });
+            }
 
-
-
-            var builder = new ProducerBuilder<Null, string>(producerConfig);
-            // builder.SetValueSerializer(new StudentSerializer());
+            var builder = new ProducerBuilder<string, Student>(settings.ProducerConfig);
+            builder.SetValueSerializer(new StudentSerializer());
             using (var producer = builder.Build())
             {
-                for (var i = 0; i < 10; ++i)
+                foreach (var student in listStudents)
                 {
                     try
                     {
-                        var message = new Message<Null, string> { Value = "ducth" };
-                        var result = await producer.ProduceAsync($"topicname3", message);
-                        System.Console.WriteLine($"produce successfully message {message.Value} to partition {result.TopicPartition}");
+                        var message = new Message<string, Student> { Key = student.Id.ToString(), Value = student };
+                        var result = await producer.ProduceAsync($"{topicName}", message);
+                        System.Console.WriteLine($"produce successfully message {message.Value.Id} to partition {result.TopicPartition}");
                     }
                     catch (Exception ex)
                     {
@@ -123,47 +130,20 @@ namespace Utility.Kafka.ConsoleApp
                 }
             }
 
-            // var consumerConfig = new ConsumerConfig
-            // {
-            //     BootstrapServers = bootstrapServers,
-            //     GroupId = "foo",
-            //     AutoOffsetReset = AutoOffsetReset.Earliest
-            // };
-
-            // var consumerBuilder = new ConsumerBuilder<string, Student>(consumerConfig);
-            // consumerBuilder.SetValueDeserializer(new StudentSerializer());
-            // using (var consumer = consumerBuilder.Build())
-            // {
-            //     consumer.Subscribe(new string[] { "StudentAdded" });
-            //     ConsumeResult<string, Student> consumeResult;
-            //     do
-            //     {
-            //         consumeResult = consumer.Consume();
-            //         System.Console.WriteLine(consumeResult.Message.Value.Name);
-            //     }
-            //     while (consumeResult != null);
-            //     consumer.Close();
-            // }
-
-            // config.ProduceMessage<string, Student>("StudentAdded", new Message<string, Student>{Key = student.Id.ToString() ,Value = student}, valueSerializer: new StudentSerializer())
-            //     .Subscribe(
-            //         res => 
-            //         {
-            //             var config = new ConsumerConfig
-            //             {
-            //                 BootstrapServers = "kafka-broker.doitsu.tech:9092",
-            //                 GroupId = "foo",
-            //                 AutoOffsetReset = AutoOffsetReset.Earliest
-            //             };
-            //             using (var consumer = new ConsumerBuilder<Ignore, string>(config).Build())
-            //             {
-            //                 consumer.Subscribe(new string[] { "weblog2" });
-            //                 var consumeResult = consumer.Consume();
-            //                 // System.Console.WriteLine(JsonSerializer.Serialize(consumeResult));
-            //                 consumer.Close();
-            //             }
-            //         },
-            //         error => System.Console.WriteLine(error.Message));
+            var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
+            consumerBuilder.SetValueDeserializer(new StudentSerializer());
+            using (var consumer = consumerBuilder.Build())
+            {
+                consumer.Subscribe(new string[] { topicName });
+                ConsumeResult<string, Student> consumeResult;
+                do
+                {
+                    consumeResult = consumer.Consume();
+                    System.Console.WriteLine($"consume successfully message {consumeResult.Message.Key} from partition {consumeResult.TopicPartition}");
+                }
+                while (consumeResult != null);
+                consumer.Close();
+            }
         }
     }
 }

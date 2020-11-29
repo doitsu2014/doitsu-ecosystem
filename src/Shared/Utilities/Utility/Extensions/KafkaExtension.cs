@@ -6,7 +6,7 @@ namespace Utility.Extensions
 {
     public static class KafkaExtension
     {
-        public static IObservable<DeliveryResult<TKey, TValue>> ProduceMessage<TKey, TValue>(this ClientConfig config,
+        public static IObservable<DeliveryResult<TKey, TValue>> ProduceMessage<TKey, TValue>(this ProducerConfig config,
                                                                                              string topic,
                                                                                              Message<TKey, TValue> kafkaMessage,
                                                                                              ISerializer<TKey> keySerializer = default,
