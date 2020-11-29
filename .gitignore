@@ -38,3 +38,9 @@ msbuild.wrn
 logs/
 Volumes/
 node_modules/
+
+*.crt
+*.jks
+*_creds
+*.key
+*.pem
