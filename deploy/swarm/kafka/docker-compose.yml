@@ -2,6 +2,9 @@ version: '3.8'
 services:
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper-1
+    ports:
+      - "22181:22181"
     environment:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 22181
@@ -14,6 +17,9 @@ services:
 
   zookeeper-2:
     image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper-2
+    ports:
+      - "32181:32181"
     environment:
       ZOOKEEPER_SERVER_ID: 2
       ZOOKEEPER_CLIENT_PORT: 32181
@@ -26,6 +32,9 @@ services:
 
   zookeeper-3:
     image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper-3
+    ports:
+      - "42181:42181"
     environment:
       ZOOKEEPER_SERVER_ID: 3
       ZOOKEEPER_CLIENT_PORT: 42181
@@ -38,6 +47,7 @@ services:
 
   kafka-ssl-1:
     image: confluentinc/cp-kafka:latest
+    hostname: kafka-ssl-1
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -65,6 +75,7 @@ services:
 
   kafka-ssl-2:
     image: confluentinc/cp-kafka:latest
+    hostname: kafka-ssl-2
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -92,6 +103,7 @@ services:
 
   kafka-ssl-3:
     image: confluentinc/cp-kafka:latest
+    hostname: kafka-ssl-3
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -119,3 +131,5 @@ services:
 
 networks:
   kafka:
+    driver: overlay
+    attachable: true
