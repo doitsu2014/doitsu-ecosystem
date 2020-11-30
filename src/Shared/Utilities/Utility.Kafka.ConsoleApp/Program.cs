@@ -74,50 +74,26 @@ namespace Utility.Kafka.ConsoleApp
                 var produceResults = await kafkaService.ProduceMessagesAsync(topicName, listMessages, valueSerializer: new StudentSerializer());
                 foreach (var produceResult in produceResults)
                 {
-                    System.Console.WriteLine($"produce successfully message {produceResult.Message.Value.Id} to partition {produceResult.TopicPartition}");
+                    System.Console.WriteLine($"Produces successfully message {produceResult.Message.Value.Id} to partition {produceResult.TopicPartition}");
+                }
+
+                var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
+                consumerBuilder.SetValueDeserializer(new StudentSerializer());
+                using (var consumer = consumerBuilder.Build())
+                {
+                    consumer.Subscribe(new string[] { topicName });
+                    ConsumeResult<string, Student> consumeResult;
+                    do
+                    {
+                        consumeResult = consumer.Consume();
+                        System.Console.WriteLine($"Consumes successfully message {consumeResult.Message.Key} from partition {consumeResult.TopicPartition}");
+                    }
+                    while (consumeResult != null);
+                    consumer.Close();
                 }
             }
 
 
-            // var produceResults = await settings.ProducerConfig.ProduceMessagesAsync(topicName,
-            //                                                                        listMessages,
-            //                                                                        valueSerializer: new StudentSerializer());
-
-
-            // var builder = new ProducerBuilder<string, Student>(settings.ProducerConfig);
-            // builder.SetValueSerializer(new StudentSerializer());
-            // using (var producer = builder.Build())
-            // {
-            //     foreach (var student in listStudents)
-            //     {
-            //         try
-            //         {
-            //             var message = new Message<string, Student> { Key = student.Id.ToString(), Value = student };
-            //             var result = await producer.ProduceAsync($"{topicName}", message);
-            //             System.Console.WriteLine($"produce successfully message {message.Value.Id} to partition {result.TopicPartition}");
-            //         }
-            //         catch (Exception ex)
-            //         {
-            //             System.Console.WriteLine(ex.Message);
-
-            //         }
-            //     }
-            // }
-
-            // var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
-            // consumerBuilder.SetValueDeserializer(new StudentSerializer());
-            // using (var consumer = consumerBuilder.Build())
-            // {
-            //     consumer.Subscribe(new string[] { topicName });
-            //     ConsumeResult<string, Student> consumeResult;
-            //     do
-            //     {
-            //         consumeResult = consumer.Consume();
-            //         System.Console.WriteLine($"consume successfully message {consumeResult.Message.Key} from partition {consumeResult.TopicPartition}");
-            //     }
-            //     while (consumeResult != null);
-            //     consumer.Close();
-            // }
         }
     }
 }
