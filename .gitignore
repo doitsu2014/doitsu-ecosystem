@@ -48,3 +48,7 @@ deploy/swarm/kafka/**/*.csr
 deploy/swarm/kafka/**/*.srl
 deploy/swarm/kafka/**/*.req
 
+Utility.Kafka.ConsoleApp/**/*.pem
+Utility.Kafka.ConsoleApp/**/*.key
+Utility.Kafka.ConsoleApp/**/*.crt
+
