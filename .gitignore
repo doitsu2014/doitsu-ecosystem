@@ -39,8 +39,12 @@ logs/
 Volumes/
 node_modules/
 
-*.crt
-*.jks
-*_creds
-*.key
-*.pem
+deploy/swarm/kafka/**/*.crt
+deploy/swarm/kafka/**/*.jks
+deploy/swarm/kafka/**/*_creds
+deploy/swarm/kafka/**/*.key
+deploy/swarm/kafka/**/*.pem
+deploy/swarm/kafka/**/*.csr
+deploy/swarm/kafka/**/*.srl
+deploy/swarm/kafka/**/*.req
+
