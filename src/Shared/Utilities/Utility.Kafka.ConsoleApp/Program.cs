@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 using Confluent.Kafka.Admin;
 using Utility.Settings;
 using System.Collections.Generic;
+using Utility.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Utility.Interfaces;
 
 namespace Utility.Kafka.ConsoleApp
 {
@@ -34,115 +40,55 @@ namespace Utility.Kafka.ConsoleApp
     {
         public static async Task Main(string[] args)
         {
-            var bootstrapServers = "localhost:19093,localhost:29093,localhost:39093";
-            var settings = new KafkaSettings()
+            var serviceProvider = ServiceProviderFactory.GetServiceProvider(args);
+            using (var scope = serviceProvider.CreateScope())
             {
-                AdminClientConfig = new AdminClientConfig()
-                {
-                    BootstrapServers = bootstrapServers,
-                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
-                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
-                    SslKeyLocation = "Configurations/kafkacat.client.key",
-                    SslKeyPassword = "zaQ@1234",
-                    SecurityProtocol = SecurityProtocol.Ssl
-                },
-                ConsumerConfig = new ConsumerConfig()
-                {
-                    BootstrapServers = bootstrapServers,
-                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
-                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
-                    SslKeyLocation = "Configurations/kafkacat.client.key",
-                    SslKeyPassword = "zaQ@1234",
-                    SecurityProtocol = SecurityProtocol.Ssl,
-                    GroupId = "group-default-01",
-                    AutoOffsetReset = AutoOffsetReset.Earliest,
-                },
-                ProducerConfig = new ProducerConfig()
-                {
-                    BootstrapServers = bootstrapServers,
-                    SslCaLocation = "Configurations/snakeoil-ca-1.crt",
-                    SslCertificateLocation = "Configurations/kafkacat-ca1-signed.pem",
-                    SslKeyLocation = "Configurations/kafkacat.client.key",
-                    SslKeyPassword = "zaQ@1234",
-                    SecurityProtocol = SecurityProtocol.Ssl,
-                    Partitioner = Partitioner.Random
-                }
-            };
-            var topicName = "studentAdded";
-            var adminBuilder = new AdminClientBuilder(settings.AdminClientConfig);
-            using (var adminClient = adminBuilder.Build())
-            {
-                try
-                {
-                    (adminClient.DeleteTopicsAsync(new string[] { topicName })).ConfigureAwait(true).GetAwaiter().GetResult();
-                }
-                catch (Exception ex)
-                {
-                    System.Console.WriteLine(ex.Message);
-                }
+                var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+                var configuration = scope.ServiceProvider.GetService<IConfiguration>();
+                var settings = scope.ServiceProvider.GetService<IOptions<KafkaSettings>>().Value;
+                var kafkaService = scope.ServiceProvider.GetService<IKafkaService>();
 
-                try
+                var topicName = "studentAdded";
+                await kafkaService.DeleteTopicsAsync(new string[] { topicName });
+                await kafkaService.CreateTopicsAsync(new string[] { topicName }, 3, 3);
+
+                var listMessages = new List<Message<string, Student>>();
+                for (var i = 0; i < 10; ++i)
                 {
-                    adminClient.CreateTopicsAsync(new TopicSpecification[] {
-                        new TopicSpecification()
+                    listMessages.Add((x: Guid.NewGuid(), y: new Message<string, Student>())
+                        .Map(req =>
                         {
-                            ReplicationFactor = 3,
-                            NumPartitions = 3,
-                            Name = topicName
-                        }
-                    }).ConfigureAwait(true).GetAwaiter().GetResult();
+                            req.y.Key = req.x.ToString();
+                            req.y.Value = new Student()
+                            {
+                                Id = req.x,
+                                Gpa = Faker.RandomNumber.Next(0, 10),
+                                Name = Faker.Name.FullName()
+                            };
+                            return req.y;
+                        }));
                 }
-                catch (Exception ex)
+
+                var produceResults = await kafkaService.ProduceMessagesAsync(topicName, listMessages, valueSerializer: new StudentSerializer());
+                foreach (var produceResult in produceResults)
                 {
-                    System.Console.WriteLine(ex.Message);
+                    System.Console.WriteLine($"Produces successfully message {produceResult.Message.Value.Id} to partition {produceResult.TopicPartition}");
                 }
-            }
 
-
-            var listStudents = new List<Student>();
-            for (var i = 0; i < 10; ++i)
-            {
-                listStudents.Add(new Student()
+                var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
+                consumerBuilder.SetValueDeserializer(new StudentSerializer());
+                using(var consumer = consumerBuilder.Build())
                 {
-                    Id = Guid.NewGuid(),
-                    Gpa = Faker.RandomNumber.Next(0, 10),
-                    Name = Faker.Name.FullName()
-                });
-            }
-
-            var builder = new ProducerBuilder<string, Student>(settings.ProducerConfig);
-            builder.SetValueSerializer(new StudentSerializer());
-            using (var producer = builder.Build())
-            {
-                foreach (var student in listStudents)
-                {
-                    try
+                    consumer.Subscribe(new string[] { topicName });
+                    ConsumeResult<string, Student> consumeResult;
+                    do
                     {
-                        var message = new Message<string, Student> { Key = student.Id.ToString(), Value = student };
-                        var result = await producer.ProduceAsync($"{topicName}", message);
-                        System.Console.WriteLine($"produce successfully message {message.Value.Id} to partition {result.TopicPartition}");
+                        consumeResult = consumer.Consume();
+                        System.Console.WriteLine($"Consumes successfully message {consumeResult.Message.Key} from partition {consumeResult.TopicPartition}");
                     }
-                    catch (Exception ex)
-                    {
-                        System.Console.WriteLine(ex.Message);
-
-                    }
+                    while (consumeResult != null);
+                    consumer.Close();
                 }
-            }
-
-            var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
-            consumerBuilder.SetValueDeserializer(new StudentSerializer());
-            using (var consumer = consumerBuilder.Build())
-            {
-                consumer.Subscribe(new string[] { topicName });
-                ConsumeResult<string, Student> consumeResult;
-                do
-                {
-                    consumeResult = consumer.Consume();
-                    System.Console.WriteLine($"consume successfully message {consumeResult.Message.Key} from partition {consumeResult.TopicPartition}");
-                }
-                while (consumeResult != null);
-                consumer.Close();
             }
         }
     }
