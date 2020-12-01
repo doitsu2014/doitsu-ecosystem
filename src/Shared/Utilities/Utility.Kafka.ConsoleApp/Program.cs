@@ -50,9 +50,7 @@ namespace Utility.Kafka.ConsoleApp
 
                 var topicName = "studentAdded";
                 await kafkaService.DeleteTopicsAsync(new string[] { topicName });
-                await kafkaService.CreateTopicsAsync(new string[] { topicName },
-                                                     3,
-                                                     3);
+                await kafkaService.CreateTopicsAsync(new string[] { topicName }, 3, 3);
 
                 var listMessages = new List<Message<string, Student>>();
                 for (var i = 0; i < 10; ++i)
@@ -79,7 +77,7 @@ namespace Utility.Kafka.ConsoleApp
 
                 var consumerBuilder = new ConsumerBuilder<string, Student>(settings.ConsumerConfig);
                 consumerBuilder.SetValueDeserializer(new StudentSerializer());
-                using (var consumer = consumerBuilder.Build())
+                using(var consumer = consumerBuilder.Build())
                 {
                     consumer.Subscribe(new string[] { topicName });
                     ConsumeResult<string, Student> consumeResult;
@@ -92,8 +90,6 @@ namespace Utility.Kafka.ConsoleApp
                     consumer.Close();
                 }
             }
-
-
         }
     }
 }
