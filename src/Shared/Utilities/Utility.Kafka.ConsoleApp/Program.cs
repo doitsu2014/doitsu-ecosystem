@@ -70,6 +70,26 @@ namespace Utility.Kafka.ConsoleApp
                 }
 
                 var produceResults = await kafkaService.ProduceMessagesAsync(topicName, listMessages, valueSerializer: new StudentSerializer());
+                var b = await kafkaService
+                            .MapAsync(async service => await kafkaService.ProduceMessagesAsync(topicName, listMessages, valueSerializer: new StudentSerializer()))
+                            .MapAsync(async result =>
+                            {
+                                return await result;
+                            })
+                            .MapAsync(async x => x)
+                            .MapAsync(async x => await x)
+                            .MapAsync(async x => await x)
+                            .MapAsync(async x => await x)
+                            .MapAsync(async x => await x)
+                            .MapAsync(async x => await x)
+                            .MapAsync(async x => await x)
+                            //.MapAsync(async count =>
+                            //{
+                            //    return await Task.FromResult(count);
+                            //})
+                            ;
+
+
                 foreach (var produceResult in produceResults)
                 {
                     System.Console.WriteLine($"Produces successfully message {produceResult.Message.Value.Id} to partition {produceResult.TopicPartition}");

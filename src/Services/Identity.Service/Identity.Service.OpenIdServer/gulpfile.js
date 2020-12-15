@@ -1,48 +1,49 @@
-﻿/// <binding Clean='clean' />
+﻿const gulp = require("gulp"),
+    del = require("del"),
+    vinylPaths = require('vinyl-paths'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
+    babel = require('gulp-babel'),
+    cleanCss = require('gulp-clean-css');
 
-var gulp = require("gulp"),
-    rimraf = require("rimraf"),
-    concat = require("gulp-concat"),
-    cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
-
-var paths = {
-    webroot: "./wwwroot/"
+const paths = {
+    webroot: "wwwroot/"
 };
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
-
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
+paths.distJs = paths.webroot + "dist/js/";
+paths.distCss = paths.webroot + "dist/css/";
 
-paths.concatJsDest = paths.webroot + "js/site.min.js";
-paths.concatCssDest = paths.webroot + "css/site.min.css";
+gulp.task('clean:script', function () {
+    return gulp.src(paths.distJs, {allowEmpty: true, read: false})
+        .pipe(vinylPaths(del))
+        .pipe(gulp.dest(paths.distJs));
+});
 
-function cleanAll(cb) {
-    rimraf(paths.concatJsDest, cb);
-    rimraf(paths.concatCssDest, cb);
-}
-cleanAll.displayName = "clean:all";
-gulp.task(cleanAll);
+gulp.task('clean:css', function () {
+    return gulp.src(paths.distCss, {allowEmpty: true, read: false})
+        .pipe(vinylPaths(del))
+        .pipe(gulp.dest(paths.distCss));
+});
 
-function minAll(cb) {
-    function minJs() {
-        (gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-            .pipe(concat(paths.concatJsDest))
-            .pipe(uglify())
-            .pipe(gulp.dest(".")));
-    }
+gulp.task('min:script', function () {
+    return gulp.src([paths.js, "!" + paths.minJs])
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(uglify())
+        .pipe(rename({ extname: '.min.js' }))
+        .pipe(gulp.dest(paths.distJs))
+});
 
-    function minCss() {
-        (gulp.src([paths.css, "!" + paths.minCss])
-            .pipe(concat(paths.concatCssDest))
-            .pipe(cssmin())
-            .pipe(gulp.dest(".")));
-    }
+gulp.task('min:css', function () {
+    return gulp.src([paths.css, "!" + paths.minCss])
+        .pipe(cleanCss({compatibility: 'ie8'}))
+        .pipe(rename({ extname: '.min.css' }))
+        .pipe(gulp.dest(paths.distCss))
+});
 
-    gulp.series(minJs, minCss);
-    cb();
-}
-minAll.displayName = "min:all";
-gulp.task(minAll);
+gulp.task('default', gulp.series(['clean:script', 'clean:css', 'min:script', 'min:css']));

@@ -1,0 +1,63 @@
+version: '3'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    hostname: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.keystore.type=PKCS12
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.keystore.path=elastic-stack-ca.p12
+      - xpack.security.transport.ssl.truststore.path=elastic-stack-ca.p12
+      - xpack.security.transport.ssl.truststore.type=PKCS12
+      - ELASTIC_PASSWORD=zaQ@1234
+    volumes:
+      - "./certificate/elastic-stack-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12"
+      - "elastic-data01:/usr/share/elasticsearch/data"
+    ports:
+      - 9200:9200
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    hostname: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.keystore.type=PKCS12
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.keystore.path=elastic-stack-ca.p12
+      - xpack.security.transport.ssl.truststore.path=elastic-stack-ca.p12
+      - xpack.security.transport.ssl.truststore.type=PKCS12
+      - ELASTIC_PASSWORD=zaQ@1234
+    volumes:
+      - ./certificate/elastic-stack-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
+      - elastic-data02:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.2
+    hostname: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: "http://es01:9200"
+      ELASTICSEARCH_USERNAME: "elastic"
+      ELASTICSEARCH_PASSWORD: "zaQ@1234"
+    ports:
+      - 5601:5601
+    depends_on:
+      - es01
+      - es02
+volumes:
+  elastic-data01:
+  elastic-data02:

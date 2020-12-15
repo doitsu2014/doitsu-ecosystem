@@ -27,7 +27,7 @@ namespace Identity.Service.OpenIdServer.Custom
                 (ClaimTypeConstants.ADDRESS_COUNTRY, user.Country),
                 (ClaimTypeConstants.ADDRESS_STATE, user.State),
                 (ClaimTypeConstants.ADDRESS_CITY, user.City),
-                (ClaimTypeConstants.ADDRESS_ZIP_CODE, user.ZipCode),
+                (ClaimTypeConstants.ADDRESS_ZIP_CODE, user.ZipCode)
             }
             .Where(kv => !string.IsNullOrEmpty(kv.value))
             .Select(kv => new Claim(kv.key, kv.value))
