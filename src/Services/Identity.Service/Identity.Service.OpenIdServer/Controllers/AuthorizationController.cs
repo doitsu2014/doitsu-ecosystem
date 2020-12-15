@@ -374,7 +374,7 @@ namespace Identity.Service.OpenIdServer
             }
 
             // Redisplay the form when the user code is not valid.
-            return View(new VerifyViewModel
+            return View("Verify", new VerifyViewModel
             {
                 Error = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.Error),
                 ErrorDescription = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription)

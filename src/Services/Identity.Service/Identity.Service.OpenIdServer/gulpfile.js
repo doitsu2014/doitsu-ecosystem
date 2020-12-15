@@ -12,8 +12,10 @@ const paths = {
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
+
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
+
 paths.distJs = paths.webroot + "dist/js/";
 paths.distCss = paths.webroot + "dist/css/";
 

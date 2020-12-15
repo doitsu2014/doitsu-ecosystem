@@ -36,12 +36,8 @@
 
   <ItemGroup>
     <Content Include="certs\**\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\dist\js" />
   </ItemGroup>
 
 </Project>

@@ -116,7 +116,12 @@ namespace Identity.Service.OpenIdServer
                            .AllowRefreshTokenFlow();
 
                     // Mark the "email", "profile", "roles" and "demo_api" scopes as supported scopes.
-                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles, "demo_api", ScopeNameConstants.BLOGPOST_ALL_SERVICES);
+                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles,
+                        ScopeNameConstants.ScopeBlogPostAll,
+                        ScopeNameConstants.ScopeBlogPostCreate,
+                        ScopeNameConstants.ScopeBlogPostUpdate,
+                        ScopeNameConstants.ScopeBlogPostDelete,
+                        ScopeNameConstants.ScopeBlogPostSearch);
 
                     if (Environment.IsDevelopment())
                     {
@@ -170,7 +175,7 @@ namespace Identity.Service.OpenIdServer
                 })
 
                 // Register the OpenIddict validation components.
-                // If unnecessory remove it
+                // If unnecessary remove it
                 .AddValidation(options =>
                 {
                     // Configure the audience accepted by this resource server.
@@ -201,11 +206,11 @@ namespace Identity.Service.OpenIdServer
             services.AddHostedService<Worker>();
 
             services.AddAuthentication()
-               .AddGoogle(options =>
-               {
-                   options.ClientId = Configuration["Authentication:Google:ClientId"];
-                   options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-               });
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                });
 
             if (IsCluster())
             {
