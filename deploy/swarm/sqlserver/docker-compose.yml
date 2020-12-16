@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+
     server:
         image: "mcr.microsoft.com/mssql/server:2019-latest"
         environment:
@@ -9,5 +10,6 @@ services:
             - "1444:1433"
         volumes:
             - data:/var/opt/mssql
+
 volumes:
   data:
