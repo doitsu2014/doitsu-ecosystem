@@ -70,7 +70,8 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Scopes.Email,
                         Permissions.Scopes.Profile,
                         Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostAll}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
                     },
                     Requirements =
                     {
@@ -83,19 +84,35 @@ namespace Identity.Service.OpenIdServer
         private async Task RegisterScopesAsync(IServiceProvider provider)
         {
             var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
-            if (await manager.FindByNameAsync(ResourceNameConstants.ResourceBlogPost) is null)
+
+            if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostRead) is null)
             {
                 await manager.CreateAsync(new OpenIddictScopeDescriptor
                 {
-                    DisplayName = ResourceNameConstants.ResourceBlogPost,
-                    Name = ResourceNameConstants.ResourceBlogPost,
+                    DisplayName = ScopeNameConstants.ScopeBlogPostRead,
+                    Name = ScopeNameConstants.ScopeBlogPostRead,
                     Resources =
                     {
-                        ScopeNameConstants.ScopeBlogPostAll,
-                        ScopeNameConstants.ScopeBlogPostCreate,
-                        ScopeNameConstants.ScopeBlogPostUpdate,
-                        ScopeNameConstants.ScopeBlogPostDelete,
-                        ScopeNameConstants.ScopeBlogPostSearch
+                        ResourceNameConstants.ResourceBlogPost,
+                        ResourceNameConstants.ResourceBlogTag,
+                        ResourceNameConstants.ResourceBlogComment,
+                        ResourceNameConstants.ResourceBlogLike
+                    }
+                });
+            }
+
+            if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostWrite) is null)
+            {
+                await manager.CreateAsync(new OpenIddictScopeDescriptor
+                {
+                    DisplayName = ScopeNameConstants.ScopeBlogPostWrite,
+                    Name = ScopeNameConstants.ScopeBlogPostWrite,
+                    Resources =
+                    {
+                        ResourceNameConstants.ResourceBlogPost,
+                        ResourceNameConstants.ResourceBlogTag,
+                        ResourceNameConstants.ResourceBlogComment,
+                        ResourceNameConstants.ResourceBlogLike
                     }
                 });
             }
@@ -108,7 +125,7 @@ namespace Identity.Service.OpenIdServer
             var configuration = provider.GetRequiredService<IConfiguration>();
             var adminUserSection = configuration.GetSection("Initial:AdminUser");
 
-            if (userManager.Users.Count() == 0)
+            if (!userManager.Users.Any())
             {
                 var adminUser = new ApplicationUser()
                 {
@@ -133,9 +150,11 @@ namespace Identity.Service.OpenIdServer
                     IdentityRoleConstants.BlogPublisher,
                     IdentityRoleConstants.BlogWriter
                 });
-                if (roleManager.Roles.Count() == 0)
+                
+                if (!roleManager.Roles.Any())
                 {
-                    var roles = listRoleNames.Select(r => new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = r, NormalizedName = r.ToUpper() });
+                    var roles = listRoleNames.Select(r => new IdentityRole()
+                        {Id = Guid.NewGuid().ToString(), Name = r, NormalizedName = r.ToUpper()});
                     foreach (var role in roles) await roleManager.CreateAsync(role);
                 }
 

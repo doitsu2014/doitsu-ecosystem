@@ -116,12 +116,11 @@ namespace Identity.Service.OpenIdServer
                         .AllowRefreshTokenFlow();
 
                     // Mark the "email", "profile", "roles" and "demo_api" scopes as supported scopes.
-                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles,
-                        ScopeNameConstants.ScopeBlogPostAll,
-                        ScopeNameConstants.ScopeBlogPostCreate,
-                        ScopeNameConstants.ScopeBlogPostUpdate,
-                        ScopeNameConstants.ScopeBlogPostDelete,
-                        ScopeNameConstants.ScopeBlogPostSearch);
+                    options.RegisterScopes(Scopes.Email, 
+                        Scopes.Profile, 
+                        Scopes.Roles,
+                        ScopeNameConstants.ScopeBlogPostWrite,
+                        ScopeNameConstants.ScopeBlogPostRead);
 
                     if (Environment.IsDevelopment())
                     {
