@@ -127,11 +127,11 @@ namespace Identity.Service.OpenIdServer
 
                 var listRoleNames = (new string[]
                 {
-                    IdentityRoleConstants.ADMIN,
-                    IdentityRoleConstants.CUSTOMER,
-                    IdentityRoleConstants.BLOG_MANAGER,
-                    IdentityRoleConstants.BLOG_PUBLISHER,
-                    IdentityRoleConstants.BLOG_WRITER
+                    IdentityRoleConstants.Admin,
+                    IdentityRoleConstants.Customer,
+                    IdentityRoleConstants.BlogManager,
+                    IdentityRoleConstants.BlogPublisher,
+                    IdentityRoleConstants.BlogWriter
                 });
                 if (roleManager.Roles.Count() == 0)
                 {

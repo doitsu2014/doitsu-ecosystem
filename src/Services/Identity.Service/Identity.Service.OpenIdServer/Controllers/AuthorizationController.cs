@@ -530,12 +530,12 @@ namespace Identity.Service.OpenIdServer
             switch (claim.Type)
             {
                 case Claims.Name:
-                case ClaimTypeConstants.AVATAR:
-                case ClaimTypeConstants.ADDRESS_CITY:
-                case ClaimTypeConstants.ADDRESS_COUNTRY:
-                case ClaimTypeConstants.ADDRESS_STATE:
-                case ClaimTypeConstants.ADDRESS_STREET:
-                case ClaimTypeConstants.ADDRESS_ZIP_CODE:
+                case ClaimTypeConstants.Avatar:
+                case ClaimTypeConstants.AddressCity:
+                case ClaimTypeConstants.AddressCountry:
+                case ClaimTypeConstants.AddressState:
+                case ClaimTypeConstants.AddressStreet:
+                case ClaimTypeConstants.AddressZipCode:
                     yield return Destinations.AccessToken;
                     if (principal.HasScope(Scopes.Profile))
                         yield return Destinations.IdentityToken;
