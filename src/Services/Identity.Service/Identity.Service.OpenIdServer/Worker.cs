@@ -9,6 +9,7 @@ using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ namespace Identity.Service.OpenIdServer
             using var scope = _serviceProvider.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            await context.Database.EnsureCreatedAsync(cancellationToken);
+            await context.Database.MigrateAsync(cancellationToken);
 
             await RegisterApplicationsAsync(scope.ServiceProvider);
             await RegisterScopesAsync(scope.ServiceProvider);
@@ -43,25 +44,21 @@ namespace Identity.Service.OpenIdServer
             var applicationSection = configuration.GetSection("Initial:Application");
 
             var clientServiceGateway = "client.services.gateway";
-            if (await manager.FindByClientIdAsync(clientServiceGateway) is null)
+            if (await manager.FindByClientIdAsync(applicationSection["ServiceGateway:ClientId"]) is null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
-                    ClientId = clientServiceGateway,
-                    ClientSecret = applicationSection["ServiceGateway:ClientSecret"],
                     DisplayName = clientServiceGateway,
+                    ClientId = applicationSection["ServiceGateway:ClientId"],
+                    ClientSecret = applicationSection["ServiceGateway:ClientSecret"],
                     Requirements =
                     {
                         Requirements.Features.ProofKeyForCodeExchange
                     },
                     Permissions =
                     {
-                        Permissions.Endpoints.Introspection,
-                        Permissions.Endpoints.Authorization,
                         Permissions.Endpoints.Token,
-                        Permissions.GrantTypes.AuthorizationCode,
-                        Permissions.GrantTypes.RefreshToken,
-                        Permissions.ResponseTypes.Code,
+                        Permissions.GrantTypes.ClientCredentials,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
                     },
@@ -69,11 +66,11 @@ namespace Identity.Service.OpenIdServer
             }
 
             var clientBlazor = "client.blazor";
-            if (await manager.FindByClientIdAsync(clientBlazor) is null)
+            if (await manager.FindByClientIdAsync(applicationSection["BlazorClient:ClientId"]) is null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
-                    ClientId = clientBlazor,
+                    ClientId = applicationSection["BlazorClient:ClientId"],
                     ConsentType = ConsentTypes.Explicit,
                     DisplayName = clientBlazor,
                     Type = ClientTypes.Public,

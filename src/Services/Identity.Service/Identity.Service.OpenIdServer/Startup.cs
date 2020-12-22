@@ -41,7 +41,8 @@ namespace Identity.Service.OpenIdServer
                 // Configure the context to use Microsoft SQL Server.
                 options.UseNpgsql(Configuration.GetConnectionString("IdentityDatabase"), options =>
                     options.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
-                        .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorCodesToAdd: null));
+                        .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorCodesToAdd: null));
 
                 // Register the entity sets needed by OpenIddict.
                 // Note: use the generic overload if you need
@@ -113,11 +114,12 @@ namespace Identity.Service.OpenIdServer
                     options.AllowAuthorizationCodeFlow()
                         .AllowDeviceCodeFlow()
                         .AllowPasswordFlow()
-                        .AllowRefreshTokenFlow();
+                        .AllowRefreshTokenFlow()
+                        .AllowClientCredentialsFlow();
 
-                    // Mark the "email", "profile", "roles" and "demo_api" scopes as supported scopes.
-                    options.RegisterScopes(Scopes.Email, 
-                        Scopes.Profile, 
+                    // Mark the "email", "profile", "roles" scopes as supported scopes.
+                    options.RegisterScopes(Scopes.Email,
+                        Scopes.Profile,
                         Scopes.Roles,
                         ScopeNameConstants.ScopeBlogPostWrite,
                         ScopeNameConstants.ScopeBlogPostRead);
@@ -172,31 +174,33 @@ namespace Identity.Service.OpenIdServer
                     // you don't own, you can disable access token encryption:
                     //
                     // options.DisableAccessTokenEncryption();
-                })
-
-                // Register the OpenIddict validation components.
-                // If unnecessary remove it
-                .AddValidation(options =>
-                {
-                    // Configure the audience accepted by this resource server.
-                    // The value MUST match the audience associated with the
-                    // "demo_api" scope, which is used by ResourceController.
-                    options.AddAudiences("resource_server");
-
-                    // Import the configuration from the local OpenIddict server instance.
-                    options.UseLocalServer();
-
-                    // Register the ASP.NET Core host.
-                    options.UseAspNetCore();
-
-                    // For applications that need immediate access token or authorization
-                    // revocation, the database entry of the received tokens and their
-                    // associated authorizations can be validated for each API call.
-                    // Enabling these options may have a negative impact on performance.
-                    //
-                    // options.EnableAuthorizationEntryValidation();
-                    // options.EnableTokenEntryValidation();
                 });
+            
+            #region Add Validation to handle validate resources of this server
+            // Register the OpenIddict validation components.
+            // If unnecessary remove it
+            // .AddValidation(options =>
+            // {
+            // Configure the audience accepted by this resource server.
+            // The value MUST match the audience associated with the
+            // "demo_api" scope, which is used by ResourceController.
+            // options.AddAudiences("resource_server");
+
+            // Import the configuration from the local OpenIddict server instance.
+            // options.UseLocalServer();
+
+            // Register the ASP.NET Core host.
+            // options.UseAspNetCore();
+
+            // For applications that need immediate access token or authorization
+            // revocation, the database entry of the received tokens and their
+            // associated authorizations can be validated for each API call.
+            // Enabling these options may have a negative impact on performance.
+            //
+            // options.EnableAuthorizationEntryValidation();
+            // options.EnableTokenEntryValidation();
+            // });
+            #endregion
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
