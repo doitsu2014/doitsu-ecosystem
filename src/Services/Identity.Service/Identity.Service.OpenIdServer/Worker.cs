@@ -9,6 +9,7 @@ using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ namespace Identity.Service.OpenIdServer
             using var scope = _serviceProvider.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            await context.Database.EnsureCreatedAsync(cancellationToken);
+            await context.Database.MigrateAsync(cancellationToken);
 
             await RegisterApplicationsAsync(scope.ServiceProvider);
             await RegisterScopesAsync(scope.ServiceProvider);
@@ -42,13 +43,36 @@ namespace Identity.Service.OpenIdServer
             var configuration = provider.GetRequiredService<IConfiguration>();
             var applicationSection = configuration.GetSection("Initial:Application");
 
-            if (await manager.FindByClientIdAsync("blogpost-blazor-client") is null)
+            var clientServiceGateway = "client.services.gateway";
+            if (await manager.FindByClientIdAsync(applicationSection["ServiceGateway:ClientId"]) is null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
-                    ClientId = "blogpost-blazor-client",
+                    DisplayName = clientServiceGateway,
+                    ClientId = applicationSection["ServiceGateway:ClientId"],
+                    ClientSecret = applicationSection["ServiceGateway:ClientSecret"],
+                    Requirements =
+                    {
+                        Requirements.Features.ProofKeyForCodeExchange
+                    },
+                    Permissions =
+                    {
+                        Permissions.Endpoints.Token,
+                        Permissions.GrantTypes.ClientCredentials,
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
+                    },
+                });
+            }
+
+            var clientBlazor = "client.blazor";
+            if (await manager.FindByClientIdAsync(applicationSection["BlazorClient:ClientId"]) is null)
+            {
+                await manager.CreateAsync(new OpenIddictApplicationDescriptor
+                {
+                    ClientId = applicationSection["BlazorClient:ClientId"],
                     ConsentType = ConsentTypes.Explicit,
-                    DisplayName = "Blazor client application",
+                    DisplayName = clientBlazor,
                     Type = ClientTypes.Public,
                     PostLogoutRedirectUris =
                     {
@@ -69,89 +93,13 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Scopes.Email,
                         Permissions.Scopes.Profile,
                         Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.BLOGPOST_ALL_SERVICES}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
                     },
                     Requirements =
                     {
                         Requirements.Features.ProofKeyForCodeExchange
                     }
-                });
-            }
-
-            if (await manager.FindByClientIdAsync("mvc") is null)
-            {
-                await manager.CreateAsync(new OpenIddictApplicationDescriptor
-                {
-                    ClientId = "mvc",
-                    ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654",
-                    ConsentType = ConsentTypes.Explicit,
-                    DisplayName = "MVC client application",
-                    DisplayNames =
-                    {
-                        [CultureInfo.GetCultureInfo("fr-FR")] = "Application cliente MVC"
-                    },
-                    PostLogoutRedirectUris =
-                    {
-                        new Uri("https://localhost:44381/signout-callback-oidc")
-                    },
-                    RedirectUris =
-                    {
-                        new Uri("https://localhost:44381/signin-oidc")
-                    },
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Authorization,
-                        Permissions.Endpoints.Logout,
-                        Permissions.Endpoints.Token,
-                        Permissions.GrantTypes.AuthorizationCode,
-                        Permissions.GrantTypes.RefreshToken,
-                        Permissions.ResponseTypes.Code,
-                        Permissions.Scopes.Email,
-                        Permissions.Scopes.Profile,
-                        Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}demo_api"
-                    },
-                    Requirements =
-                    {
-                        Requirements.Features.ProofKeyForCodeExchange
-                    }
-                });
-            }
-
-            // To test this sample with Postman, use the following settings:
-            //
-            // * Authorization URL: https://localhost:44395/connect/authorize
-            // * Access token URL: https://localhost:44395/connect/token
-            // * Client ID: postman
-            // * Client secret: [blank] (not used with public clients)
-            // * Scope: openid email profile roles
-            // * Grant type: authorization code
-            // * Request access token locally: yes
-            if (await manager.FindByClientIdAsync("postman") is null)
-            {
-                await manager.CreateAsync(new OpenIddictApplicationDescriptor
-                {
-                    ClientId = "postman",
-                    ConsentType = ConsentTypes.Systematic,
-                    DisplayName = "Postman",
-                    RedirectUris =
-                        {
-                            new Uri("urn:postman")
-                        },
-                    Permissions =
-                        {
-                            Permissions.Endpoints.Authorization,
-                            Permissions.Endpoints.Device,
-                            Permissions.Endpoints.Token,
-                            Permissions.GrantTypes.AuthorizationCode,
-                            Permissions.GrantTypes.DeviceCode,
-                            Permissions.GrantTypes.Password,
-                            Permissions.GrantTypes.RefreshToken,
-                            Permissions.ResponseTypes.Code,
-                            Permissions.Scopes.Email,
-                            Permissions.Scopes.Profile,
-                            Permissions.Scopes.Roles
-                        }
                 });
             }
         }
@@ -160,34 +108,44 @@ namespace Identity.Service.OpenIdServer
         {
             var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
 
-            if (await manager.FindByNameAsync("demo_api") is null)
-            {
-                await manager.CreateAsync(new OpenIddictScopeDescriptor
+            var funcCreateScopeDescription = new Func<string, string[], OpenIddictScopeDescriptor>((
+                (scopeName, resources) =>
                 {
-                    DisplayName = "Demo API access",
-                    DisplayNames =
-                        {
-                            [CultureInfo.GetCultureInfo("fr-FR")] = "Accès à l'API de démo"
-                        },
-                    Name = "demo_api",
-                    Resources =
-                        {
-                            "resource_server"
-                        }
-                });
+                    var scopeDescriptor = new OpenIddictScopeDescriptor
+                    {
+                        DisplayName = scopeName,
+                        Name = scopeName,
+                        Resources = { }
+                    };
+
+                    foreach (var resource in resources)
+                    {
+                        scopeDescriptor.Resources.Add(resource);
+                    }
+
+                    return scopeDescriptor;
+                }));
+
+            if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostRead) is null)
+            {
+                await manager.CreateAsync(funcCreateScopeDescription(ScopeNameConstants.ScopeBlogPostRead, new string[]
+                {
+                    ResourceNameConstants.ResourceBlogPost,
+                    ResourceNameConstants.ResourceBlogTag,
+                    ResourceNameConstants.ResourceBlogComment,
+                    ResourceNameConstants.ResourceBlogInteract
+                }));
             }
 
-            if (await manager.FindByNameAsync(ScopeNameConstants.BLOGPOST_ALL_SERVICES) is null)
+            if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostWrite) is null)
             {
-                await manager.CreateAsync(new OpenIddictScopeDescriptor
+                await manager.CreateAsync(funcCreateScopeDescription(ScopeNameConstants.ScopeBlogPostWrite, new string[]
                 {
-                    DisplayName = "Access all services of BlogPost services",
-                    Name = ScopeNameConstants.BLOGPOST_ALL_SERVICES,
-                    Resources =
-                    {
-                        ResourceNameConstants.BLOGPOST_RESOURCE
-                    }
-                });
+                    ResourceNameConstants.ResourceBlogPost,
+                    ResourceNameConstants.ResourceBlogTag,
+                    ResourceNameConstants.ResourceBlogComment,
+                    ResourceNameConstants.ResourceBlogInteract
+                }));
             }
         }
 
@@ -198,7 +156,7 @@ namespace Identity.Service.OpenIdServer
             var configuration = provider.GetRequiredService<IConfiguration>();
             var adminUserSection = configuration.GetSection("Initial:AdminUser");
 
-            if (userManager.Users.Count() == 0)
+            if (!userManager.Users.Any())
             {
                 var adminUser = new ApplicationUser()
                 {
@@ -217,15 +175,17 @@ namespace Identity.Service.OpenIdServer
 
                 var listRoleNames = (new string[]
                 {
-                    IdentityRoleConstants.ADMIN,
-                    IdentityRoleConstants.CUSTOMER,
-                    IdentityRoleConstants.BLOG_MANAGER,
-                    IdentityRoleConstants.BLOG_PUBLISHER,
-                    IdentityRoleConstants.BLOG_WRITER
+                    IdentityRoleConstants.Admin,
+                    IdentityRoleConstants.Customer,
+                    IdentityRoleConstants.BlogManager,
+                    IdentityRoleConstants.BlogPublisher,
+                    IdentityRoleConstants.BlogWriter
                 });
-                if (roleManager.Roles.Count() == 0)
+
+                if (!roleManager.Roles.Any())
                 {
-                    var roles = listRoleNames.Select(r => new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = r, NormalizedName = r.ToUpper() });
+                    var roles = listRoleNames.Select(r => new IdentityRole()
+                        {Id = Guid.NewGuid().ToString(), Name = r, NormalizedName = r.ToUpper()});
                     foreach (var role in roles) await roleManager.CreateAsync(role);
                 }
 

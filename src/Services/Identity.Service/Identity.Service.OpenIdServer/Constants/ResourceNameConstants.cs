@@ -1,7 +1,10 @@
 namespace Identity.Service.OpenIdServer.Constants
 {
-    public class ResourceNameConstants
+    public static class ResourceNameConstants
     {
-        public const string BLOGPOST_RESOURCE = "blogpost-resource";
+        public const string ResourceBlogPost = "services.blogpost";
+        public const string ResourceBlogTag = "services.blogtag";
+        public const string ResourceBlogInteract = "services.bloginteract";
+        public const string ResourceBlogComment = "services.blogcomment";
     }
 }

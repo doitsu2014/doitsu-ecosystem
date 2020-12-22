@@ -2,8 +2,9 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Identity.Service.OpenIdServer.Constants
 {
-    public class ScopeNameConstants
+    public static class ScopeNameConstants
     {
-        public const string BLOGPOST_ALL_SERVICES = "blogpost-all-services";
+        public const string ScopeBlogPostWrite = "services.blogpost.write";
+        public const string ScopeBlogPostRead = "services.blogpost.read";
     }
 }

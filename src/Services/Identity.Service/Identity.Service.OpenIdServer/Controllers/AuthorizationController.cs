@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using static OpenIddict.Abstractions.OpenIddictConstants;
@@ -49,6 +50,7 @@ namespace Identity.Service.OpenIdServer
         }
 
         #region Authorization code, implicit and hybrid flows
+
         // Note: to support interactive flows like the code flow,
         // you must provide your own authorization endpoint action:
 
@@ -58,7 +60,7 @@ namespace Identity.Service.OpenIdServer
         public async Task<IActionResult> Authorize()
         {
             var request = HttpContext.GetOpenIddictServerRequest() ??
-                throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
+                          throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
             // Retrieve the user principal stored in the authentication cookie.
             // If it can't be extracted, redirect the user to the login page.
@@ -74,7 +76,8 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.LoginRequired,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is not logged in."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The user is not logged in."
                         }));
                 }
 
@@ -95,9 +98,9 @@ namespace Identity.Service.OpenIdServer
                 // is removed from the authorization request payload before redirecting the user.
                 var prompt = string.Join(" ", request.GetPrompts().Remove(Prompts.Login));
 
-                var parameters = Request.HasFormContentType ?
-                    Request.Form.Where(parameter => parameter.Key != Parameters.Prompt).ToList() :
-                    Request.Query.Where(parameter => parameter.Key != Parameters.Prompt).ToList();
+                var parameters = Request.HasFormContentType
+                    ? Request.Form.Where(parameter => parameter.Key != Parameters.Prompt).ToList()
+                    : Request.Query.Where(parameter => parameter.Key != Parameters.Prompt).ToList();
 
                 parameters.Add(KeyValuePair.Create(Parameters.Prompt, new StringValues(prompt)));
 
@@ -121,7 +124,8 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.LoginRequired,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is not logged in."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The user is not logged in."
                         }));
                 }
 
@@ -136,19 +140,20 @@ namespace Identity.Service.OpenIdServer
 
             // Retrieve the profile of the logged in user.
             var user = await _userManager.GetUserAsync(result.Principal) ??
-                throw new InvalidOperationException("The user details cannot be retrieved.");
+                       throw new InvalidOperationException("The user details cannot be retrieved.");
 
             // Retrieve the application details from the database.
             var application = await _applicationManager.FindByClientIdAsync(request.ClientId) ??
-                throw new InvalidOperationException("Details concerning the calling client application cannot be found.");
+                              throw new InvalidOperationException(
+                                  "Details concerning the calling client application cannot be found.");
 
             // Retrieve the permanent authorizations associated with the user and the calling client application.
             var authorizations = await _authorizationManager.FindAsync(
                 subject: await _userManager.GetUserIdAsync(user),
-                client : await _applicationManager.GetIdAsync(application),
-                status : Statuses.Valid,
-                type   : AuthorizationTypes.Permanent,
-                scopes : request.GetScopes()).ToListAsync();
+                client: await _applicationManager.GetIdAsync(application),
+                status: Statuses.Valid,
+                type: AuthorizationTypes.Permanent,
+                scopes: request.GetScopes()).ToListAsync();
 
             switch (await _applicationManager.GetConsentTypeAsync(application))
             {
@@ -184,10 +189,10 @@ namespace Identity.Service.OpenIdServer
                     {
                         authorization = await _authorizationManager.CreateAsync(
                             principal: principal,
-                            subject  : await _userManager.GetUserIdAsync(user),
-                            client   : await _applicationManager.GetIdAsync(application),
-                            type     : AuthorizationTypes.Permanent,
-                            scopes   : principal.GetScopes());
+                            subject: await _userManager.GetUserIdAsync(user),
+                            client: await _applicationManager.GetIdAsync(application),
+                            type: AuthorizationTypes.Permanent,
+                            scopes: principal.GetScopes());
                     }
 
                     principal.SetAuthorizationId(await _authorizationManager.GetIdAsync(authorization));
@@ -201,7 +206,7 @@ namespace Identity.Service.OpenIdServer
 
                 // At this point, no authorization was found in the database and an error must be returned
                 // if the client application specified prompt=none in the authorization request.
-                case ConsentTypes.Explicit   when request.HasPrompt(Prompts.None):
+                case ConsentTypes.Explicit when request.HasPrompt(Prompts.None):
                 case ConsentTypes.Systematic when request.HasPrompt(Prompts.None):
                     return Forbid(
                         authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
@@ -213,11 +218,12 @@ namespace Identity.Service.OpenIdServer
                         }));
 
                 // In every other case, render the consent form.
-                default: return View(new AuthorizeViewModel
-                {
-                    ApplicationName = await _applicationManager.GetLocalizedDisplayNameAsync(application),
-                    Scope = request.Scope
-                });
+                default:
+                    return View(new AuthorizeViewModel
+                    {
+                        ApplicationName = await _applicationManager.GetLocalizedDisplayNameAsync(application),
+                        Scope = request.Scope
+                    });
             }
         }
 
@@ -226,28 +232,30 @@ namespace Identity.Service.OpenIdServer
         public async Task<IActionResult> Accept()
         {
             var request = HttpContext.GetOpenIddictServerRequest() ??
-                throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
+                          throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
             // Retrieve the profile of the logged in user.
             var user = await _userManager.GetUserAsync(User) ??
-                throw new InvalidOperationException("The user details cannot be retrieved.");
+                       throw new InvalidOperationException("The user details cannot be retrieved.");
 
             // Retrieve the application details from the database.
             var application = await _applicationManager.FindByClientIdAsync(request.ClientId) ??
-                throw new InvalidOperationException("Details concerning the calling client application cannot be found.");
+                              throw new InvalidOperationException(
+                                  "Details concerning the calling client application cannot be found.");
 
             // Retrieve the permanent authorizations associated with the user and the calling client application.
             var authorizations = await _authorizationManager.FindAsync(
                 subject: await _userManager.GetUserIdAsync(user),
-                client : await _applicationManager.GetIdAsync(application),
-                status : Statuses.Valid,
-                type   : AuthorizationTypes.Permanent,
-                scopes : request.GetScopes()).ToListAsync();
+                client: await _applicationManager.GetIdAsync(application),
+                status: Statuses.Valid,
+                type: AuthorizationTypes.Permanent,
+                scopes: request.GetScopes()).ToListAsync();
 
             // Note: the same check is already made in the other action but is repeated
             // here to ensure a malicious user can't abuse this POST-only endpoint and
             // force it to return a valid response without the external authorization.
-            if (!authorizations.Any() && await _applicationManager.HasConsentTypeAsync(application, ConsentTypes.External))
+            if (!authorizations.Any() &&
+                await _applicationManager.HasConsentTypeAsync(application, ConsentTypes.External))
             {
                 return Forbid(
                     authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
@@ -274,10 +282,10 @@ namespace Identity.Service.OpenIdServer
             {
                 authorization = await _authorizationManager.CreateAsync(
                     principal: principal,
-                    subject  : await _userManager.GetUserIdAsync(user),
-                    client   : await _applicationManager.GetIdAsync(application),
-                    type     : AuthorizationTypes.Permanent,
-                    scopes   : principal.GetScopes());
+                    subject: await _userManager.GetUserIdAsync(user),
+                    client: await _applicationManager.GetIdAsync(application),
+                    type: AuthorizationTypes.Permanent,
+                    scopes: principal.GetScopes());
             }
 
             principal.SetAuthorizationId(await _authorizationManager.GetIdAsync(authorization));
@@ -296,15 +304,17 @@ namespace Identity.Service.OpenIdServer
         // Notify OpenIddict that the authorization grant has been denied by the resource owner
         // to redirect the user agent to the client application using the appropriate response_mode.
         public IActionResult Deny() => Forbid(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
         #endregion
 
         #region Device flow
+
         // Note: to support the device flow, you must provide your own verification endpoint action:
         [Authorize, HttpGet("~/connect/verify")]
         public async Task<IActionResult> Verify()
         {
             var request = HttpContext.GetOpenIddictServerRequest() ??
-                throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
+                          throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
             // If the user code was not specified in the query string (e.g as part of the verification_uri_complete),
             // render a form to ask the user to enter the user code manually (non-digit chars are automatically ignored).
@@ -318,8 +328,10 @@ namespace Identity.Service.OpenIdServer
             if (result.Succeeded)
             {
                 // Retrieve the application details from the database using the client_id stored in the principal.
-                var application = await _applicationManager.FindByClientIdAsync(result.Principal.GetClaim(Claims.ClientId)) ??
-                    throw new InvalidOperationException("Details concerning the calling client application cannot be found.");
+                var application =
+                    await _applicationManager.FindByClientIdAsync(result.Principal.GetClaim(Claims.ClientId)) ??
+                    throw new InvalidOperationException(
+                        "Details concerning the calling client application cannot be found.");
 
                 // Render a form asking the user to confirm the authorization demand.
                 return View(new VerifyViewModel
@@ -334,7 +346,8 @@ namespace Identity.Service.OpenIdServer
             return View(new VerifyViewModel
             {
                 Error = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.Error),
-                ErrorDescription = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription)
+                ErrorDescription =
+                    result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription)
             });
         }
 
@@ -344,7 +357,7 @@ namespace Identity.Service.OpenIdServer
         {
             // Retrieve the profile of the logged in user.
             var user = await _userManager.GetUserAsync(User) ??
-                throw new InvalidOperationException("The user details cannot be retrieved.");
+                       throw new InvalidOperationException("The user details cannot be retrieved.");
 
             // Retrieve the claims principal associated with the user code.
             var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
@@ -374,10 +387,11 @@ namespace Identity.Service.OpenIdServer
             }
 
             // Redisplay the form when the user code is not valid.
-            return View(new VerifyViewModel
+            return View("Verify", new VerifyViewModel
             {
                 Error = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.Error),
-                ErrorDescription = result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription)
+                ErrorDescription =
+                    result.Properties?.GetString(OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription)
             });
         }
 
@@ -392,9 +406,11 @@ namespace Identity.Service.OpenIdServer
                 // redirect the user to after rejecting the authorization demand.
                 RedirectUri = "/"
             });
+
         #endregion
 
         #region Logout support for interactive flows like code and implicit
+
         // Note: the logout action is only useful when implementing interactive
         // flows like the authorization code flow or the implicit flow.
 
@@ -419,9 +435,11 @@ namespace Identity.Service.OpenIdServer
                     RedirectUri = "/"
                 });
         }
+
         #endregion
 
         #region Password, authorization code, device and refresh token flows
+
         // Note: to support non-interactive flows like password,
         // you must provide your own token endpoint action:
 
@@ -429,7 +447,7 @@ namespace Identity.Service.OpenIdServer
         public async Task<IActionResult> Exchange()
         {
             var request = HttpContext.GetOpenIddictServerRequest() ??
-                throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
+                          throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
             if (request.IsPasswordGrantType())
             {
@@ -441,12 +459,14 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The username/password couple is invalid."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The username/password couple is invalid."
                         }));
                 }
 
                 // Validate the username/password parameters and ensure the account is not locked out.
-                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
+                var result =
+                    await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
                 if (!result.Succeeded)
                 {
                     return Forbid(
@@ -454,7 +474,8 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The username/password couple is invalid."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The username/password couple is invalid."
                         }));
                 }
 
@@ -474,11 +495,13 @@ namespace Identity.Service.OpenIdServer
                 // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
                 return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
-
-            else if (request.IsAuthorizationCodeGrantType() || request.IsDeviceCodeGrantType() || request.IsRefreshTokenGrantType())
+            else if (request.IsAuthorizationCodeGrantType() || request.IsDeviceCodeGrantType() ||
+                     request.IsRefreshTokenGrantType())
             {
                 // Retrieve the claims principal stored in the authorization code/device code/refresh token.
-                var principal = (await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
+                var principal =
+                    (await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme))
+                    .Principal;
 
                 // Retrieve the user profile corresponding to the authorization code/refresh token.
                 // Note: if you want to automatically invalidate the authorization code/refresh token
@@ -492,7 +515,8 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The token is no longer valid."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The token is no longer valid."
                         }));
                 }
 
@@ -504,7 +528,8 @@ namespace Identity.Service.OpenIdServer
                         properties: new AuthenticationProperties(new Dictionary<string, string>
                         {
                             [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is no longer allowed to sign in."
+                            [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                                "The user is no longer allowed to sign in."
                         }));
                 }
 
@@ -516,9 +541,48 @@ namespace Identity.Service.OpenIdServer
                 // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
                 return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
+            else if (request.IsClientCredentialsGrantType())
+            {
+                // Note: the client credentials are automatically validated by OpenIddict:
+                // if client_id or client_secret are invalid, this action won't be invoked.
+
+                var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
+                if (application == null)
+                {
+                    throw new InvalidOperationException("The application details cannot be found in the database.");
+                }
+
+                // Create a new ClaimsIdentity containing the claims that
+                // will be used to create an id_token, a token or a code.
+                var identity = new ClaimsIdentity(
+                    TokenValidationParameters.DefaultAuthenticationType,
+                    Claims.Name, Claims.Role);
+
+                // Use the client_id as the subject identifier.
+                identity.AddClaim(Claims.Subject, await _applicationManager.GetClientIdAsync(application),
+                    Destinations.AccessToken, Destinations.IdentityToken);
+
+                identity.AddClaim(Claims.Name, await _applicationManager.GetDisplayNameAsync(application),
+                    Destinations.AccessToken, Destinations.IdentityToken);
+
+                var principal = new ClaimsPrincipal();
+                principal.AddIdentity(identity); 
+                // Note: in this sample, the granted scopes match the requested scope
+                // but you may want to allow the user to uncheck specific scopes.
+                // For that, simply restrict the list of scopes before calling SetScopes.
+                principal.SetScopes(request.GetScopes());
+                principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
+                foreach (var claim in principal.Claims)
+                {
+                    claim.SetDestinations(GetDestinations(claim, principal));
+                }
+
+                return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
 
             throw new InvalidOperationException("The specified grant type is not supported.");
         }
+
         #endregion
 
         private IEnumerable<string> GetDestinations(Claim claim, ClaimsPrincipal principal)
@@ -530,12 +594,12 @@ namespace Identity.Service.OpenIdServer
             switch (claim.Type)
             {
                 case Claims.Name:
-                case ClaimTypeConstants.AVATAR:
-                case ClaimTypeConstants.ADDRESS_CITY:
-                case ClaimTypeConstants.ADDRESS_COUNTRY:
-                case ClaimTypeConstants.ADDRESS_STATE:
-                case ClaimTypeConstants.ADDRESS_STREET:
-                case ClaimTypeConstants.ADDRESS_ZIP_CODE:
+                case ClaimTypeConstants.Avatar:
+                case ClaimTypeConstants.AddressCity:
+                case ClaimTypeConstants.AddressCountry:
+                case ClaimTypeConstants.AddressState:
+                case ClaimTypeConstants.AddressStreet:
+                case ClaimTypeConstants.AddressZipCode:
                     yield return Destinations.AccessToken;
                     if (principal.HasScope(Scopes.Profile))
                         yield return Destinations.IdentityToken;
