@@ -133,7 +133,7 @@ namespace Identity.Service.OpenIdServer
                     ResourceNameConstants.ResourceBlogPost,
                     ResourceNameConstants.ResourceBlogTag,
                     ResourceNameConstants.ResourceBlogComment,
-                    ResourceNameConstants.ResourceBlogLike
+                    ResourceNameConstants.ResourceBlogInteract
                 }));
             }
 
@@ -144,7 +144,7 @@ namespace Identity.Service.OpenIdServer
                     ResourceNameConstants.ResourceBlogPost,
                     ResourceNameConstants.ResourceBlogTag,
                     ResourceNameConstants.ResourceBlogComment,
-                    ResourceNameConstants.ResourceBlogLike
+                    ResourceNameConstants.ResourceBlogInteract
                 }));
             }
         }

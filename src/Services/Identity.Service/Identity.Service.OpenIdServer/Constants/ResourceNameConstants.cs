@@ -4,7 +4,7 @@ namespace Identity.Service.OpenIdServer.Constants
     {
         public const string ResourceBlogPost = "services.blogpost";
         public const string ResourceBlogTag = "services.blogtag";
-        public const string ResourceBlogLike = "services.blogtag";
-        public const string ResourceBlogComment = "services.blogpost";
+        public const string ResourceBlogInteract = "services.bloginteract";
+        public const string ResourceBlogComment = "services.blogcomment";
     }
 }

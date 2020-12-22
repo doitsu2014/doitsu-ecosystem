@@ -173,7 +173,7 @@ namespace Identity.Service.OpenIdServer
                     // Note: when issuing access tokens used by third-party APIs
                     // you don't own, you can disable access token encryption:
                     //
-                    // options.DisableAccessTokenEncryption();
+                    options.DisableAccessTokenEncryption();
                 });
             
             #region Add Validation to handle validate resources of this server
