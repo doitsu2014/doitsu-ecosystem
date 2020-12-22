@@ -42,6 +42,32 @@ namespace Identity.Service.OpenIdServer
             var configuration = provider.GetRequiredService<IConfiguration>();
             var applicationSection = configuration.GetSection("Initial:Application");
 
+            var clientServiceGateway = "client.services.gateway";
+            if (await manager.FindByClientIdAsync(clientServiceGateway) is null)
+            {
+                await manager.CreateAsync(new OpenIddictApplicationDescriptor
+                {
+                    ClientId = clientServiceGateway,
+                    ClientSecret = applicationSection["ServiceGateway:ClientSecret"],
+                    DisplayName = clientServiceGateway,
+                    Requirements =
+                    {
+                        Requirements.Features.ProofKeyForCodeExchange
+                    },
+                    Permissions =
+                    {
+                        Permissions.Endpoints.Introspection,
+                        Permissions.Endpoints.Authorization,
+                        Permissions.Endpoints.Token,
+                        Permissions.GrantTypes.AuthorizationCode,
+                        Permissions.GrantTypes.RefreshToken,
+                        Permissions.ResponseTypes.Code,
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
+                    },
+                });
+            }
+
             var clientBlazor = "client.blazor";
             if (await manager.FindByClientIdAsync(clientBlazor) is null)
             {
@@ -85,36 +111,44 @@ namespace Identity.Service.OpenIdServer
         {
             var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
 
+            var funcCreateScopeDescription = new Func<string, string[], OpenIddictScopeDescriptor>((
+                (scopeName, resources) =>
+                {
+                    var scopeDescriptor = new OpenIddictScopeDescriptor
+                    {
+                        DisplayName = scopeName,
+                        Name = scopeName,
+                        Resources = { }
+                    };
+
+                    foreach (var resource in resources)
+                    {
+                        scopeDescriptor.Resources.Add(resource);
+                    }
+
+                    return scopeDescriptor;
+                }));
+
             if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostRead) is null)
             {
-                await manager.CreateAsync(new OpenIddictScopeDescriptor
+                await manager.CreateAsync(funcCreateScopeDescription(ScopeNameConstants.ScopeBlogPostRead, new string[]
                 {
-                    DisplayName = ScopeNameConstants.ScopeBlogPostRead,
-                    Name = ScopeNameConstants.ScopeBlogPostRead,
-                    Resources =
-                    {
-                        ResourceNameConstants.ResourceBlogPost,
-                        ResourceNameConstants.ResourceBlogTag,
-                        ResourceNameConstants.ResourceBlogComment,
-                        ResourceNameConstants.ResourceBlogLike
-                    }
-                });
+                    ResourceNameConstants.ResourceBlogPost,
+                    ResourceNameConstants.ResourceBlogTag,
+                    ResourceNameConstants.ResourceBlogComment,
+                    ResourceNameConstants.ResourceBlogLike
+                }));
             }
 
             if (await manager.FindByNameAsync(ScopeNameConstants.ScopeBlogPostWrite) is null)
             {
-                await manager.CreateAsync(new OpenIddictScopeDescriptor
+                await manager.CreateAsync(funcCreateScopeDescription(ScopeNameConstants.ScopeBlogPostWrite, new string[]
                 {
-                    DisplayName = ScopeNameConstants.ScopeBlogPostWrite,
-                    Name = ScopeNameConstants.ScopeBlogPostWrite,
-                    Resources =
-                    {
-                        ResourceNameConstants.ResourceBlogPost,
-                        ResourceNameConstants.ResourceBlogTag,
-                        ResourceNameConstants.ResourceBlogComment,
-                        ResourceNameConstants.ResourceBlogLike
-                    }
-                });
+                    ResourceNameConstants.ResourceBlogPost,
+                    ResourceNameConstants.ResourceBlogTag,
+                    ResourceNameConstants.ResourceBlogComment,
+                    ResourceNameConstants.ResourceBlogLike
+                }));
             }
         }
 
@@ -150,7 +184,7 @@ namespace Identity.Service.OpenIdServer
                     IdentityRoleConstants.BlogPublisher,
                     IdentityRoleConstants.BlogWriter
                 });
-                
+
                 if (!roleManager.Roles.Any())
                 {
                     var roles = listRoleNames.Select(r => new IdentityRole()
