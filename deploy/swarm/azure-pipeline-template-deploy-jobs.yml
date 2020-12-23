@@ -1,0 +1,12 @@
+jobs:
+  - job: deploy
+    displayName: Deploy Nuget
+    pool:
+      name: "Doitsu Technology Linux Pipeplies"
+      vmImage: "Doitsu.Technology.Ubuntu.Agent"
+    # variables:
+      # - template: './azure-pipeline-template-variables.yml'
+    steps:
+      # - template: "./azure-pipeline-template-transform-config-files-steps.yml"
+      # - template: "./azure-pipeline-template-build-all-steps.yml"
+      - template: "./services/azure-pipeline-template-deploy-steps.yml"

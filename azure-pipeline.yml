@@ -20,8 +20,8 @@ stages:
   # jobs:  
   # - template: azure-pipeline-template-unittest-jobs.yml
 # - stage: deploy
-  # displayName: Deployment
-  # dependsOn: unit_test
-  # condition: succeeded()
-  # jobs:
-  # - template: azure-pipeline-template-deploy-jobs.yml
+#   displayName: Deployment
+#   dependsOn: unit_test
+#   condition: succeeded()
+#   jobs:
+#   - template: ./deploy/swarm/azure-pipeline-template-deploy-jobs.yml
