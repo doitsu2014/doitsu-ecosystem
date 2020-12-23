@@ -1,6 +1,6 @@
 jobs:
   - job: build
-    displayName: Build service
+    displayName: "Publish Services Docker Images"
     pool:
       name: "Doitsu Technology Linux Pipeplies"
       vmImage: "Doitsu.Technology.Ubuntu.Agent"
