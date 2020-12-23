@@ -9,7 +9,7 @@ trigger:
 - feature/*
 
 stages:
-- stage: "Publish Docker Images"
+- stage: publish_docker_images 
   displayName: "Build And Push Docker Images"
   jobs:  
   - template: ./azure-pipeline-template-publish-docker-images-jobs.yml
