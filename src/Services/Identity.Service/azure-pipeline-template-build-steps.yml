@@ -4,7 +4,7 @@ steps:
   displayName: Build Image
   inputs:
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
-    dockerComposeFile: '**/docker-compose.yml'
+    dockerComposeFile: './docker-compose.yml'
     action: 'Build services'
     includeLatestTag: true
     arguments: '--force-rm'
@@ -13,6 +13,6 @@ steps:
   displayName: Push Image
   inputs:
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
-    dockerComposeFile: '**/docker-compose.yml'
+    dockerComposeFile: './docker-compose.yml'
     action: 'Push services'
     includeLatestTag: true
