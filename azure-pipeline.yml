@@ -6,7 +6,7 @@
 name: $(Build.SourceBranchName).$(date:yyyyMMdd).$(rev:r)
 
 trigger:
-- feature/*
+- master
 
 stages:
 - stage: stage_publish_docker_images

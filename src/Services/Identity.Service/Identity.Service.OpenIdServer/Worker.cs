@@ -45,7 +45,7 @@ namespace Identity.Service.OpenIdServer
             var configuration = provider.GetRequiredService<IConfiguration>();
             var applicationSection = configuration.GetSection("Initial:Application");
 
-            var funcCreateClientAsync = new Action<string, string, OpenIddictApplicationDescriptor>(
+            var funcCreateClientAsync = new Func<string, string, OpenIddictApplicationDescriptor, Task>(
                 async (clientId, clientDisplayName, data) =>
                 {
                     if (await manager.FindByClientIdAsync(clientId) is null)
@@ -62,7 +62,7 @@ namespace Identity.Service.OpenIdServer
                     }
                 });
 
-            funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
+            await funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
                 "client.services.gateway",
                 new OpenIddictApplicationDescriptor
                 {
@@ -76,11 +76,11 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Endpoints.Token,
                         Permissions.GrantTypes.ClientCredentials,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}"
                     }
                 });
 
-            funcCreateClientAsync(applicationSection["Administrator:ClientId"],
+            await funcCreateClientAsync(applicationSection["Administrator:ClientId"],
                 "client.administrator",
                 new OpenIddictApplicationDescriptor
                 {
@@ -95,12 +95,13 @@ namespace Identity.Service.OpenIdServer
                         Permissions.GrantTypes.Password,
                         Permissions.GrantTypes.RefreshToken,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}"
                     }
                 });
 
-
-            funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
+            await funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
                 "client.blazor",
                 new OpenIddictApplicationDescriptor
                 {
@@ -126,7 +127,8 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Scopes.Profile,
                         Permissions.Scopes.Roles,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}"
                     },
                     Requirements =
                     {
@@ -139,7 +141,7 @@ namespace Identity.Service.OpenIdServer
         {
             var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
 
-            var funcCreateScopeDescriptorAsync = new Action<string, OpenIddictScopeDescriptor>(
+            var funcCreateScopeDescriptorAsync = new Func<string, OpenIddictScopeDescriptor, Task>(
                 async (scopeName, data) =>
                 {
                     if (await manager.FindByNameAsync(scopeName) is null)
@@ -150,7 +152,7 @@ namespace Identity.Service.OpenIdServer
                     }
                 });
 
-            funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostWrite,
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostWrite,
                 new OpenIddictScopeDescriptor()
                 {
                     Resources =
@@ -161,8 +163,8 @@ namespace Identity.Service.OpenIdServer
                         ResourceNameConstants.ResourceBlogInteract
                     }
                 });
-            
-            funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostRead,
+
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostRead,
                 new OpenIddictScopeDescriptor()
                 {
                     Resources =
@@ -171,6 +173,24 @@ namespace Identity.Service.OpenIdServer
                         ResourceNameConstants.ResourceBlogTag,
                         ResourceNameConstants.ResourceBlogComment,
                         ResourceNameConstants.ResourceBlogInteract
+                    }
+                });
+
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeImageServerRead,
+                new OpenIddictScopeDescriptor()
+                {
+                    Resources =
+                    {
+                        ResourceNameConstants.ResourceImageServer
+                    }
+                });
+            
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeImageServerWrite,
+                new OpenIddictScopeDescriptor()
+                {
+                    Resources =
+                    {
+                        ResourceNameConstants.ResourceImageServer
                     }
                 });
         }
