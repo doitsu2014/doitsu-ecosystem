@@ -1,0 +1,10 @@
+jobs:
+  - job: deploy
+    displayName: Deploy Nuget
+    pool:
+      name: "Doitsu Technology Linux Pipeplies"
+      vmImage: "Doitsu.Technology.Ubuntu.Agent"
+    variables:
+      - template: './deploy/swarm/azure-pipeline-template-variables.yml'
+    steps:
+      - template: './deploy/swarm/azure-pipeline-template-deploy-steps.yml'

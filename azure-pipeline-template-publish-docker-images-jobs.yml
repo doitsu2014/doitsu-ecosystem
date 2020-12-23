@@ -1,0 +1,8 @@
+jobs:
+  - job: build
+    displayName: Build service
+    pool:
+      name: "Doitsu Technology Linux Pipeplies"
+      vmImage: "Doitsu.Technology.Ubuntu.Agent"
+    steps:
+      - template: "./src/Services/Identity.Service/azure-pipeline-template-publish-docker-images-steps.yml"

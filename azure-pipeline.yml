@@ -9,10 +9,10 @@ trigger:
 - feature/*
 
 stages:
-- stage: build
-  displayName: Build
+- stage: Publish Docker Images
+  displayName: Build And Push Docker Images
   jobs:  
-  - template: ./src/Services/Identity.Service/azure-pipeline-template-build-jobs.yml
+  - template: ./azure-pipeline-template-publish-docker-images-jobs.yml
 # - stage: unit_test
   # displayName: Unit Test
   # dependsOn: build
