@@ -1,0 +1,18 @@
+
+steps:
+- task: DockerCompose@0
+  displayName: Build Image
+  inputs:
+    dockerRegistryEndpoint: 'Docker Hub doitsu2014'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Build services'
+    includeLatestTag: true
+    arguments: '--force-rm'
+
+- task: DockerCompose@0
+  displayName: Push Image
+  inputs:
+    dockerRegistryEndpoint: 'Docker Hub doitsu2014'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Push services'
+    includeLatestTag: true
