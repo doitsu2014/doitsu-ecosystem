@@ -9,7 +9,7 @@ trigger:
 - feature/*
 
 stages:
-- stage: stage_publish_docker_images 
+- stage: stage_publish_docker_images
   displayName: "[Stage] Build And Push Docker Images"
   jobs:  
   - template: ./azure-pipeline-template-publish-docker-images-jobs.yml
@@ -19,9 +19,9 @@ stages:
   # condition: succeeded()
   # jobs:  
   # - template: azure-pipeline-template-unittest-jobs.yml
-# - stage: deploy
-#   displayName: Deployment
-#   dependsOn: unit_test
-#   condition: succeeded()
-#   jobs:
-#   - template: ./deploy/swarm/azure-pipeline-template-deploy-jobs.yml
+- stage: deploy
+  displayName: "[Stage] Deployment"
+  dependsOn: stage_publish_docker_images
+  condition: succeeded()
+  jobs:
+  - template: ./azure-pipeline-template-deploy-jobs.yml

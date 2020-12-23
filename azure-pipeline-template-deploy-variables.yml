@@ -1,0 +1,2 @@
+variables:
+  ECOSYSTEM_DEPLOY_PATH: '/home/taikhoan/srv/doitsu-ecosystem'
