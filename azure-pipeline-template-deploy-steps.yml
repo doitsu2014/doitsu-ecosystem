@@ -4,5 +4,5 @@ steps:
     targetType: 'inline'
     script: |
       # Write your commands here
-      cd ${{ ECOSYSTEM_DEPLOY_PATH }} 
+      cd $(ECOSYSTEM_DEPLOY_PATH) 
       docker stack deploy -c docker-compose.yml doitsu-ecosystem
