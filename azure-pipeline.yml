@@ -1,0 +1,27 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+name: $(Build.SourceBranchName).$(date:yyyyMMdd).$(rev:r)
+
+trigger:
+- master
+
+stages:
+- stage: stage_publish_docker_images
+  displayName: "[Stage] Build And Push Docker Images"
+  jobs:  
+  - template: ./azure-pipeline-template-publish-docker-images-jobs.yml
+# - stage: unit_test
+  # displayName: Unit Test
+  # dependsOn: build
+  # condition: succeeded()
+  # jobs:  
+  # - template: azure-pipeline-template-unittest-jobs.yml
+- stage: deploy
+  displayName: "[Stage] Deployment"
+  dependsOn: stage_publish_docker_images
+  condition: succeeded()
+  jobs:
+  - template: ./azure-pipeline-template-deploy-jobs.yml
