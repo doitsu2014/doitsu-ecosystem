@@ -3,6 +3,7 @@ steps:
 - task: DockerCompose@0
   displayName: Build Image
   inputs:
+    containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
     dockerComposeFile: './src/Services/Identity.Service/docker-compose.yml'
     action: 'Build services'
@@ -12,6 +13,7 @@ steps:
 - task: DockerCompose@0
   displayName: Push Image
   inputs:
+    containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
     dockerComposeFile: './src/Services/Identity.Service/docker-compose.yml'
     action: 'Push services'
