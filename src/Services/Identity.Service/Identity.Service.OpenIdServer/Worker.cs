@@ -101,7 +101,7 @@ namespace Identity.Service.OpenIdServer
                     }
                 });
 
-            await funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
+            await funcCreateClientAsync(applicationSection["BlazorClient:ClientId"],
                 "client.blazor",
                 new OpenIddictApplicationDescriptor
                 {
