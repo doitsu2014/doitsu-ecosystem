@@ -1,18 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IO;
+using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Web.Caching;
 using SixLabors.ImageSharp.Web.DependencyInjection;
+using Storage.Service.ApplicationCore.Constants;
 using Storage.Service.ApplicationCore.Settings;
 
 namespace Storage.Service.ImageResource
@@ -35,6 +38,11 @@ namespace Storage.Service.ImageResource
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApplicationSetting>(_configuration);
+            services.Configure<OidcSettings>(_configuration.GetSection(SettingKeyConstant.OidcSettingKey));
+
+            services.AddControllers();
+            services.AddCors();
             services.AddImageSharp(options =>
             {
                 // You only need to set the options you want to change here
@@ -49,11 +57,8 @@ namespace Storage.Service.ImageResource
                 options.OnBeforeSaveAsync = _ => Task.CompletedTask;
                 options.OnProcessedAsync = _ => Task.CompletedTask;
                 options.OnPrepareResponseAsync = _ => Task.CompletedTask;
-            }).Configure<PhysicalFileSystemCacheOptions>(options =>
-            {
-                options.CacheFolder = "cache";
-            });
-            
+            }).Configure<PhysicalFileSystemCacheOptions>(options => { options.CacheFolder = "cache"; });
+
             if (IsCluster())
             {
                 services.Configure<ForwardedHeadersOptions>(options =>
@@ -61,6 +66,39 @@ namespace Storage.Service.ImageResource
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 });
             }
+
+            services.AddOpenIddict()
+                .AddValidation(opt =>
+                {
+                    var oidcSettingSection = _configuration.GetSection(SettingKeyConstant.OidcSettingKey);
+                    opt.SetIssuer(oidcSettingSection["Authority"]);
+                    opt.AddAudiences(oidcSettingSection["ResourceServerName"]);
+                    opt.UseSystemNetHttp();
+                    opt.UseAspNetCore();
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ImageResourceRead", policy =>
+                {
+                    policy.AuthenticationSchemes = new string[]
+                        {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                    policy.RequireClaim(OpenIddictConstants.Claims.Scope, new[]
+                    {
+                        "services.imageserver.read",
+                    });
+                });
+
+                options.AddPolicy("ImageResourceWrite", policy =>
+                {
+                    policy.AuthenticationSchemes = new string[]
+                        {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                    policy.RequireClaim(OpenIddictConstants.Claims.Scope, new[]
+                    {
+                        "services.imageserver.write",
+                    });
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +124,7 @@ namespace Storage.Service.ImageResource
             app.UseStatusCodePagesWithReExecute("/error");
             app.UseRouting();
 
-            var allowedOrigins = _configuration["AllowedOrigins"].Split(";");
+            var allowedOrigins = _configuration["AllowedHosts"].Split(";");
             app.UseCors(x =>
             {
                 if (allowedOrigins.Contains("*"))
@@ -103,12 +141,12 @@ namespace Storage.Service.ImageResource
                     .AllowAnyHeader();
             });
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/",
-                    async context => { await context.Response.WriteAsync(":v Image Resource Server :v"); });
-            });
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(options => options.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Get}/{id?}"));
         }
     }
 }
