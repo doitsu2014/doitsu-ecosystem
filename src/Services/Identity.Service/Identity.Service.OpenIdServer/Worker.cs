@@ -74,6 +74,7 @@ namespace Identity.Service.OpenIdServer
                     Permissions =
                     {
                         Permissions.Endpoints.Token,
+                        Permissions.Endpoints.Introspection,
                         Permissions.GrantTypes.ClientCredentials,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}"
@@ -92,6 +93,7 @@ namespace Identity.Service.OpenIdServer
                     Permissions =
                     {
                         Permissions.Endpoints.Token,
+                        Permissions.Endpoints.Introspection,
                         Permissions.GrantTypes.Password,
                         Permissions.GrantTypes.RefreshToken,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",

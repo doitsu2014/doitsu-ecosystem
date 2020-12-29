@@ -122,7 +122,9 @@ namespace Identity.Service.OpenIdServer
                         Scopes.Profile,
                         Scopes.Roles,
                         ScopeNameConstants.ScopeBlogPostWrite,
-                        ScopeNameConstants.ScopeBlogPostRead);
+                        ScopeNameConstants.ScopeBlogPostRead,
+                        ScopeNameConstants.ScopeImageServerRead,
+                        ScopeNameConstants.ScopeImageServerWrite);
 
                     if (Environment.IsDevelopment())
                     {
@@ -177,33 +179,29 @@ namespace Identity.Service.OpenIdServer
                     {
                         options.DisableAccessTokenEncryption();
                     }
+                })
+                // Register the OpenIddict validation components.
+                // If unnecessary remove it
+                .AddValidation(options =>
+                {
+                    // Configure the audience accepted by this resource server.
+                    // The value MUST match the audience associated with the
+                    // "demo_api" scope, which is used by ResourceController.
+                    options.AddAudiences("resource_server");
+
+                    // Import the configuration from the local OpenIddict server instance.
+                    options.UseLocalServer();
+
+                    // Register the ASP.NET Core host.
+                    options.UseAspNetCore();
+
+                    // For applications that need immediate access token or authorization
+                    // revocation, the database entry of the received tokens and their
+                    // associated authorizations can be validated for each API call.
+                    // Enabling these options may have a negative impact on performance.
+                    options.EnableAuthorizationEntryValidation();
+                    options.EnableTokenEntryValidation();
                 });
-            
-            #region Add Validation to handle validate resources of this server
-            // Register the OpenIddict validation components.
-            // If unnecessary remove it
-            // .AddValidation(options =>
-            // {
-            // Configure the audience accepted by this resource server.
-            // The value MUST match the audience associated with the
-            // "demo_api" scope, which is used by ResourceController.
-            // options.AddAudiences("resource_server");
-
-            // Import the configuration from the local OpenIddict server instance.
-            // options.UseLocalServer();
-
-            // Register the ASP.NET Core host.
-            // options.UseAspNetCore();
-
-            // For applications that need immediate access token or authorization
-            // revocation, the database entry of the received tokens and their
-            // associated authorizations can be validated for each API call.
-            // Enabling these options may have a negative impact on performance.
-            //
-            // options.EnableAuthorizationEntryValidation();
-            // options.EnableTokenEntryValidation();
-            // });
-            #endregion
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -289,7 +287,7 @@ namespace Identity.Service.OpenIdServer
 
         private bool IsCluster()
         {
-            return Configuration.GetValue<bool>("IsCluster");
+            return Configuration.GetValue<bool>("Operation:IsCluster");
         }
     }
 }
