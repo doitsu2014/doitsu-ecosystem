@@ -79,24 +79,26 @@ namespace Storage.Service.ImageResource
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ImageResourceRead", policy =>
+                options.AddPolicy(PolicyConstants.PolicyImageResourceRead, policy =>
                 {
                     policy.AuthenticationSchemes = new string[]
                         {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
-                    policy.RequireClaim(OpenIddictConstants.Claims.Scope, new[]
-                    {
-                        "services.imageserver.read",
-                    });
+                    policy.RequireClaim(OpenIddictConstants.Claims.Private.Scope,
+                        new[]
+                        {
+                            "services.imageserver.read",
+                        });
                 });
 
-                options.AddPolicy("ImageResourceWrite", policy =>
+                options.AddPolicy(PolicyConstants.PolicyImageResourceWrite, policy =>
                 {
                     policy.AuthenticationSchemes = new string[]
                         {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
-                    policy.RequireClaim(OpenIddictConstants.Claims.Scope, new[]
-                    {
-                        "services.imageserver.write",
-                    });
+                    policy.RequireClaim(OpenIddictConstants.Claims.Private.Scope,
+                        new[]
+                        {
+                            "services.imageserver.write"
+                        });
                 });
             });
         }

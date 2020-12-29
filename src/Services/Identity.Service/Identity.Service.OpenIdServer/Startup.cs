@@ -287,7 +287,7 @@ namespace Identity.Service.OpenIdServer
 
         private bool IsCluster()
         {
-            return Configuration.GetValue<bool>("IsCluster");
+            return Configuration.GetValue<bool>("Operation:IsCluster");
         }
     }
 }
