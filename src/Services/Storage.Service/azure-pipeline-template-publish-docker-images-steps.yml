@@ -1,20 +1,20 @@
 
 steps:
 - task: DockerCompose@0
-  displayName: Build Identity.Service.DockerImage
+  displayName: Build Storage.Service.DockerImage
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
-    dockerComposeFile: './src/Services/Identity.Service/docker-compose.yml'
+    dockerComposeFile: './src/Services/Storage.Service/docker-compose.yml'
     action: 'Build services'
     includeLatestTag: true
     arguments: '--force-rm'
 
 - task: DockerCompose@0
-  displayName: Push Identity.Service.DockerImage
+  displayName: Push Storage.Service.DockerImage
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'Docker Hub doitsu2014'
-    dockerComposeFile: './src/Services/Identity.Service/docker-compose.yml'
+    dockerComposeFile: './src/Services/Storage.Service/docker-compose.yml'
     action: 'Push services'
     includeLatestTag: true
