@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  image-resource-service:
+    image: doitsu2014/image-resource-service:latest
+    build:
+      context: .
+      dockerfile: Storage.Service.ImageResource/Dockerfile
+

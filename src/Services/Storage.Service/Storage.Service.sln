@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Service.ImageResour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Service.ApplicationCore", "Storage.Service.ApplicationCore\Storage.Service.ApplicationCore.csproj", "{81F09909-DDEE-4F98-9296-76C33BAD1047}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose.dcproj", "{0B2AC98A-D845-4DC3-84A9-1064B43EA7F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{81F09909-DDEE-4F98-9296-76C33BAD1047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81F09909-DDEE-4F98-9296-76C33BAD1047}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81F09909-DDEE-4F98-9296-76C33BAD1047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B2AC98A-D845-4DC3-84A9-1064B43EA7F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2AC98A-D845-4DC3-84A9-1064B43EA7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B2AC98A-D845-4DC3-84A9-1064B43EA7F2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2AC98A-D845-4DC3-84A9-1064B43EA7F2}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

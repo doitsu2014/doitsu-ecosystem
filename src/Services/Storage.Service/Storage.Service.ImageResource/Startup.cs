@@ -31,7 +31,7 @@ namespace Storage.Service.ImageResource
 
         private bool IsCluster()
         {
-            return _configuration.GetValue<bool>("IsCluster");
+            return _configuration.GetValue<bool>("Operation:IsCluster");
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
