@@ -11,12 +11,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization.Policy" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+      
     <PackageReference Include="Npgsql" Version="5.0.1.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
-    <PackageReference Include="OpenIddict.Quartz" Version="3.0.0-rc2.20607.88" />
-    <PackageReference Include="OpenIddict.AspNetCore" Version="3.0.0-rc2.20607.88" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.0.0-rc2.20607.88" />
+    <PackageReference Include="OpenIddict.Quartz" Version="3.0.0" />
+    <PackageReference Include="OpenIddict.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="OpenIddict.Validation" Version="3.0.0" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="Quartz.AspNetCore" Version="3.2.3" />
 

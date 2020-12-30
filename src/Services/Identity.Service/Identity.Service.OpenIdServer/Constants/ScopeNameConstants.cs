@@ -9,5 +9,8 @@ namespace Identity.Service.OpenIdServer.Constants
         
         public const string ScopeImageServerRead = "services.imageserver.read";
         public const string ScopeImageServerWrite = "services.imageserver.write";
+        
+        public const string ScopeIdentityServerAllServices = "services.identity.all";
+        public const string ScopeIdentityServerUserInfo = "services.identity.userinfo";
     }
 }
