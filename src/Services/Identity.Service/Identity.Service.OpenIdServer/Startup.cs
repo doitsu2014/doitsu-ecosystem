@@ -231,6 +231,18 @@ namespace Identity.Service.OpenIdServer
                             ScopeNameConstants.ScopeIdentityServerAllServices
                         });
                     });
+
+                options.AddPolicy(OidcConstants.PolicyIdentityResourceUserInfo,
+                    b =>
+                    {
+                        b.AuthenticationSchemes = new string[]
+                            {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+
+                        b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
+                        {
+                            ScopeNameConstants.ScopeIdentityServerUserInfo
+                        });
+                    });
             });
 
             if (IsCluster())

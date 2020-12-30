@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Identity.Service.OpenIdServer.Constants;
+using Identity.Service.OpenIdServer.Helpers;
 using Identity.Service.OpenIdServer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -12,47 +15,32 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 namespace Identity.Service.OpenIdServer.Controllers
 {
     [Route("api")]
+    [Authorize(Policy = OidcConstants.PolicyIdentityResourceAll)]
     public class ResourceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IOpenIddictApplicationManager _oidApplicationManager;
+        private readonly IOpenIddictScopeManager _oidScopeManager;
+        private readonly IOpenIddictTokenManager _oidTokenManger;
+        private readonly IOpenIddictAuthorizationManager _oidAuthorizationManager;
 
-        public ResourceController(UserManager<ApplicationUser> userManager)
-            => _userManager = userManager;
-
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
-        [HttpGet("message")]
-        public async Task<IActionResult> GetMessage()
+        public ResourceController(UserManager<ApplicationUser> userManager,
+            IOpenIddictApplicationManager oidApplicationManager,
+            IOpenIddictScopeManager oidScopeManager,
+            IOpenIddictTokenManager oidTokenManger,
+            IOpenIddictAuthorizationManager oidAuthorizationManager)
         {
-            // This demo action requires that the client application be granted the "demo_api" scope.
-            // If it was not granted, a detailed error is returned to the client application to inform it
-            // that the authorization process must be restarted with the specified scope to access this API.
-            if (!User.HasScope("demo_api"))
-            {
-                return Forbid(
-                    authenticationSchemes: OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme,
-                    properties: new AuthenticationProperties(new Dictionary<string, string>
-                    {
-                        [OpenIddictValidationAspNetCoreConstants.Properties.Scope] = "demo_api",
-                        [OpenIddictValidationAspNetCoreConstants.Properties.Error] = Errors.InsufficientScope,
-                        [OpenIddictValidationAspNetCoreConstants.Properties.ErrorDescription] =
-                            "The 'demo_api' scope is required to perform this action."
-                    }));
-            }
+            _userManager = userManager;
+            _oidApplicationManager = oidApplicationManager;
+            _oidScopeManager = oidScopeManager;
+            _oidTokenManger = oidTokenManger;
+            _oidAuthorizationManager = oidAuthorizationManager;
+        }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user is null)
-            {
-                return Challenge(
-                    authenticationSchemes: OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme,
-                    properties: new AuthenticationProperties(new Dictionary<string, string>
-                    {
-                        [OpenIddictValidationAspNetCoreConstants.Properties.Error] = Errors.InvalidToken,
-                        [OpenIddictValidationAspNetCoreConstants.Properties.ErrorDescription] =
-                            "The specified access token is bound to an account that no longer exists."
-                    }));
-            }
-
-            return Content($"{user.UserName} has been successfully authenticated.");
+        [HttpGet("application")]
+        public async Task<IActionResult> GetApplications()
+        {
+            return Ok(await _oidApplicationManager.ListAsync().ToListAsync());
         }
     }
 }
