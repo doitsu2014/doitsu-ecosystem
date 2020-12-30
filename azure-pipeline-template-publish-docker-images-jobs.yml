@@ -6,3 +6,4 @@ jobs:
       vmImage: "Doitsu.Technology.Ubuntu.Agent"
     steps:
       - template: "./src/Services/Identity.Service/azure-pipeline-template-publish-docker-images-steps.yml"
+      - template: "./src/Services/Storage.Service/azure-pipeline-template-publish-docker-images-steps.yml"
