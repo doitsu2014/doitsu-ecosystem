@@ -14,7 +14,6 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Identity.Service.OpenIdServer.Controllers
 {
-    [Route("api")]
     [Authorize(Policy = OidcConstants.PolicyIdentityResourceAll)]
     public class ResourceController : Controller
     {
@@ -37,10 +36,11 @@ namespace Identity.Service.OpenIdServer.Controllers
             _oidAuthorizationManager = oidAuthorizationManager;
         }
 
-        [HttpGet("application")]
+        [HttpGet("~/api/resource/application")]
         public async Task<IActionResult> GetApplications()
         {
-            return Ok(await _oidApplicationManager.ListAsync().ToListAsync());
+            var result = await _oidApplicationManager.ListAsync().ToListAsync();
+            return Ok(result);
         }
     }
 }
