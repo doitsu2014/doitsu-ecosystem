@@ -37,7 +37,8 @@ namespace Identity.Service.OpenIdServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -252,6 +253,7 @@ namespace Identity.Service.OpenIdServer
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 });
             }
+            
         }
 
         public void Configure(IApplicationBuilder app)
