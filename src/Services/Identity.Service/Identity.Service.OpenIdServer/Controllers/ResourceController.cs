@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -45,17 +46,32 @@ namespace Identity.Service.OpenIdServer.Controllers
         [HttpGet("~/api/resource/application")]
         public async Task<IActionResult> GetApplications()
         {
-            return Ok((await _oidApplicationManager.ListAsync()
-                    .ToListAsync())
-                .Select(o => _mapper.Map<OpenIddictApplicationViewModel>(o))
-                .ToImmutableList());
+            return (await _oidApplicationManager.ListAsync().ToListAsync())
+                .ToOption()
+                .Filter(d => d != null)
+                .Map(oidApplication => _mapper.Map<OpenIddictApplicationViewModel>(oidApplication))
+                .Match<IActionResult>(Ok, NotFound);
         }
 
         [HttpGet("~/api/resource/application/{clientId}")]
         public async Task<IActionResult> GetApplications([FromRoute] string clientId)
         {
-            var result = await _oidApplicationManager.FindByClientIdAsync(clientId);
-            return Ok(result);
+            return (await _oidApplicationManager.FindByClientIdAsync(clientId))
+                .ToSome()
+                .ToOption()
+                .Filter(d => d != null)
+                .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
+                .Match<IActionResult>(Ok, NotFound);
+        }
+
+        [HttpPost("~/api/resource/application/{clientId}/permissions")]
+        public async Task<IActionResult> PostPermission([FromRoute] string clientId, [FromBody] string)
+        {
+            return clientId.ToOption()
+                .
+                .Filter(d => )
+                .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
+                .Match<IActionResult>(Ok, NotFound);
         }
     }
 }
