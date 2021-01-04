@@ -65,11 +65,15 @@ namespace Identity.Service.OpenIdServer.Controllers
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
-        public async Task<IActionResult> PostPermission([FromRoute] string clientId, [FromBody] string)
+        public async Task<IActionResult> PostPermission([FromRoute] string clientId, [FromBody] (string prefix, string name) request)
         {
-            return clientId.ToOption()
-                .
-                .Filter(d => )
+            return (clientId, request)
+                .ToSome()
+                .ToOption()
+                .ToValidation(string.Empty)
+                
+                
+                .Filter(d => !string.IsNullOrEmpty(d.prefix))
                 .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
                 .Match<IActionResult>(Ok, NotFound);
         }
