@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Custom;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OpenIddict.Abstractions;
-using OpenIddict.Validation;
 using OpenIddict.Validation.AspNetCore;
 using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
@@ -245,6 +244,8 @@ namespace Identity.Service.OpenIdServer
                         });
                     });
             });
+
+            services.AddAutoMapper(typeof(MapperProfile));
 
             if (IsCluster())
             {
