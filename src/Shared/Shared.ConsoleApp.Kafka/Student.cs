@@ -3,7 +3,7 @@ using System.Text.Json;
 using Bogus;
 using Confluent.Kafka;
 
-namespace Shared.Kafka.ConsoleApp
+namespace Shared.ConsoleApp.Kafka
 {
     public class StudentSerializer : ISerializer<Student>, IDeserializer<Student>
     {

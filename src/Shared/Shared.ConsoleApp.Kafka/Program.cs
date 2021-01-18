@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Bogus;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,12 +11,9 @@ using Shared.Abstraction.Interfaces.Services;
 using Shared.Abstraction.Settings;
 using Shared.ConsoleApp.Extension;
 using Shared.Services;
-using LanguageExt;
-using LanguageExt.Common;
 using static LanguageExt.Prelude;
-using Some = LanguageExt.Some;
 
-namespace Shared.Kafka.ConsoleApp
+namespace Shared.ConsoleApp.Kafka
 {
     public class Program
     {
