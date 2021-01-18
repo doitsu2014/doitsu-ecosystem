@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
@@ -15,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
+
+using static LanguageExt.Prelude;
 
 namespace Identity.Service.OpenIdServer.Controllers
 {
@@ -67,12 +66,11 @@ namespace Identity.Service.OpenIdServer.Controllers
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
         public async Task<IActionResult> PostPermission([FromRoute] string clientId, [FromBody] (string prefix, string name) request)
         {
-            return (clientId, request)
-                .ToSome()
-                .ToOption()
-                .ToValidation(string.Empty)
-                
-                
+            return Optional((clientId, request))
+                .ToEither<string, (string, (string, string))>(req =>
+                {
+                    return None;
+                })
                 .Filter(d => !string.IsNullOrEmpty(d.prefix))
                 .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
                 .Match<IActionResult>(Ok, NotFound);

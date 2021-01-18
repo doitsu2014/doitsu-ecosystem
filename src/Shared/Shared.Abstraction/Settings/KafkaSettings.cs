@@ -1,6 +1,6 @@
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 
-namespace Utility.Settings
+namespace Shared.Abstraction.Settings
 {
     public class KafkaSettings
     {
