@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using LanguageExt;
 
 namespace Shared.Abstraction.Interfaces.Services
 {
@@ -16,7 +17,7 @@ namespace Shared.Abstraction.Interfaces.Services
             ISerializer<TKey> keySerializer = default,
             ISerializer<TValue> valueSerializer = default);
 
-        Task DeleteTopicsAsync(params string[] topics);
-        Task CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1);
+        Task<Either<Seq<string>, Unit>> DeleteTopicsAsync(params string[] topics);
+        Task <Either<Seq<string>, Unit>> CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1);
     }
 }

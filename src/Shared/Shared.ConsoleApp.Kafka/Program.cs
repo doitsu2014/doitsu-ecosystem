@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using LanguageExt;
+using LanguageExt.ClassInstances.Const;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -33,12 +35,22 @@ namespace Shared.ConsoleApp.Kafka
                 var configuration = scope.ServiceProvider.GetService<IConfiguration>();
                 var settings = scope.ServiceProvider.GetService<IOptions<KafkaSettings>>()?.Value;
                 var kafkaService = scope.ServiceProvider.GetService<IKafkaService>();
+                
                 var studentGenerator = StudentFaker.GetFaker();
                 var topicName = "studentAdded";
 
-                await kafkaService.DeleteTopicsAsync(new string[] {topicName});
-                await kafkaService.CreateTopicsAsync(new string[] {topicName}, 3, 3);
+                await TryAsync(async () => await kafkaService.DeleteTopicsAsync(new string[] {topicName}))
+                    .Match(
+                        res => res
+                            .Match(res => Console.WriteLine("Delete Topics Successfully"), errors => Console.WriteLine(errors.First())),
+                        error => Console.WriteLine(error.Message));
 
+                await TryAsync(async () => await kafkaService.CreateTopicsAsync(new string[] {topicName}))
+                    .Match(
+                        res => res
+                            .Match(res => Console.WriteLine("Create Topics Successfully"), errors => Console.WriteLine(errors.First())),
+                        error => Console.WriteLine(error.Message));
+                
                 var listMessages = List<int>().AddRange(Enumerable.Range(0, 20))
                     .Map((_) => new Message<string, Student>()
                     {

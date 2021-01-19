@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Shared.Kafka.ConsoleApp</RootNamespace>
-    </PropertyGroup>
+      <UserSecretsId>f75e141a-c95b-4618-aa76-53849299f621</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Bogus" Version="32.0.2" />

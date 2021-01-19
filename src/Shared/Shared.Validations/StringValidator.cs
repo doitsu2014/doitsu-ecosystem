@@ -6,9 +6,15 @@ namespace Shared.Validations
 {
     public static class StringValidator
     {
-        public static Validation<string, string> ShouldNotNullOrEmpty(string value) => 
+        public static Validation<string, string> ShouldNotNullOrEmpty(string value, string failMessage) => 
             !value.IsNullOrEmpty() 
                 ? Success<string, string>(value)
-                : Fail<string, string>("");
+                : Fail<string, string>(failMessage);
+        
+        public static Validation<string, string[]> ShouldNotNullOrEmpty(string[] value, string failMessage) => 
+            (value != null && value.Length > 0)
+                ? Success<string, string[]>(value)
+                : Fail<string, string[]>(failMessage);
+        
     }
 }
