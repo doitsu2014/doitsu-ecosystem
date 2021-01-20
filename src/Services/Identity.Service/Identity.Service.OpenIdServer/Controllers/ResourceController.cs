@@ -1,18 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
+using System.Threading.Tasks;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.ViewModels.Resource;
-using LanguageExt;
-using LanguageExt.SomeHelp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
-
+using static Shared.Validations.StringValidator;
+using static Shared.Validations.GenericValidator;
 using static LanguageExt.Prelude;
 
 namespace Identity.Service.OpenIdServer.Controllers
@@ -45,35 +45,34 @@ namespace Identity.Service.OpenIdServer.Controllers
         [HttpGet("~/api/resource/application")]
         public async Task<IActionResult> GetApplications()
         {
-            return (await _oidApplicationManager.ListAsync().ToListAsync())
-                .ToOption()
-                .Filter(d => d != null)
-                .Map(oidApplication => _mapper.Map<OpenIddictApplicationViewModel>(oidApplication))
-                .Match<IActionResult>(Ok, NotFound);
+            return ShouldNotNullOrEmpty(await _oidApplicationManager.ListAsync().ToListAsync())
+                .
+                    // data => _mapper.Map<OpenIddictApplicationViewModel>(data))
+                // )
+                .Map(oa => oa)
+                .Match<IActionResult>(Ok, errors => NotFound());
         }
 
         [HttpGet("~/api/resource/application/{clientId}")]
         public async Task<IActionResult> GetApplications([FromRoute] string clientId)
         {
-            return (await _oidApplicationManager.FindByClientIdAsync(clientId))
-                .ToSome()
-                .ToOption()
-                .Filter(d => d != null)
-                .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
-                .Match<IActionResult>(Ok, NotFound);
+            return (await ShouldNotNullOrEmpty(clientId)
+                    .ToEither()
+                    .MapAsync(async req => await _oidApplicationManager.FindByClientIdAsync(req)))
+                .Map(ShouldNotNull)
+                .Match<IActionResult>(res =>
+                        res.Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
+                            _ => NotFound()),
+                    errors => BadRequest(errors.Aggregate((a, b) => $"{a}, {b}")));
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
-        public async Task<IActionResult> PostPermission([FromRoute] string clientId, [FromBody] (string prefix, string name) request)
+        public async Task<IActionResult> PostPermission([FromRoute] string cid, [FromBody] (string prefix, string name) req)
         {
-            return Optional((clientId, request))
-                .ToEither<string, (string, (string, string))>(req =>
-                {
-                    return None;
-                })
-                .Filter(d => !string.IsNullOrEmpty(d.prefix))
-                .Map(oApplication => _mapper.Map<OpenIddictApplicationViewModel>(oApplication))
-                .Match<IActionResult>(Ok, NotFound);
+            // return (from clientId in ShouldNotNullOrEmpty(cid)
+            // from request in ShouldNotNull(req)
+            // select (clientId, request))
+            return NotFound();
         }
     }
 }

@@ -7,15 +7,15 @@ namespace Shared.Validations
 {
     public static class StringValidator
     {
-        public static Validation<string, string> ShouldNotNullOrEmpty(string value, string failMessage) =>
+        public static Validation<string, string> ShouldNotNullOrEmpty(string value) =>
             !value.IsNullOrEmpty()
                 ? Success<string, string>(value)
-                : Fail<string, string>(failMessage);
+                : Fail<string, string>("value is null or empty");
 
         public static Validation<string, string[]> ShouldNotNullOrEmpty(string[] value, string failMessage) =>
             (value != null && value.Length > 0)
                 ? Success<string, string[]>(value)
-                : Fail<string, string[]>(failMessage);
+                : Fail<string, string[]>("list values is null or empty");
 
         public static Func<string, Validation<string, string>> MaxStrLength(int maxLength) =>
             fun((string value) => 
@@ -24,8 +24,8 @@ namespace Shared.Validations
                         ? (value.Length <= maxLength)
                             ? Success<string, string>(value)
                             : Fail<string, string>($"value is greater than {maxLength}")
-                        : Fail<string, string>($"{nameof(maxLength)} is less than zero.")
-                    : Fail<string, string>("value is null."));
+                        : Fail<string, string>($"{nameof(maxLength)} is less than zero")
+                    : Fail<string, string>("value is null"));
 
         public static Func<string, Validation<string, string>> MinStrLength(int minLength) =>
             fun((string value) =>
@@ -34,7 +34,7 @@ namespace Shared.Validations
                         ? (value.Length >= minLength)
                             ? Success<string, string>(value)
                             : Fail<string, string>($"value is less than {minLength}")
-                        : Fail<string, string>($"{nameof(minLength)} is less than zero.")
-                    : Fail<string, string>("value is null."));
+                        : Fail<string, string>($"{nameof(minLength)} is less than zero")
+                    : Fail<string, string>("value is null"));
     }
 }

@@ -16,10 +16,10 @@ namespace Tests.Shared
             object objectNull = null;
             var objectNotNull = (a: 1, b: 2);
 
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listData, "listData should not be null or empty.").IsSuccess);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyData, "listEmptyData should not be null or empty.").IsFail);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject, "listEmptyObject should not be null or empty.").IsFail);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject, "listEmptyObject should not be null or empty.").IsFail);
+            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listData).IsSuccess);
+            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyData).IsFail);
+            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject).IsFail);
+            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject).IsFail);
         }
 
         [Fact]
