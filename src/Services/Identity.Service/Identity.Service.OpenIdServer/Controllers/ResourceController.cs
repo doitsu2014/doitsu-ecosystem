@@ -46,30 +46,38 @@ namespace Identity.Service.OpenIdServer.Controllers
         public async Task<IActionResult> GetApplications()
         {
             return ShouldNotNullOrEmpty(await _oidApplicationManager.ListAsync().ToListAsync())
-                .
-                    // data => _mapper.Map<OpenIddictApplicationViewModel>(data))
-                // )
-                .Map(oa => oa)
-                .Match<IActionResult>(Ok, errors => NotFound());
+                .Match<IActionResult>(res => 
+                        Ok(res.Map(x => _mapper.Map<OpenIddictApplicationViewModel>(x))), _ => NotFound());
         }
 
         [HttpGet("~/api/resource/application/{clientId}")]
         public async Task<IActionResult> GetApplications([FromRoute] string clientId)
         {
-            return (await ShouldNotNullOrEmpty(clientId)
-                    .ToEither()
-                    .MapAsync(async req => await _oidApplicationManager.FindByClientIdAsync(req)))
-                .Map(ShouldNotNull)
-                .Match<IActionResult>(res =>
-                        res.Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
-                            _ => NotFound()),
-                    errors => BadRequest(errors.Aggregate((a, b) => $"{a}, {b}")));
+            return (await ShouldNotNullOrEmpty(clientId).ToEither().MapAsync(async req => ShouldNotNull(await _oidApplicationManager.FindByClientIdAsync(req))))
+                .Match<IActionResult>(res => res
+                        .Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
+                        _ => NotFound()),
+                    errors => BadRequest(errors.Aggregate((a,
+                        b) => $"{a}, {b}")));
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
         public async Task<IActionResult> PostPermission([FromRoute] string cid, [FromBody] (string prefix, string name) req)
         {
-            // return (from clientId in ShouldNotNullOrEmpty(cid)
+           var validateData = fun((string clientId,
+               (string prefix,
+               string name) request) => from x in ShouldNotNullOrEmpty(cid)
+               from y in ShouldNotNullOrEmpty(req.prefix)
+               from z in ShouldNotNullOrEmpty(request.name)
+               select (clientId: x, Prefixes: y, nameof: z));
+
+           return validateData(cid, req)
+               .ToEither()
+               .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.x)))
+               .Map(x => new OpenIddictApplicationDescriptor())
+
+
+           // return (from clientId in ShouldNotNullOrEmpty(cid)
             // from request in ShouldNotNull(req)
             // select (clientId, request))
             return NotFound();
