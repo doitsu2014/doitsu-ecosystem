@@ -104,8 +104,8 @@ namespace Shared.Services
                     var listTopicSpecifications = req.listTopics.Select(t => new TopicSpecification()
                     {
                         Name = t,
-                        NumPartitions = numberOfPartition,
-                        ReplicationFactor = replicationFactor
+                        NumPartitions = req.nop,
+                        ReplicationFactor = req.rf
                     }).ToImmutableList();
                     var listExistedTopicOnServer = req.ac.GetMetadata(TimeSpan.FromSeconds(20)).Topics.Select(t => t.Topic);
 

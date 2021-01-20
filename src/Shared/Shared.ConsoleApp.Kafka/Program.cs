@@ -45,7 +45,7 @@ namespace Shared.ConsoleApp.Kafka
                             .Match(res => Console.WriteLine("Delete Topics Successfully"), errors => Console.WriteLine(errors.First())),
                         error => Console.WriteLine(error.Message));
 
-                await TryAsync(async () => await kafkaService.CreateTopicsAsync(new string[] {topicName}))
+                await TryAsync(async () => await kafkaService.CreateTopicsAsync(new string[] {topicName}, 3, 3))
                     .Match(
                         res => res
                             .Match(res => Console.WriteLine("Create Topics Successfully"), errors => Console.WriteLine(errors.First())),
