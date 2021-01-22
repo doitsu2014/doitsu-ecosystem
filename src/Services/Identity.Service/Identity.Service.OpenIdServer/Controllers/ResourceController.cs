@@ -5,12 +5,14 @@ using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.ViewModels.Resource;
+using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
+using Shared.Abstraction;
 using static Shared.Validations.StringValidator;
 using static Shared.Validations.GenericValidator;
 using static LanguageExt.Prelude;
@@ -57,8 +59,7 @@ namespace Identity.Service.OpenIdServer.Controllers
                 .Match<IActionResult>(res => res
                         .Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
                         _ => NotFound()),
-                    errors => BadRequest(errors.Aggregate((a,
-                        b) => $"{a}, {b}")));
+                    errors => BadRequest(errors.ComposeStrings(", ")));
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
@@ -69,18 +70,15 @@ namespace Identity.Service.OpenIdServer.Controllers
                string name) request) => from x in ShouldNotNullOrEmpty(cid)
                from y in ShouldNotNullOrEmpty(req.prefix)
                from z in ShouldNotNullOrEmpty(request.name)
-               select (clientId: x, Prefixes: y, nameof: z));
+               select (clientId: x, prefix: y, nameof: z));
 
-           return validateData(cid, req)
+           return (await validateData(cid, req)
                .ToEither()
-               .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.x)))
-               .Map(x => new OpenIddictApplicationDescriptor())
-
-
-           // return (from clientId in ShouldNotNullOrEmpty(cid)
-            // from request in ShouldNotNull(req)
-            // select (clientId, request))
-            return NotFound();
+               .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
+               .Match<IActionResult>(res =>
+               {
+                   return Ok(res.application);
+               }, errors => BadRequest(errors.ComposeStrings(", ")));
         }
     }
 }
