@@ -37,7 +37,7 @@ namespace Shared.ConsoleApp.Extension
                     var sc = new ServiceCollection();
                     addCustomServices(sc, conf);
                     return sc.AddSingleton(conf)
-                        .AddLogging(l => l.ClearProviders().AddSerilog(new LoggerConfiguration().ReadFrom.Configuration(conf).CreateLogger()))
+                        .AddLogging(l => l.AddSerilog(new LoggerConfiguration().ReadFrom.Configuration(conf).CreateLogger()))
                         .BuildServiceProvider();
                 });
         }

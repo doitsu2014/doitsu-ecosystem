@@ -12,7 +12,6 @@ using Shared.Abstraction.Interfaces.Services;
 using Shared.Abstraction.Settings;
 using Shared.Validations;
 using static LanguageExt.Prelude;
-using Some = LanguageExt.Some;
 
 namespace Shared.Services
 {
