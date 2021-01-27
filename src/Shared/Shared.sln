@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Shared", "Tests.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.ConsoleApp.SendGrid", "Shared.ConsoleApp.SendGrid\Shared.ConsoleApp.SendGrid.csproj", "{D4DA7D69-8041-46E5-ABF7-6CF5CBA3392D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.ConsoleApp.ServiceAppMigration", "Shared.ConsoleApp.ServiceAppMigration\Shared.ConsoleApp.ServiceAppMigration.csproj", "{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,5 +116,17 @@ Global
 		{D4DA7D69-8041-46E5-ABF7-6CF5CBA3392D}.Release|x64.Build.0 = Release|Any CPU
 		{D4DA7D69-8041-46E5-ABF7-6CF5CBA3392D}.Release|x86.ActiveCfg = Release|Any CPU
 		{D4DA7D69-8041-46E5-ABF7-6CF5CBA3392D}.Release|x86.Build.0 = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Debug|x86.Build.0 = Debug|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|x64.Build.0 = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E0D5B18-CA23-4220-B362-0B0B69A7A43A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
