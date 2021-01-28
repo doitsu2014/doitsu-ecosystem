@@ -63,38 +63,23 @@ namespace Identity.Service.OpenIdServer.Controllers
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
-        public async Task<IActionResult> PostPermission([FromRoute] string aid, [FromBody] (string prefix, string name) req)
+        public async Task<IActionResult> PostPermission([FromRoute] string aid, [FromBody] (PermissionPrefixEnums prefix, string name) req)
         {
-            // var getClientByIdAsync = fun(async (string pCid) => (await ShouldNotNull(pCid)
-            //         .ToEither()
-            //         .MapAsync(async pCid => await _oidApplicationManager.FindByClientIdAsync(pCid)))
-            //     .Match(
-            //         res => ShouldNotNull(res),
-            //         errors => Fail<string, OpenIddictEntityFrameworkCoreApplication>(errors.ComposeStrings(", ")))
-            // );
-            //
-
-            var validateData = fun((string applicationId, (string prefix, string name) request)
-                => from x in ShouldNotNullOrEmpty(applicationId)
-                from y in ShouldNotNullOrEmpty(req.prefix)
-                from z in ShouldNotNullOrEmpty(request.name)
-                select (applicationId: x, prefix: y, nameof: z));
-
-                    // .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
-                    return (await (ShouldNotNullOrEmpty(aid), ShouldNotNullOrEmpty(req.prefix), ShouldNotNullOrEmpty(req.name)) 
-                        .Apply(async (applicationId, permPrefix, permName) =>
+            // .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
+            var a = (await (ShouldNotNullOrEmpty(aid), Success<string, PermissionPrefixEnums>(req.prefix), ShouldNotNullOrEmpty(req.name))
+                .Apply((applicationId, permPrefix, permName) => (applicationId, permValue: $"{permPrefix}{permName}"))
+                .ToEither()
+                .MapAsync(async t =>
+                {
+                    return Optional(await _oidApplicationManager.FindByClientIdAsync(t.applicationId))
+                        .ToEither("Application does not exist.")
+                        .Map(app =>
                         {
-                            return Optional(await _oidApplicationManager
-                                .FindByClientIdAsync(applicationId))
-                                .ToEither("Application does not exist.")
-                                .MapAsync(async application =>
-                                {
-                                    application.Permissions.Insert($"{permPrefix}{permName}");
-                                });
-                        })
-                        .AsTask())
-                        .Match();
-                    // .Match<IActionResult>(res => { return Ok(res.application); }, errors => BadRequest(errors.ComposeStrings(", ")));
+
+                            return app;
+                        });
+                }));
+            // .Match<IActionResult>(res => { return Ok(res.application); }, errors => BadRequest(errors.ComposeStrings(", ")));
         }
     }
 }
