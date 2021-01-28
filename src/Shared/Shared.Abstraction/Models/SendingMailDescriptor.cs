@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Shared.Abstraction.Model
+namespace Shared.Abstraction.Models
 {
     public class SendingMailDescriptor
     {

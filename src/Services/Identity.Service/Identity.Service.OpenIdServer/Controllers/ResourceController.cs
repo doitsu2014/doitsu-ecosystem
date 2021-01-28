@@ -48,8 +48,8 @@ namespace Identity.Service.OpenIdServer.Controllers
         public async Task<IActionResult> GetApplications()
         {
             return ShouldNotNullOrEmpty(await _oidApplicationManager.ListAsync().ToListAsync())
-                .Match<IActionResult>(res => 
-                        Ok(res.Map(x => _mapper.Map<OpenIddictApplicationViewModel>(x))), _ => NotFound());
+                .Match<IActionResult>(res =>
+                    Ok(res.Map(x => _mapper.Map<OpenIddictApplicationViewModel>(x))), _ => NotFound());
         }
 
         [HttpGet("~/api/resource/application/{clientId}")]
@@ -58,27 +58,43 @@ namespace Identity.Service.OpenIdServer.Controllers
             return (await ShouldNotNullOrEmpty(clientId).ToEither().MapAsync(async req => ShouldNotNull(await _oidApplicationManager.FindByClientIdAsync(req))))
                 .Match<IActionResult>(res => res
                         .Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
-                        _ => NotFound()),
+                            _ => NotFound()),
                     errors => BadRequest(errors.ComposeStrings(", ")));
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
-        public async Task<IActionResult> PostPermission([FromRoute] string cid, [FromBody] (string prefix, string name) req)
+        public async Task<IActionResult> PostPermission([FromRoute] string aid, [FromBody] (string prefix, string name) req)
         {
-           var validateData = fun((string clientId,
-               (string prefix,
-               string name) request) => from x in ShouldNotNullOrEmpty(cid)
-               from y in ShouldNotNullOrEmpty(req.prefix)
-               from z in ShouldNotNullOrEmpty(request.name)
-               select (clientId: x, prefix: y, nameof: z));
+            // var getClientByIdAsync = fun(async (string pCid) => (await ShouldNotNull(pCid)
+            //         .ToEither()
+            //         .MapAsync(async pCid => await _oidApplicationManager.FindByClientIdAsync(pCid)))
+            //     .Match(
+            //         res => ShouldNotNull(res),
+            //         errors => Fail<string, OpenIddictEntityFrameworkCoreApplication>(errors.ComposeStrings(", ")))
+            // );
+            //
 
-           return (await validateData(cid, req)
-               .ToEither()
-               .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
-               .Match<IActionResult>(res =>
-               {
-                   return Ok(res.application);
-               }, errors => BadRequest(errors.ComposeStrings(", ")));
+            var validateData = fun((string applicationId, (string prefix, string name) request)
+                => from x in ShouldNotNullOrEmpty(applicationId)
+                from y in ShouldNotNullOrEmpty(req.prefix)
+                from z in ShouldNotNullOrEmpty(request.name)
+                select (applicationId: x, prefix: y, nameof: z));
+
+                    // .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
+                    return (await (ShouldNotNullOrEmpty(aid), ShouldNotNullOrEmpty(req.prefix), ShouldNotNullOrEmpty(req.name)) 
+                        .Apply(async (applicationId, permPrefix, permName) =>
+                        {
+                            return Optional(await _oidApplicationManager
+                                .FindByClientIdAsync(applicationId))
+                                .ToEither("Application does not exist.")
+                                .MapAsync(async application =>
+                                {
+                                    application.Permissions.Insert($"{permPrefix}{permName}");
+                                });
+                        })
+                        .AsTask())
+                        .Match();
+                    // .Match<IActionResult>(res => { return Ok(res.application); }, errors => BadRequest(errors.ComposeStrings(", ")));
         }
     }
 }

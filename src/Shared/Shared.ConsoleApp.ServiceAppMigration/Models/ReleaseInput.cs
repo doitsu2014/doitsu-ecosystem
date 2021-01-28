@@ -1,13 +1,17 @@
 ﻿namespace Shared.ConsoleApp.ServiceAppMigration.Models
 {
+    
     public class ReleaseInput
     {
-        public ReleaseInputDbConnectionString ConnectionString { get; set; }
+        public ReleaseInputDbConnection DbConnection { get; set; }
+        public string AzureKeyVaultConnection { get; set; }
     }
 
-    public class ReleaseInputDbConnectionString
+    public class ReleaseInputDbConnection
     {
-        public string Connection { get; set; }
         public string Host { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
+
 }

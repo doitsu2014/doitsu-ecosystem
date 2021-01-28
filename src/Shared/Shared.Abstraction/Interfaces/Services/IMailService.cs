@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
-using Shared.Abstraction.Model;
+using Shared.Abstraction.Models;
 
 namespace Shared.Abstraction.Interfaces.Services
 {
