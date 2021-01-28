@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
@@ -65,20 +66,21 @@ namespace Identity.Service.OpenIdServer.Controllers
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
         public async Task<IActionResult> PostPermission([FromRoute] string aid, [FromBody] (PermissionPrefixEnums prefix, string name) req)
         {
-            // .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
-            var a = (await (ShouldNotNullOrEmpty(aid), Success<string, PermissionPrefixEnums>(req.prefix), ShouldNotNullOrEmpty(req.name))
+            return (await (ShouldNotNullOrEmpty(aid), Success<string, PermissionPrefixEnums>(req.prefix), ShouldNotNullOrEmpty(req.name))
                 .Apply((applicationId, permPrefix, permName) => (applicationId, permValue: $"{permPrefix}{permName}"))
                 .ToEither()
-                .MapAsync(async t =>
+                .MatchAsync<IActionResult>(async t =>
                 {
                     return Optional(await _oidApplicationManager.FindByClientIdAsync(t.applicationId))
                         .ToEither("Application does not exist.")
-                        .Map(app =>
+                        .Match<IActionResult>(app =>
                         {
-
-                            return app;
-                        });
-                }));
+                            var existedPermValue = app.Permissions?.Contains(t.permValue) ?? false;
+                            return Ok(app);
+                        }, BadRequest);
+                }, errors => BadRequest(errors.ComposeStrings(", "))));
+            
+            // .MapAsync(async data => (application: await _oidApplicationManager.FindByClientIdAsync(data.clientId), data.prefix, data.nameof)))
             // .Match<IActionResult>(res => { return Ok(res.application); }, errors => BadRequest(errors.ComposeStrings(", ")));
         }
     }
