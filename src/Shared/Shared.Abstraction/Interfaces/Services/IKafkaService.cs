@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Confluent.Kafka;
 using LanguageExt;
+using SharedError = Shared.Abstraction.Models.Types.Error;
 
 namespace Shared.Abstraction.Interfaces.Services
 {
@@ -17,7 +18,7 @@ namespace Shared.Abstraction.Interfaces.Services
             ISerializer<TKey> keySerializer = default,
             ISerializer<TValue> valueSerializer = default);
 
-        Task<Either<Seq<string>, Unit>> DeleteTopicsAsync(params string[] topics);
-        Task <Either<Seq<string>, Unit>> CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1);
+        Task<Either<Seq<SharedError>, Unit>> DeleteTopicsAsync(params string[] topics);
+        Task <Either<Seq<SharedError>, Unit>> CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1);
     }
 }

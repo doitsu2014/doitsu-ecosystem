@@ -6,6 +6,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Shared.Abstraction\Shared.Abstraction.csproj" />
+        <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
     </ItemGroup>
     
     <ItemGroup>

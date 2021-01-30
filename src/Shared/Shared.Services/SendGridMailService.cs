@@ -7,10 +7,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using Shared.Abstraction;
 using Shared.Abstraction.Interfaces.Services;
-using Shared.Abstraction.Model;
+using Shared.Abstraction.Models;
 using Shared.Abstraction.Settings;
+using Shared.Extensions;
 using Shared.Validations;
 using static LanguageExt.Prelude;
 
@@ -25,10 +25,10 @@ namespace Shared.Services
         {
             _logger = logger;
             _settings = optSettings.Value;
-            (from vSetting in GenericValidator.ShouldNotNull(_settings)
-                    from vApiKey in StringValidator.ShouldNotNullOrEmpty(_settings.ApiKey)
-                    select (vSetting, vApiKey))
-                .IfFail(errors => logger.LogWarning(errors.ComposeStrings(", ")));
+            // (from vSetting in GenericValidator.ShouldNotNull(_settings)
+            //         from vApiKey in StringValidator.ShouldNotNullOrEmpty(_settings.ApiKey)
+            //         select (vSetting, vApiKey))
+            //     .IfFail(errors => logger.LogWarning(errors.Joins(", ")));
         }
 
         public async Task<Either<string, string>> SendMailAsync(SendingMailDescriptor data)

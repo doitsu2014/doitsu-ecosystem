@@ -6,8 +6,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Shared.Abstraction\Shared.Abstraction.csproj" />
-      <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
-      <ProjectReference Include="..\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     </ItemGroup>
 
 </Project>

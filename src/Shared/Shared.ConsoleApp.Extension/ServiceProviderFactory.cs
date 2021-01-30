@@ -4,9 +4,8 @@ using System.Reflection;
 using LanguageExt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using Shared.Abstraction;
+using Shared.Extensions;
 using static LanguageExt.Prelude;
 
 namespace Shared.ConsoleApp.Extension

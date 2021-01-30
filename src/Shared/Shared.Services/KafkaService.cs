@@ -12,6 +12,8 @@ using Shared.Abstraction.Interfaces.Services;
 using Shared.Abstraction.Settings;
 using Shared.Validations;
 using static LanguageExt.Prelude;
+using static Shared.Validations.StringValidator;
+using Error = Shared.Abstraction.Models.Types.Error;
 
 namespace Shared.Services
 {
@@ -56,10 +58,10 @@ namespace Shared.Services
             return result;
         }
 
-        public async Task<Either<Seq<string>, Unit>> DeleteTopicsAsync(params string[] topics)
+        public async Task<Either<Seq<Error>, Unit>> DeleteTopicsAsync(params string[] topics)
         {
             using var adminClient = new AdminClientBuilder(_settings.AdminClientConfig).Build();
-            return await StringValidator.ShouldNotNullOrEmpty(topics, $"{nameof(topics)} should not null or empty")
+            return await ShouldNotNullOrEmpty(topics)
                 .Map(req => (tp: req, ac: adminClient))
                 .Map((req) =>
                 {
@@ -68,6 +70,7 @@ namespace Shared.Services
                         .ac
                         .GetMetadata(TimeSpan.FromSeconds(20)).Topics.Select(t => t.Topic)
                         .ToImmutableList();
+                    
                     // Warning existed Topics
                     var listNotExistedTopics = req.tp.Where(t => !listExistedTopics.Contains(t));
                     foreach (var notExistedTopic in listNotExistedTopics)
@@ -89,12 +92,12 @@ namespace Shared.Services
                 });
         }
 
-        public async Task<Either<Seq<string>, Unit>> CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1)
+        public async Task<Either<Seq<Error>, Unit>> CreateTopicsAsync(string[] topics, int numberOfPartition = 1, short replicationFactor = 1)
         {
             using var adminClient = new AdminClientBuilder(_settings.AdminClientConfig).Build();
-            return await (from listTopics in StringValidator.ShouldNotNullOrEmpty(topics, $"{nameof(topics)} should not null or empty")
-                    from nop in Success<string, int>(numberOfPartition)
-                    from rf in Success<string, short>(replicationFactor)
+            return await (from listTopics in StringValidator.ShouldNotNullOrEmpty(topics)
+                    from nop in Success<Error, int>(numberOfPartition)
+                    from rf in Success<Error, short>(replicationFactor)
                     select (listTopics, nop, rf, ac: adminClient))
                 .ToEither()
                 .Map((req) =>

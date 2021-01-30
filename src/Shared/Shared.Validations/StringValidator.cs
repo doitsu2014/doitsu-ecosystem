@@ -1,40 +1,41 @@
 ﻿using System;
 using LanguageExt;
-using Shared.Abstraction;
+using Shared.Abstraction.Models.Types;
+using Shared.Extensions;
 using static LanguageExt.Prelude;
 
 namespace Shared.Validations
 {
     public static class StringValidator
     {
-        public static Validation<string, string> ShouldNotNullOrEmpty(string value) =>
+        public static Validation<Error, string> ShouldNotNullOrEmpty(string value) =>
             !value.IsNullOrEmpty()
-                ? Success<string, string>(value)
-                : Fail<string, string>("value is null or empty");
+                ? Success<Error, string>(value)
+                : Fail<Error, string>("value is null or empty");
 
-        public static Validation<string, string[]> ShouldNotNullOrEmpty(string[] value, string failMessage) =>
+        public static Validation<Error, string[]> ShouldNotNullOrEmpty(string[] value) =>
             (value != null && value.Length > 0)
-                ? Success<string, string[]>(value)
-                : Fail<string, string[]>("list values is null or empty");
+                ? Success<Error, string[]>(value)
+                : Fail<Error, string[]>("list values is null or empty");
 
-        public static Func<string, Validation<string, string>> MaxStrLength(int maxLength) =>
+        public static Func<string, Validation<Error, string>> MaxStrLength(int maxLength) =>
             fun((string value) => 
                 (value != null)
                     ? maxLength >= 0 
                         ? (value.Length <= maxLength)
-                            ? Success<string, string>(value)
-                            : Fail<string, string>($"value is greater than {maxLength}")
-                        : Fail<string, string>($"{nameof(maxLength)} is less than zero")
-                    : Fail<string, string>("value is null"));
+                            ? Success<Error, string>(value)
+                            : Fail<Error, string>($"value is greater than {maxLength}")
+                        : Fail<Error, string>($"{nameof(maxLength)} is less than zero")
+                    : Fail<Error, string>("value is null"));
 
-        public static Func<string, Validation<string, string>> MinStrLength(int minLength) =>
+        public static Func<string, Validation<Error, string>> MinStrLength(int minLength) =>
             fun((string value) =>
                 (value != null) 
                     ? minLength >= 0 
                         ? (value.Length >= minLength)
-                            ? Success<string, string>(value)
-                            : Fail<string, string>($"value is less than {minLength}")
-                        : Fail<string, string>($"{nameof(minLength)} is less than zero")
-                    : Fail<string, string>("value is null"));
+                            ? Success<Error, string>(value)
+                            : Fail<Error, string>($"value is less than {minLength}")
+                        : Fail<Error, string>($"{nameof(minLength)} is less than zero")
+                    : Fail<Error, string>("value is null"));
     }
 }

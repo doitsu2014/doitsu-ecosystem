@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using LanguageExt.ClassInstances.Const;
+using Shared.Abstraction.Models.Types;
 using Shared.Validations;
 using Xunit;
+using static LanguageExt.Prelude;
 
 namespace Tests.Shared
 {

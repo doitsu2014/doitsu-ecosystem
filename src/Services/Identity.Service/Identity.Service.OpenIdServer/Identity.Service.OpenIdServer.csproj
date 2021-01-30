@@ -63,6 +63,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Abstraction\Shared.Validations.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Extensions\Shared.Validations.csproj" />
     <ProjectReference Include="..\..\..\Shared\Shared.Validations\Shared.Validations.csproj" />
   </ItemGroup>
 
