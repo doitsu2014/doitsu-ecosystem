@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using Shared.Abstraction.Interfaces.Services;
 using Shared.Abstraction.Models;
-using Shared.Abstraction.Settings;
-using Shared.Extensions;
-using Shared.Validations;
-using static LanguageExt.Prelude;
 
 namespace Shared.Services
 {
