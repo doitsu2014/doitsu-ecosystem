@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
@@ -59,23 +60,34 @@ namespace Identity.Service.OpenIdServer.Controllers
                 .Match<IActionResult>(res => res
                         .Match<IActionResult>(data => Ok(_mapper.Map<OpenIddictApplicationViewModel>(data)),
                             _ => NotFound()),
-                    errors => BadRequest(errors.ComposeStrings(", ")));
+                    errors => BadRequest(errors.Join()));
         }
 
         [HttpPost("~/api/resource/application/{clientId}/permissions")]
         public async Task<IActionResult> PostPermission([FromRoute] string aid, [FromBody] (PermissionPrefixEnums prefix, string name) req)
         {
-
             var getExistApplicationById = fun(async (string appId) => await ShouldNotNullOrEmpty(appId)
                 .MatchAsync(async d => Optional(await _oidApplicationManager.FindByClientIdAsync(appId))
-                        .ToValidation<Error>($"application {d} does not exist."),
-                    errors => Fail<Error, OpenIddictEntityFrameworkCoreApplication>(errors.Join())));
+                        .ToValidation<Error>($"application {d} does not exist.")
+                        .Map(app => _mapper.Map<OpenIddictApplicationViewModel>(app)),
+                    errors => Fail<Error, OpenIddictApplicationViewModel>(errors.Join())));
+
+            var permValueMustUnique = fun((OpenIddictApplicationViewModel app, string permValue) =>
+                app.Permissions.Any(x => x == permValue)
+                    ? Fail<Error, (OpenIddictApplicationViewModel, string)>($"Permission {permValue} does exist in application")
+                    : Success<Error, (OpenIddictApplicationViewModel, string)>((app, permValue)));
 
             return (await getExistApplicationById(aid), ShouldNotNullOrEmpty(req.name), Success<Error, PermissionPrefixEnums>(req.prefix))
-                .Apply((application, permName, permPrefix) => (application, permValue: $"{permPrefix}{permName}"))
-                .Map(res => res.application)
+                .Apply((application, permName, permPrefix) => (app: application, permValue: $"{permPrefix}{permName}"))
+                .Bind(x => Validatex.Success)
+                .Match(res =>
+                {
+                    
+
+                }, errors => errors.Join())
+                .AsTask()
                 .ToActionResult();
-            
+
             // .Apply((applicationId, permName, permPrefix) => (applicationId, permValue: $"{permPrefix}{permName}"))
             // .ToEither();
             // .MatchAsync<IActionResult>(async t =>

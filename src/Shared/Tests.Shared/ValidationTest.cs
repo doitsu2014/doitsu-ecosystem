@@ -1,16 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using LanguageExt.ClassInstances.Const;
-using Shared.Abstraction.Models.Types;
+using LanguageExt;
 using Shared.Validations;
 using Xunit;
 using static LanguageExt.Prelude;
+using static Shared.Validations.StringValidator;
+using static Shared.Validations.GenericValidator;
 
 namespace Tests.Shared
 {
     public class ValidationTest
     {
+
         [Fact]
         public void TestListGenericValidator()
         {
@@ -20,10 +20,10 @@ namespace Tests.Shared
             object objectNull = null;
             var objectNotNull = (a: 1, b: 2);
 
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listData).IsSuccess);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyData).IsFail);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject).IsFail);
-            Assert.True(GenericValidator.ShouldNotNullOrEmpty(listEmptyObject).IsFail);
+            Assert.True(ShouldNotNullOrEmpty(listData).IsSuccess);
+            Assert.True(ShouldNotNullOrEmpty(listEmptyData).IsFail);
+            Assert.True(ShouldNotNullOrEmpty(listEmptyObject).IsFail);
+            Assert.True(ShouldNotNullOrEmpty(listEmptyObject).IsFail);
         }
 
         [Fact]
@@ -34,8 +34,8 @@ namespace Tests.Shared
             var str2 = "123";
             var str3 = "12345";
 
-            var case1 = StringValidator.MinStrLength(1);
-            var case2 = StringValidator.MaxStrLength(3);
+            var case1 = MinStrLength(1);
+            var case2 = MaxStrLength(3);
 
             Assert.True(case1(emptyStr).IsFail);
             Assert.True(case2(str3).IsFail);
