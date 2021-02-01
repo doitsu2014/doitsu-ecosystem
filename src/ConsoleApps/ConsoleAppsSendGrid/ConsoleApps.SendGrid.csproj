@@ -3,7 +3,6 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>Shared.ConsoleApp.SendGrid</RootNamespace>
         <UserSecretsId>24ba069d-2d51-4891-ae97-7de38e0bb641</UserSecretsId>
     </PropertyGroup>
 
@@ -46,9 +45,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shared.Abstraction\Shared.Abstraction.csproj" />
-        <ProjectReference Include="..\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj" />
-        <ProjectReference Include="..\Shared.Services\Shared.Services.csproj" />
+        <ProjectReference Include="..\..\Shared\Shared.Abstraction\Shared.Abstraction.csproj"/>
+        <ProjectReference Include="..\..\Shared\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj"/>
+        <ProjectReference Include="..\..\Shared\Shared.Services\Shared.Services.csproj"/>
     </ItemGroup>
-
+    
 </Project>

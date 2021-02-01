@@ -1,4 +1,4 @@
-﻿namespace Shared.ConsoleApp.ServiceAppMigration.Models
+﻿namespace ConsoleApps.ServiceAppMigration.Models
 {
     
     public class ReleaseInput

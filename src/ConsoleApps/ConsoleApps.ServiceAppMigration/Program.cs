@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.ConsoleApp.Extension;
 
-namespace Shared.ConsoleApp.ServiceAppMigration
+namespace ConsoleApps.ServiceAppMigration
 {
     public class Program
     {

@@ -13,7 +13,7 @@ using Shared.ConsoleApp.Extension;
 using Shared.Services;
 using static LanguageExt.Prelude;
 
-namespace Shared.ConsoleApp.Kafka
+namespace ConsoleApps.Kafka
 {
     public class Program
     {

@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj" />
+      <ProjectReference Include="..\..\Shared\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj" />
     </ItemGroup>
 
     <ItemGroup>

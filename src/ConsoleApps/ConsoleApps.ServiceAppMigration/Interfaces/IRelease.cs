@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Shared.ConsoleApp.ServiceAppMigration.Interfaces
+namespace ConsoleApps.ServiceAppMigration.Interfaces
 {
     public interface IRelease
     {
