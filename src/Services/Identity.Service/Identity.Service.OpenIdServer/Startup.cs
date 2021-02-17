@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Custom;
@@ -16,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
 using Quartz;
@@ -127,7 +129,9 @@ namespace Identity.Service.OpenIdServer
                         ScopeNameConstants.ScopeBlogPostWrite,
                         ScopeNameConstants.ScopeBlogPostRead,
                         ScopeNameConstants.ScopeImageServerRead,
-                        ScopeNameConstants.ScopeImageServerWrite);
+                        ScopeNameConstants.ScopeImageServerWrite,
+                        ScopeNameConstants.ScopeIdentityServerAllServices,
+                        ScopeNameConstants.ScopeIdentityServerUserInfo);
 
                     if (Environment.IsDevelopment())
                     {

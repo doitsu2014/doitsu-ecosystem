@@ -12,13 +12,13 @@ namespace Shared.Extensions
                 Succ: t => new OkObjectResult(t),
                 Fail: e => new BadRequestObjectResult(e));
 
-        public static Task<IActionResult> ToActionResult<T>(this Task<Validation<Error, T>> validation) =>
+        public static Task<IActionResult> ToActionResultAsync<T>(this Task<Validation<Error, T>> validation) =>
             validation.Map(ToActionResult);
 
-        public static Task<IActionResult> ToActionResult(this Task<Validation<Error, Task>> validation) =>
-            validation.Bind(ToActionResult);
+        public static Task<IActionResult> ToActionResultAsync(this Task<Validation<Error, Task>> validation) =>
+            validation.Bind(ToActionResultAsync);
         
-        private static Task<IActionResult> ToActionResult(Validation<Error, Task> validation) =>
+        private static Task<IActionResult> ToActionResultAsync(Validation<Error, Task> validation) =>
             validation.MatchAsync<IActionResult>(
                 SuccAsync: async t => { await t; return new OkResult(); },
                 Fail: e => new BadRequestObjectResult(e));

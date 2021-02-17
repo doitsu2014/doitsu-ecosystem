@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Identity.Service.OpenIdServer.Constants;
 
 namespace Identity.Service.OpenIdServer.ViewModels.Resource
 {
@@ -22,5 +23,11 @@ namespace Identity.Service.OpenIdServer.ViewModels.Resource
         public HashSet<string> Requirements { get; set; }
         public Dictionary<string, JsonElement> Properties { get; set; }
         public string Type { get; set; }
+    }
+
+    public class EditApplicationPermissionViewModel
+    {
+        public PermissionPrefixEnums Prefix { get; set; }
+        public string Name { get; set; }
     }
 }
