@@ -7,10 +7,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj Identity.Service.OpenIdServer/
-RUN dotnet restore "Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj"
+COPY Shared/Shared.Abstraction/Shared.Abstraction.csproj Shared/Shared.Abstraction/
+COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
+COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
+COPY Shared/Shared.Services/Shared.Services.csproj Shared/Shared.Services/
+COPY Shared/Shared.Validations/Shared.Validations.csproj Shared/Shared.Validations/
+
+COPY Services/Identity.Service/Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj Services/Identity.Service/Identity.Service.OpenIdServer/
+RUN dotnet restore "Services/Identity.Service/Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj"
 COPY . .
-WORKDIR "/src/Identity.Service.OpenIdServer"
+WORKDIR "/src/Services/Identity.Service/Identity.Service.OpenIdServer"
+RUN dotnet restore "Identity.Service.OpenIdServer.csproj"
 RUN dotnet build "Identity.Service.OpenIdServer.csproj" -c Release -o /app/build
 
 FROM build AS publish

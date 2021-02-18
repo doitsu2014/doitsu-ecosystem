@@ -4,6 +4,6 @@ services:
   identity-server:
     image: doitsu2014/identity-service:latest
     build:
-      context: .
-      dockerfile: Identity.Service.OpenIdServer/Dockerfile
+      context: ../../
+      dockerfile: Services/Identity.Service/Identity.Service.OpenIdServer/Dockerfile
 
