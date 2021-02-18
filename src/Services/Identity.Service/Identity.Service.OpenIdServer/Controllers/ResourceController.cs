@@ -80,6 +80,7 @@ namespace Identity.Service.OpenIdServer.Controllers
                 {
                     return Fail<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>($"Permission {permValue} does exist in application");
                 }
+
                 listPermissions.Add(permValue);
                 return Success<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>((app, JsonConvert.SerializeObject(listPermissions)));
             });
@@ -96,43 +97,51 @@ namespace Identity.Service.OpenIdServer.Controllers
                 .ToActionResultAsync();
         }
 
-        // [HttpDelete("~/api/resource/application/{aid}/permissions")]
-        // public async Task<IActionResult> DeletePermission([FromRoute] string aid, [FromBody] EditApplicationPermissionViewModel req)
-        // {
-        //     var permValueMustExisted = fun((OpenIddictApplicationViewModel app, string permValue) =>
-        //         app.Permissions.All(x => x != permValue)
-        //             ? Fail<Error, (OpenIddictApplicationViewModel app, string permValue)>($"Permission {permValue} does not exist in application")
-        //             : Success<Error, (OpenIddictApplicationViewModel app, string permValue)>((app, permValue)));
-        //
-        //     return await (await GetExistApplicationById(aid), ShouldNotNullOrEmpty(req.Name), Success<Error, PermissionPrefixEnums>(req.Prefix))
-        //         .Apply((application, permName, permPrefix) => (app: application, permValue: $"{permPrefix}{permName}"))
-        //         .Bind(x => permValueMustExisted(x.app, x.permValue))
-        //         .MatchAsync(async res =>
-        //         {
-        //             res.app.Permissions.Remove(res.permValue);
-        //             var updateData = _mapper.Map<OpenIddictEntityFrameworkCoreApplication>(res.app);
-        //             await _oidApplicationManager.DeleteAsync(updateData);
-        //             return Success<Error, string>($"Removed {res.permValue} permission from application {res.app.DisplayName}");
-        //         }, errors => Fail<Error, string>(errors.Join()))
-        //         .ToActionResultAsync();
-        // }
+        [HttpDelete("~/api/resource/application/{aid}/permissions")]
+        public async Task<IActionResult> DeletePermission([FromRoute] string aid, [FromBody] EditApplicationPermissionViewModel req)
+        {
+            var permValueMustExisted = fun((OpenIddictEntityFrameworkCoreApplication app, string permValue) =>
+            {
+                var listPermissions = JsonConvert.DeserializeObject<System.Collections.Generic.HashSet<string>>(app.Permissions);
+                if (listPermissions.Any(x => x == permValue))
+                {
+                    listPermissions.Remove(permValue);
+                    return Success<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>((app, JsonConvert.SerializeObject(listPermissions)));
+                }
+
+                return Fail<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>($"Permission {permValue} does not exist in application");
+            });
+
+            return await (await GetExistApplicationById(aid), ShouldNotNullOrEmpty(req.Name), Functions.GetPermissionPrefix(req.Prefix))
+                .Apply((application, permName, permPrefix) => (app: application, permValue: $"{permPrefix}{permName}"))
+                .Bind(x => permValueMustExisted(x.app, x.permValue))
+                .MatchAsync(async res =>
+                {
+                    res.application.Permissions = res.availListP;
+                    await _oidApplicationManager.UpdateAsync(res.application);
+                    return Success<Error, string>($"Did modify new value {res.availListP} to permission field of application {res.application.DisplayName}");
+                }, errors => Fail<Error, string>(errors.Join()))
+                .ToActionResultAsync();
+        }
 
         [HttpPost("~/api/resource/application")]
         public async Task<IActionResult> PostApplication([FromBody] OpenIddictApplicationDescriptor descriptor)
         {
-            var result = await _oidApplicationManager.CreateAsync(descriptor);
-            return Ok(result);
+            return await (await _oidApplicationManager.FindByClientIdAsync(descriptor.ClientId) == null
+                    ? Success<Error, OpenIddictApplicationDescriptor>(descriptor)
+                    : Fail<Error, OpenIddictApplicationDescriptor>($"Application {descriptor.ClientId} does exist"))
+                .MatchAsync(async req => { return Success<Error, OpenIddictEntityFrameworkCoreApplication>(await _oidApplicationManager.CreateAsync(req)); }, errors => Fail<Error, OpenIddictEntityFrameworkCoreApplication>(errors.Join()))
+                .ToActionResultAsync();
         }
 
         [HttpDelete("~/api/resource/application/{appId}")]
-        public async Task<IActionResult> PostApplication([FromRoute] string appId)
+        public async Task<IActionResult> DeleteApplication([FromRoute] string appId)
         {
             return await (await GetExistApplicationById(appId))
                 .MatchAsync(async res =>
                 {
-                    var updateData = _mapper.Map<OpenIddictEntityFrameworkCoreApplication>(res);
-                    await _oidApplicationManager.DeleteAsync(updateData);
-                    return Success<Error, string>($"Removed application {updateData.DisplayName}");
+                    await _oidApplicationManager.DeleteAsync(res);
+                    return Success<Error, string>($"Removed application {res.DisplayName}");
                 }, errors => Fail<Error, string>(errors.Join()))
                 .ToActionResultAsync();
         }
