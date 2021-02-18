@@ -4,6 +4,6 @@ services:
   image-resource-service:
     image: doitsu2014/image-resource-service:latest
     build:
-      context: .
-      dockerfile: Storage.Service.ImageResource/Dockerfile
+      context: ../../
+      dockerfile: Services/Storage.Service/Storage.Service.ImageResource/Dockerfile
 
