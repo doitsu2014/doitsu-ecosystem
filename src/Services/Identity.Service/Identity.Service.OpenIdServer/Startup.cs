@@ -3,19 +3,23 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Custom;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
 using Identity.Service.OpenIdServer.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
 using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
@@ -34,7 +38,8 @@ namespace Identity.Service.OpenIdServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -124,7 +129,9 @@ namespace Identity.Service.OpenIdServer
                         ScopeNameConstants.ScopeBlogPostWrite,
                         ScopeNameConstants.ScopeBlogPostRead,
                         ScopeNameConstants.ScopeImageServerRead,
-                        ScopeNameConstants.ScopeImageServerWrite);
+                        ScopeNameConstants.ScopeImageServerWrite,
+                        ScopeNameConstants.ScopeIdentityServerAllServices,
+                        ScopeNameConstants.ScopeIdentityServerUserInfo);
 
                     if (Environment.IsDevelopment())
                     {
@@ -187,14 +194,11 @@ namespace Identity.Service.OpenIdServer
                     // Configure the audience accepted by this resource server.
                     // The value MUST match the audience associated with the
                     // "demo_api" scope, which is used by ResourceController.
-                    options.AddAudiences("resource_server");
-
+                    options.AddAudiences(ResourceNameConstants.ResourceIdentityServer);
                     // Import the configuration from the local OpenIddict server instance.
                     options.UseLocalServer();
-
                     // Register the ASP.NET Core host.
                     options.UseAspNetCore();
-
                     // For applications that need immediate access token or authorization
                     // revocation, the database entry of the received tokens and their
                     // associated authorizations can be validated for each API call.
@@ -217,6 +221,36 @@ namespace Identity.Service.OpenIdServer
                     options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(OidcConstants.PolicyIdentityResourceAll,
+                    b =>
+                    {
+                        b.AuthenticationSchemes = new string[]
+                            {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+
+                        b.RequireRole(IdentityRoleConstants.Admin);
+                        b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
+                        {
+                            ScopeNameConstants.ScopeIdentityServerAllServices
+                        });
+                    });
+
+                options.AddPolicy(OidcConstants.PolicyIdentityResourceUserInfo,
+                    b =>
+                    {
+                        b.AuthenticationSchemes = new string[]
+                            {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+
+                        b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
+                        {
+                            ScopeNameConstants.ScopeIdentityServerUserInfo
+                        });
+                    });
+            });
+
+            services.AddAutoMapper(typeof(MapperProfile));
+
             if (IsCluster())
             {
                 services.Configure<ForwardedHeadersOptions>(options =>
@@ -224,6 +258,7 @@ namespace Identity.Service.OpenIdServer
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 });
             }
+            
         }
 
         public void Configure(IApplicationBuilder app)

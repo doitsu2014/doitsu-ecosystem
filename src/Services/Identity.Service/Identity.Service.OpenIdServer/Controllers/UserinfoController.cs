@@ -21,7 +21,7 @@ namespace Identity.Service.OpenIdServer.Controllers
 
         //
         // GET: /api/userinfo
-        [Authorize(AuthenticationSchemes = OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)]
+        [Authorize(Policy = Constants.OidcConstants.PolicyIdentityResourceUserInfo)]
         [HttpGet("~/connect/userinfo"), HttpPost("~/connect/userinfo"), Produces("application/json")]
         public async Task<IActionResult> Userinfo()
         {

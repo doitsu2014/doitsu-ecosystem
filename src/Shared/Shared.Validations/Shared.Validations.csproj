@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shared.Abstraction\Shared.Abstraction.csproj" />
+      <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
+      <ProjectReference Include="..\Shared.ConsoleApp.Extension\Shared.ConsoleApp.Extension.csproj" />
+    </ItemGroup>
+
+</Project>

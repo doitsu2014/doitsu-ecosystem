@@ -99,7 +99,8 @@ namespace Identity.Service.OpenIdServer
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}",
                     }
                 });
 
@@ -130,7 +131,45 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Scopes.Roles,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}"
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerUserInfo}"
+                    },
+                    Requirements =
+                    {
+                        Requirements.Features.ProofKeyForCodeExchange
+                    }
+                });
+
+            await funcCreateClientAsync(applicationSection["AdministratorAngularClient:ClientId"],
+                "client.administrator.angular",
+                new OpenIddictApplicationDescriptor
+                {
+                    ConsentType = ConsentTypes.Explicit,
+                    Type = ClientTypes.Public,
+                    PostLogoutRedirectUris =
+                    {
+                        new Uri(
+                            $"{applicationSection["AdministratorAngularClient:Uri"]}/authentication/logout-callback")
+                    },
+                    RedirectUris =
+                    {
+                        new Uri($"{applicationSection["AdministratorAngularClient:Uri"]}/authentication/login-callback")
+                    },
+                    Permissions =
+                    {
+                        Permissions.Endpoints.Authorization,
+                        Permissions.Endpoints.Logout,
+                        Permissions.Endpoints.Token,
+                        Permissions.GrantTypes.AuthorizationCode,
+                        Permissions.GrantTypes.RefreshToken,
+                        Permissions.ResponseTypes.Code,
+                        Permissions.Scopes.Email,
+                        Permissions.Scopes.Profile,
+                        Permissions.Scopes.Roles,
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}"
                     },
                     Requirements =
                     {
@@ -186,13 +225,31 @@ namespace Identity.Service.OpenIdServer
                         ResourceNameConstants.ResourceImageServer
                     }
                 });
-            
+
             await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeImageServerWrite,
                 new OpenIddictScopeDescriptor()
                 {
                     Resources =
                     {
                         ResourceNameConstants.ResourceImageServer
+                    }
+                });
+
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeIdentityServerAllServices,
+                new OpenIddictScopeDescriptor()
+                {
+                    Resources =
+                    {
+                        ResourceNameConstants.ResourceIdentityServer
+                    }
+                });
+
+            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeIdentityServerUserInfo,
+                new OpenIddictScopeDescriptor()
+                {
+                    Resources =
+                    {
+                        ResourceNameConstants.ResourceIdentityServer
                     }
                 });
         }
