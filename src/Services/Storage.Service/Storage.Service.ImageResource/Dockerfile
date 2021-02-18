@@ -17,7 +17,7 @@ COPY Shared/Shared.Validations/Shared.Validations.csproj Shared/Shared.Validatio
 COPY Services/Storage.Service/Storage.Service.ApplicationCore/Storage.Service.ApplicationCore.csproj Services/Storage.Service/Storage.Service.ApplicationCore/
 RUN dotnet restore "Services/Storage.Service/Storage.Service.ApplicationCore/Storage.Service.ApplicationCore.csproj"
 
-COPY Services/Storage.Service/Storage.Service.ImageResource/Storage.Service.ImageResource.csproj Storage.Service.ImageResource/
+COPY Services/Storage.Service/Storage.Service.ImageResource/Storage.Service.ImageResource.csproj Services/Storage.Service/Storage.Service.ImageResource/
 RUN dotnet restore "Services/Storage.Service/Storage.Service.ImageResource/Storage.Service.ImageResource.csproj"
 
 COPY . .
