@@ -1,0 +1,14 @@
+1,"using FileConversion.Abstraction.Model.StandardV2;using FileConversion.Core.Interface;using Optional;using System.Collections.Generic;using System.Linq;namespace FileConversion.Core.BeanMappers.DynamicBeanMappers
+{public class DynamicInvoiceMapper:IBeanMapper
+{public Option<IEnumerable<object>,string>Map(IEnumerable<object>data)
+{return data.SomeNotNull().WithException('"Data is null'").Map(d=>d.Cast<Invoice>()).Map(d=>d.GroupBy(x=>new{x.VendorPaymentAmount,x.VendorPaymentDate,x.VendorPaymentNumber,x.VendorPaymentVendorId}).Select(x=>{return new VendorPayment()
+{Amount=x.Key.VendorPaymentAmount,VendorId=x.Key.VendorPaymentVendorId,Number=x.Key.VendorPaymentNumber,Date=x.Key.VendorPaymentDate,Invoices=x.ToList()};}).Cast<object>());}
+public object[]Map(object[]data)
+{throw new System.NotImplementedException();}}}"
+2,"using FileConversion.Abstraction.Model.StandardV2;using FileConversion.Core.Interface;using Optional;using System.Collections.Generic;using System.Linq;using System.Text.RegularExpressions;namespace FileConversion.Core.BeanMappers.DynamicBeanMappers
+{public class DynamicAccentWiredVendorPayment:IBeanMapper
+{public Option<IEnumerable<object>,string>Map(IEnumerable<object>data)
+{return data.SomeNotNull().WithException('"Data is null'").Map(d=>d.Cast<VendorPayment>()).Map(d=>d.Select(x=>{x.Address=new Address()
+{Line1=x.AddressLine1,Line2=x.AddressLine2,Line3=x.AddressLine3,City=x.AddressCity,Country=x.AddressCountry,StateProvince=x.AddressStateProvince,ZipCode=Regex.Match(x.AddressZipCode,'"[0-9]{5}(?:-[0-9]{4})?'").Value,};return x;}).Cast<object>());}
+public object[]Map(object[]data)
+{throw new System.NotImplementedException();}}}"
