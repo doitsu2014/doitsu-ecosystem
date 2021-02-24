@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
     
   <ItemGroup>
-    <PackageReference Include="ACOMSaaS.NetCore.EFCore.Abstractions" Version="1.2.14" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Abstraction\Shared.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.EntityFrameworkCore\Shared.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 </Project>

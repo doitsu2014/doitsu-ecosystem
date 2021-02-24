@@ -1,14 +1,10 @@
-﻿using ACOMSaaS.NetCore.EFCore.Abstractions.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
+using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Abstraction.Model
 {
-    public class OutputMapping : Entity
+    public class OutputMapping : Entity<InputType>
     {
-        public InputType Key { get; set; }
         public string XmlConfiguration { get; set; }
         [DefaultValue(0)]
         public int NumberOfHeader { get; set; }

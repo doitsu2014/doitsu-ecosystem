@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
-using ACOMSaaS.NetCore.EFCore.Abstractions.EntityConfiguration;
+using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Data.EntityConfigurations
 {
-    class OutputMappingConfiguration : BaseConfiguration<OutputMapping>
+    class OutputMappingConfiguration : BaseEntityConfiguration<OutputMapping, InputType>
     {
-        public override Expression<Func<OutputMapping, object>> KeyExpression => x => new { x.Key };
-
         public override void Configure(EntityTypeBuilder<OutputMapping> builder)
         {
             base.Configure(builder);

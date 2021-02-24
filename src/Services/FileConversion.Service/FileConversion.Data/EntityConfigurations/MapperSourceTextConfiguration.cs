@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using ACOMSaaS.NetCore.EFCore.Abstractions.EntityConfiguration;
 using FileConversion.Abstraction.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Data.EntityConfigurations
 {
-    public class MapperSourceTextConfiguration : BaseConfiguration<MapperSourceText>
+    public class MapperSourceTextConfiguration : BaseEntityConfiguration<MapperSourceText, Guid>
     {
-        public override Expression<Func<MapperSourceText, object>> KeyExpression => x => x.Id;
-
         public override void Configure(EntityTypeBuilder<MapperSourceText> builder)
         {
             base.Configure(builder);

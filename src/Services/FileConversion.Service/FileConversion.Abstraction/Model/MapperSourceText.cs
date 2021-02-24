@@ -1,11 +1,10 @@
-﻿using ACOMSaaS.NetCore.EFCore.Abstractions.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Abstraction.Model
 {
-    public class MapperSourceText : Entity<int>
+    public class MapperSourceText : Entity<Guid>
     {
         public string SourceText { get; set; }
 
