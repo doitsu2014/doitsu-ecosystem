@@ -6,15 +6,16 @@ using Shared.Abstraction.Interfaces.Entities;
 
 namespace Shared.EntityFrameworkCore
 {
-    public abstract class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfiguration<TEntity> 
-        where TEntity : Entity<TKey>
+    public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> 
+        where TEntity : class
     {
         private const string DefaultSchema = "dbo";
         public virtual string Schema => DefaultSchema;
+        public abstract Expression<Func<TEntity, object>> KeyExpression { get; }
 
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(KeyExpression);
 
             if (Schema != "dbo")
             {

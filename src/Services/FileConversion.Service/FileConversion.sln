@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileConversion.Abstraction"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileConversion.Api", "FileConversion.Api\FileConversion.Api.csproj", "{F93DAB2C-3F27-4F0C-A8D5-DA8F3755CD9E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileConversion.Data", "FileConversion.Data\FileConversion.Data.csproj", "{ECD539CB-719C-404F-899E-411DDF5E4975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileConversion.Infrastructure", "FileConversion.Infrastructure\FileConversion.Infrastructure.csproj", "{ECD539CB-719C-404F-899E-411DDF5E4975}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticFiles", "StaticFiles", "{BDD063F7-7949-4D46-B199-71E64A44DFFA}"
 	ProjectSection(SolutionItems) = preProject

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -10,14 +11,14 @@ using Shared.EntityFrameworkCore.Interfaces;
 
 namespace Shared.EntityFrameworkCore
 {
-    public class BaseRepository<TDbContext, TEntity, TKey> : IBaseRepository<TEntity, TKey>
-        where TEntity : Entity<TKey>
+    public abstract class BaseRepository<TDbContext, TEntity> : IBaseRepository<TEntity>
+        where TEntity : class
         where TDbContext : DbContext
     {
-        private readonly ILogger<BaseRepository<TDbContext, TEntity, TKey>> _logger;
+        private readonly ILogger<BaseRepository<TDbContext, TEntity>> _logger;
         private readonly TDbContext _context;
 
-        public BaseRepository(ILogger<BaseRepository<TDbContext, TEntity, TKey>> logger,
+        public BaseRepository(ILogger<BaseRepository<TDbContext, TEntity>> logger,
             TDbContext context)
         {
             _logger = logger;
@@ -42,23 +43,33 @@ namespace Shared.EntityFrameworkCore
                 .ToImmutableList();
         }
 
-        public async Task<Option<TEntity>> Get(TKey key, CancellationToken token = default)
+        public async Task<Option<TEntity>> GetAsync<TKey>(TKey key, CancellationToken token = default)
         {
             return await _context.Set<TEntity>().FindAsync(key, token);
         }
 
-        public async Task<TKey> AddAsync(TEntity data, CancellationToken token = default)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken token = default)
+        {
+            return await _context.Set<TEntity>().AnyAsync(expression);
+        }
+
+        public async Task<Option<TEntity>> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression, CancellationToken token = default)
+        {
+            return await _context.Set<TEntity>().SingleOrDefaultAsync(expression, token);
+        }
+
+        public async Task<Unit> AddAsync(TEntity data, CancellationToken token = default)
         {
             await _context.Set<TEntity>().AddAsync(data, token);
             await _context.SaveChangesAsync();
-            return data.Id;
+            return Unit.Default;
         }
 
-        public async Task<TKey[]> AddRangeAsync(TEntity[] data, CancellationToken token = default)
+        public async Task<Unit> AddRangeAsync(TEntity[] data, CancellationToken token = default)
         {
             await _context.Set<TEntity>().AddRangeAsync(data, token);
             await _context.SaveChangesAsync(token);
-            return data.Select(x => x.Id).ToArray();
+            return Unit.Default;
         }
 
         public Task<Unit> UpdateAsync(TEntity data, CancellationToken token = default)
@@ -75,7 +86,7 @@ namespace Shared.EntityFrameworkCore
                 .Map(_ => Unit.Default);
         }
 
-        public async Task<Unit> DeleteAsync(TKey data, CancellationToken token = default)
+        public async Task<Unit> DeleteAsync<TKey>(TKey data, CancellationToken token = default)
         {
             var entity = await _context.Set<TEntity>().FindAsync(data, token);
             _context.Set<TEntity>().Remove(entity);
@@ -84,7 +95,7 @@ namespace Shared.EntityFrameworkCore
                 .Map(_ => Unit.Default);
         }
 
-        public async Task<Unit> DeleteRangeAsync(TKey[] data, CancellationToken token = default)
+        public async Task<Unit> DeleteRangeAsync<TKey>(TKey[] data, CancellationToken token = default)
         {
             foreach (var key in data)
             {

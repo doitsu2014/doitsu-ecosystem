@@ -1,12 +1,13 @@
 ﻿using FileConversion.Abstraction.Model.StandardV2;
 using FileConversion.Core.Interface.Parsers;
-using Optional;
 using System.Threading.Tasks;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
 
 namespace FileConversion.Core.Interface
 {
     public interface IParserFactory
     {
-        Task<Option<IParser<T>, string>> GetParserAsync<T>(string key) where T : IStandardModel;
+        Task<Validation<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel;
     }
 }

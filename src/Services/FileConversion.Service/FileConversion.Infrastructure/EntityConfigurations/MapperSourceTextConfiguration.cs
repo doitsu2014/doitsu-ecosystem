@@ -4,10 +4,12 @@ using FileConversion.Abstraction.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.EntityFrameworkCore;
 
-namespace FileConversion.Data.EntityConfigurations
+namespace FileConversion.Infrastructure.EntityConfigurations
 {
-    public class MapperSourceTextConfiguration : BaseEntityConfiguration<MapperSourceText, Guid>
+    public class MapperSourceTextConfiguration : BaseEntityConfiguration<MapperSourceText>
     {
+        public override Expression<Func<MapperSourceText, object>> KeyExpression => d => d.Id;
+
         public override void Configure(EntityTypeBuilder<MapperSourceText> builder)
         {
             base.Configure(builder);

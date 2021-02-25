@@ -1,13 +1,12 @@
-﻿using FileConversion.Abstraction;
-using FileConversion.Abstraction.Model;
-using Optional;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Threading.Tasks;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
 
 namespace FileConversion.Core.Interface
 {
     public interface IExportService
     {
-        Task<Option<byte[], string>> ExportAsync(string inputType, ImmutableList<object> data);
+        Task<Validation<Error, byte[]>> ExportAsync(string inputType, ImmutableList<object> data);
     }
 }

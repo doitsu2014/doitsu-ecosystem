@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
-using FileConversion.Data;
-using FileConversion.Data.Services;
+using FileConversion.Infrastructure;
+using FileConversion.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

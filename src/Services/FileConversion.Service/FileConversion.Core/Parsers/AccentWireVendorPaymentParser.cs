@@ -2,13 +2,13 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
-using ACOMSaaS.NetCore.Abstractions.Parser;
 using FileConversion.Abstraction.Model.StandardV2;
 using FileConversion.Core.Interface.Parsers;
-using Optional;
-using Optional.Linq;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
 using Superpower;
 using Superpower.Parsers;
+using static LanguageExt.Prelude;
 
 namespace FileConversion.Core.Parsers
 {
@@ -16,21 +16,21 @@ namespace FileConversion.Core.Parsers
     {
         public string Key => "accent.wire.custom";
 
-        public Option<ImmutableList<VendorPayment>, string> Parse(byte[] content)
+        public Validation<Error, ImmutableList<VendorPayment>> Parse(byte[] content)
         {
             var stringContent = Encoding.UTF8.GetString(content);
             var result = AccentWireSpParser.VendorPaymentParser
                 .AtLeastOnceDelimitedBy(Common.NewLine.Repeat(3))
                 .TryParse(stringContent);
-            return result.HasValue ?
-                Option.Some<ImmutableList<VendorPayment>, string>(result.Value.ToImmutableList()) :
-                Option.None<ImmutableList<VendorPayment>, string>(
+            return result.HasValue
+                ? Success<Error, ImmutableList<VendorPayment>>(result.Value.ToImmutableList())
+                : Fail<Error, ImmutableList<VendorPayment>>(
                     result.ToString().Replace("\r", "\\r").Replace("\n", "\\n"));
         }
 
         private class AccentWireSpParser
         {
-            private static char[] digits = Enumerable.Range(0, 10).Select(i => (char)('0' + i)).ToArray();
+            private static char[] digits = Enumerable.Range(0, 10).Select(i => (char) ('0' + i)).ToArray();
 
             private static TextParser<char> BackSlash { get; } = Character.EqualTo('/');
 

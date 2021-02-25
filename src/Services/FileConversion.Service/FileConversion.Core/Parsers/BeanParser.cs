@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ACOMSaaS.NetCore.Abstractions;
 using BeanIO;
 using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
@@ -11,7 +10,10 @@ using FileConversion.Abstraction.Model.StandardV2;
 using FileConversion.Core.Interface;
 using FileConversion.Core.Interface.Parsers;
 using FileConversion.Core.Services;
-using Optional;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
+using static LanguageExt.Prelude;
+using static Shared.Validations.GenericValidator;
 
 namespace FileConversion.Core.Parsers
 {
@@ -22,7 +24,8 @@ namespace FileConversion.Core.Parsers
         private readonly IBeanMapper _beanMapper;
         private readonly MapperSourceText _mapperSrcText;
 
-        public BeanParser(string xmlConfiguration, ITransformer fileLoaderService, IBeanMapper beanMapper, MapperSourceText mapperSrcText)
+        public BeanParser(string xmlConfiguration, ITransformer fileLoaderService, IBeanMapper beanMapper,
+            MapperSourceText mapperSrcText)
         {
             _xmlConfiguration = xmlConfiguration;
             _fileLoaderService = fileLoaderService;
@@ -30,35 +33,35 @@ namespace FileConversion.Core.Parsers
             _mapperSrcText = mapperSrcText;
         }
 
-        private Option<ImmutableList<T>, string> CastToExpectedType(IEnumerable<object> src)
+        private Validation<Error, ImmutableList<T>> CastToExpectedType(IEnumerable<object> src)
         {
             if (!src.All(mE => mE.GetType() == typeof(T)))
             {
                 var firstEle = src.FirstOrDefault();
                 var expectedType = firstEle != null ? firstEle.GetType().ToString() : "null";
-                return Option
-                     .None<ImmutableList<T>, string>($"{typeof(T).GetType().ToString()} expected, but got {expectedType}.");
+                return Fail<Error, ImmutableList<T>>(
+                    $"{typeof(T).GetType().ToString()} expected, but got {expectedType}.");
             }
+
             var casted = src.Cast<T>().ToImmutableList();
-            return Option.Some<ImmutableList<T>, string>(casted);
+            return Success<Error, ImmutableList<T>>(casted);
         }
 
-        public Option<ImmutableList<T>, string> Parse(byte[] content)
+        public Validation<Error, ImmutableList<T>> Parse(byte[] content)
         {
-            return content
-                .SomeNotNull()
-                .WithException("Content is null")
-                .FlatMap(c =>
+            return ShouldNotNullOrEmpty(content)
+                .Match(c =>
                 {
                     if (_fileLoaderService != null)
                         content = _fileLoaderService.Transform(content);
 
-                    using (var xmlConfigStream = new MemoryStream(_xmlConfiguration.Map(Encoding.UTF8.GetBytes)))
+                    using (var xmlConfigStream = new MemoryStream(Encoding.UTF8.GetBytes(_xmlConfiguration)))
                     using (var contentStream = new MemoryStream(content))
                     {
                         var factory = StreamFactory.NewInstance();
                         factory.Load(xmlConfigStream);
-                        var reader = factory.CreateReader(Constants.DefaultImportStream, new StreamReader(contentStream));
+                        var reader = factory.CreateReader(Constants.DefaultImportStream,
+                            new StreamReader(contentStream));
                         var listResult = new List<object>();
                         object record = null;
 
@@ -71,22 +74,22 @@ namespace FileConversion.Core.Parsers
                         if (_beanMapper != null)
                         {
                             return _beanMapper
-                               .Map(listResult.Cast<object>())
-                               .FlatMap(m => CastToExpectedType(m));
+                                .Map(listResult.Cast<object>())
+                                .Match(m => CastToExpectedType(m), errors => errors.Join());
                         }
                         else if (_mapperSrcText != null && _mapperSrcText.SourceText.IsNotNullOrEmpty())
                         {
                             var dynamicMapperService = new DynamicBeanMapperService();
                             return dynamicMapperService
                                 .MapFromSource(listResult.Cast<object>(), _mapperSrcText.SourceText)
-                                .FlatMap(m => CastToExpectedType(m));
+                                .Match(m => CastToExpectedType(m), errors => errors.Join());
                         }
                         else
                         {
-                            return Option.Some<ImmutableList<T>, string>(listResult.Cast<T>().ToImmutableList());
+                            return Success<Error, ImmutableList<T>>(listResult.Cast<T>().ToImmutableList());
                         }
                     }
-                });
+                }, errors => errors.Join());
         }
     }
 }

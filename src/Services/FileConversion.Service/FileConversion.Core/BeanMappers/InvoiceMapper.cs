@@ -1,26 +1,27 @@
 ﻿using FileConversion.Abstraction.Model.StandardV2;
 using FileConversion.Core.Interface;
-using Optional;
 using System.Collections.Generic;
+using LanguageExt;
 using System.Linq;
+using Shared.Abstraction.Models.Types;
+using static Shared.Validations.GenericValidator;
 
 namespace FileConversion.Core.BeanMappers
 {
     public class InvoiceMapper : IBeanMapper
     {
-        public Option<IEnumerable<object>, string> Map(IEnumerable<object> data)
+        public Validation<Error, IEnumerable<object>> Map(IEnumerable<object> data)
         {
-            return data.SomeNotNull().WithException("Data is null")
-                .Map(d => d.Cast<Invoice>())
-                .Map(d => d.GroupBy(x => new { x.VendorPayment.VendorId, x.VendorPayment.Number })
-                    .Select(x =>
+            return ShouldNotNull(data)
+                .Map(d => d.Cast<Invoice>()
+                    .GroupBy(d => new {d.VendorPayment.VendorId, d.VendorPayment.Number})
+                    .Select(g =>
                     {
-                        var vendorPayment = x.FirstOrDefault().VendorPayment;
-                        vendorPayment.Invoices = x.ToList();
+                        var vendorPayment = g.FirstOrDefault().VendorPayment;
+                        vendorPayment.Invoices = g.ToList();
                         return vendorPayment;
                     })
-                    .Cast<object>()
-                );
+                    .Cast<object>());
         }
     }
 }

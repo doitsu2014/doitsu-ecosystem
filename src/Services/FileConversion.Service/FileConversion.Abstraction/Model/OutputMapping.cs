@@ -3,8 +3,9 @@ using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Abstraction.Model
 {
-    public class OutputMapping : Entity<InputType>
+    public class OutputMapping
     {
+        public InputType Id { get; set; }
         public string XmlConfiguration { get; set; }
         [DefaultValue(0)]
         public int NumberOfHeader { get; set; }

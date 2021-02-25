@@ -3,7 +3,7 @@ using FileConversion.Abstraction;
 using FileConversion.Api.ModelBinders;
 using FileConversion.Api.Models;
 using FileConversion.Core;
-using FileConversion.Data.Services;
+using FileConversion.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,7 +80,7 @@ namespace FileConversion.Api
                 .AddDataAnnotations();
 
             #region DI Services 
-            services.AddScoped(typeof(IFileConversionEntityService<>), typeof(FileConversionEntityService<>));
+            services.AddScoped(typeof(IFileConversionEntityService<>), typeof(FileConversionRepository<>));
             services.RegisterDefaultParserDependencies();
             #endregion
 

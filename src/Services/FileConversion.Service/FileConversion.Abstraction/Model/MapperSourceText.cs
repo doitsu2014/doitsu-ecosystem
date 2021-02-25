@@ -4,10 +4,10 @@ using Shared.EntityFrameworkCore;
 
 namespace FileConversion.Abstraction.Model
 {
-    public class MapperSourceText : Entity<Guid>
+    public class MapperSourceText
     {
+        public int Id { get; set; }
         public string SourceText { get; set; }
-
         public virtual ICollection<InputMapping> InputMappings { get; set; }
     }
 }

@@ -7,13 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ACOMSaaS.NetCore.Abstractions" Version="1.2.0" />
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
@@ -30,9 +24,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FileConversion.Abstraction\FileConversion.Abstraction.csproj" />
-    <ProjectReference Include="..\FileConversion.Data\FileConversion.Data.csproj" />
     <ProjectReference Include="..\FileConversion.Core.Interface\FileConversion.Core.Interface.csproj" />
     <ProjectReference Include="..\FileConversion.Core\FileConversion.Core.csproj" />
+    <ProjectReference Include="..\FileConversion.Infrastructure\FileConversion.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

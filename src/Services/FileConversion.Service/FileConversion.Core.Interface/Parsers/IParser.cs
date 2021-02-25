@@ -1,12 +1,13 @@
 ﻿using FileConversion.Abstraction.Model.StandardV2;
-using Optional;
 using System.Collections.Immutable;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
 
 namespace FileConversion.Core.Interface.Parsers
 {
     public interface IParser<T> where T : IStandardModel
     {
-        Option<ImmutableList<T>, string> Parse(byte[] content);
+        Validation<Error, ImmutableList<T>> Parse(byte[] content);
     }
 
     public interface ICustomParser

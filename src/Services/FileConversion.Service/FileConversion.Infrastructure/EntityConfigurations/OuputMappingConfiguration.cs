@@ -5,10 +5,11 @@ using FileConversion.Abstraction.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.EntityFrameworkCore;
 
-namespace FileConversion.Data.EntityConfigurations
+namespace FileConversion.Infrastructure.EntityConfigurations
 {
-    class OutputMappingConfiguration : BaseEntityConfiguration<OutputMapping, InputType>
+    class OutputMappingConfiguration : BaseEntityConfiguration<OutputMapping>
     {
+        public override Expression<Func<OutputMapping, object>> KeyExpression => d => d.Id;
         public override void Configure(EntityTypeBuilder<OutputMapping> builder)
         {
             base.Configure(builder);

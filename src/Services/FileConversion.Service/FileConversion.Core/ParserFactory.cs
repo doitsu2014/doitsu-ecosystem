@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
 using FileConversion.Abstraction.Model.StandardV2;
-using FileConversion.Data.Services;
 using FileConversion.Core.Interface;
 using FileConversion.Core.Interface.Parsers;
 using FileConversion.Core.Parsers;
-using Optional;
-using Optional.Async;
 using System;
-using Microsoft.EntityFrameworkCore;
+using LanguageExt;
+using Shared.Abstraction.Models.Types;
+using static Shared.Validations.GenericValidator;
+using static Shared.Validations.StringValidator;
+using static LanguageExt.Prelude;
 
 namespace FileConversion.Core
 {
@@ -19,20 +20,20 @@ namespace FileConversion.Core
     {
         private readonly IEnumerable<ICustomParser> _customParsers;
         private readonly IEnumerable<ITransformer> _fileLoaderServices;
-        private readonly IFileConversionEntityService<InputMapping> _inputMappingEntityService;
-        private readonly IFileConversionEntityService<MapperSourceText> _mstEntityService;
+        private readonly IFileConversionRepository<InputMapping> _inputMappingRepository;
+        private readonly IFileConversionRepository<MapperSourceText> _mstEntityRepository;
         private readonly IBeanMapperService _beanMapperFactory;
 
         public ParserFactory(IEnumerable<ICustomParser> customParsers,
             IEnumerable<ITransformer> fileLoaderServices,
-            IFileConversionEntityService<InputMapping> inputMappingEntityService,
-            IFileConversionEntityService<MapperSourceText> mstEntityService,
+            IFileConversionRepository<InputMapping> inputMappingRepository,
+            IFileConversionRepository<MapperSourceText> mstEntityRepository,
             IBeanMapperService beanMapperFactory)
         {
             _customParsers = customParsers;
             _fileLoaderServices = fileLoaderServices;
-            _inputMappingEntityService = inputMappingEntityService;
-            _mstEntityService = mstEntityService;
+            _inputMappingRepository = inputMappingRepository;
+            _mstEntityRepository = mstEntityRepository;
             _beanMapperFactory = beanMapperFactory;
         }
 
@@ -49,35 +50,41 @@ namespace FileConversion.Core
             throw new NotSupportedException($"Invalid model type: {type.FullName}");
         }
 
-        public async Task<Option<IParser<T>, string>> GetParserAsync<T>(string key) where T : IStandardModel
+        public async Task<Validation<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel
         {
-            return await key.SomeNotNull().WithException("Key is null")
-                .FlatMapAsync(async k =>
+            return await ShouldNotNullOrEmpty(key)
+                .MatchAsync(async k =>
                 {
-                    // Get customer parser
-                    var parser = _customParsers?.OfType<ICustomParser<T>>().FirstOrDefault(p => p.Key == key);
+                    // Get custom parser
+                    var parser = _customParsers?.OfType<ICustomParser<T>>().FirstOrDefault(p => p.Key == k);
                     if (parser != null)
-                        return Option.Some<IParser<T>, string>(parser);
+                    {
+                        return Success<Error, IParser<T>>(parser);
+                    }
+                    else
+                    {
+                        var inputType = MapInputType<T>();
+                        // Get beanio parser
+                        var inputMapping = (await _inputMappingRepository
+                                .ListAsync(q => q.Where(e => e.Key == k && e.InputType == inputType)))
+                            .FirstOrDefault();
 
-                    // Get beanio parser
-                    var inputType = MapInputType<T>();
-                    var inputMapping = await 
-                        _inputMappingEntityService
-                        .Set().FirstOrDefaultAsync(x => x.Key == key && x.InputType == inputType);
+                        if (inputMapping == null)
+                            return Fail<Error, IParser<T>>($"No mapping by key: {k} & type: {inputType.ToString()}");
+                        else if (inputMapping.XmlConfiguration.IsNullOrEmpty())
+                            return Fail<Error, IParser<T>>(
+                                $"No xml configuration by key: {k} & type: {inputType.ToString()}");
 
-                    if (inputMapping == null)
-                        return Option.None<IParser<T>, string>($"No mapping by key: {k} & type: {inputType.ToString()}");
-                    else if (inputMapping.XmlConfiguration.IsNullOrEmpty())
-                        return Option.None<IParser<T>, string>($"No xml configuration by key: {k} & type: {inputType.ToString()}");
-
-                    var mapperSrcText = await _mstEntityService.Set().FirstOrDefaultAsync(x=> x.Id == inputMapping.MapperSourceTextId);
-
-                    return Option.Some<IParser<T>, string>(new BeanParser<T>(
-                        inputMapping.XmlConfiguration,
-                        _fileLoaderServices.SingleOrDefault(fl => fl.Type == inputMapping.StreamType),
-                        _beanMapperFactory.GetBeanMapper(inputMapping.Mapper),
-                        mapperSrcText));;
-                });
+                        return (await _mstEntityRepository.GetAsync(inputMapping.MapperSourceTextId))
+                            .Match(mapperSrcText => Success<Error, IParser<T>>(new BeanParser<T>(
+                                    inputMapping.XmlConfiguration,
+                                    _fileLoaderServices.SingleOrDefault(fl => fl.Type == inputMapping.StreamType),
+                                    _beanMapperFactory.GetBeanMapper(inputMapping.Mapper),
+                                    mapperSrcText)),
+                                () => Fail<Error, IParser<T>>(
+                                    $"Mapper source text '{inputMapping.MapperSourceTextId}' does not exist."));
+                    }
+                }, errors => errors.Join());
         }
     }
 }
