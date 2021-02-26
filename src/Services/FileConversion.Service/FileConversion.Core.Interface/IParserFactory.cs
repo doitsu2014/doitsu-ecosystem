@@ -8,6 +8,6 @@ namespace FileConversion.Core.Interface
 {
     public interface IParserFactory
     {
-        Task<Validation<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel;
+        Task<Either<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel;
     }
 }

@@ -6,6 +6,6 @@ namespace FileConversion.Core.Interface
 {
     public interface IBeanMapper
     {
-        Validation<Error, IEnumerable<object>> Map(IEnumerable<object> data);
+        Either<Error, IEnumerable<object>> Map(IEnumerable<object> data);
     }
 }

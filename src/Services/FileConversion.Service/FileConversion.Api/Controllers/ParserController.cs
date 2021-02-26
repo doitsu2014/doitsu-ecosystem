@@ -1,24 +1,18 @@
 ﻿using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model.StandardV2;
 using FileConversion.Core.Interface;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Optional;
-using Optional.Async;
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using LanguageExt;
 
 namespace FileConversion.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = Security.Scheme)]
-    //[Authorize(Security.PolicyFileConversion)]
-    [AllowAnonymous]
     public class ParserController : ControllerBase
     {
         private readonly IParserFactory _parserFactory;
@@ -33,11 +27,12 @@ namespace FileConversion.Api.Controllers
         [HttpPost("{key}/{inputType}")]
         public async Task<IActionResult> Post([FromForm] IFormFile file, [FromRoute] string key, [FromRoute] string inputType)
         {
-            async Task<Option<ImmutableList<object>, string>> Parse<T>(string k, IFormFile f) where T : IStandardModel
+            async Task<Either<ImmutableList<object>, string>> Parse<T>(string k, IFormFile f) where T : IStandardModel
             {
                 return (await _parserFactory.GetParserAsync<T>(key))
-                    .FlatMap(p => p.Parse(LoadFileContent(f)))
-                    .Map(p => p.Select(e => e as object).ToImmutableList());
+                    .Bind(p => p.Parse(LoadFileContent(f)))
+                    .AsTask()
+                    .MapT(p => p.Select(e => e as object).ToImmutableList());
             }
 
             return (await (key, file, inputType).SomeNotNull().WithException(string.Empty)

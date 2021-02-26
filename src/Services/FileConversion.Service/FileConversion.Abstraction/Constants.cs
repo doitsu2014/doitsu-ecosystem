@@ -13,12 +13,15 @@
         public const string DefaultExportFileName = "export.txt";
     }
 
-    public static class Security
+    public static class PolicyConstants
     {
-        public const string Scheme = "conversion";
-
-        public const string ScopeFileConversion = "conversion";
-
-        public const string PolicyFileConversion = "conversion";
+        public const string PolicyFileConversionRead = "policy.read";
+        public const string PolicyFileConversionParse = "conversion";
+        public const string PolicyFileConversionWrite = "conversion";
+        
+        public const string ScopeFileConversionAll = "services.fileconversion.all";
+        public const string ScopeFileConversionRead = "services.fileconversion.read";
+        public const string ScopeFileConversionParse = "services.fileconversion.parse";
+        public const string ScopeFileConversionWrite = "services.fileconversion.write";
     }
 }

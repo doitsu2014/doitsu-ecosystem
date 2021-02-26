@@ -1,7 +1,4 @@
-﻿using System;
-using Shared.EntityFrameworkCore;
-
-namespace FileConversion.Abstraction.Model
+﻿namespace FileConversion.Abstraction.Model
 {
     public class InputMapping
     {

@@ -10,7 +10,7 @@ namespace FileConversion.Core.BeanMappers
 {
     public class InvoiceMapper : IBeanMapper
     {
-        public Validation<Error, IEnumerable<object>> Map(IEnumerable<object> data)
+        public Either<Error, IEnumerable<object>> Map(IEnumerable<object> data)
         {
             return ShouldNotNull(data)
                 .Map(d => d.Cast<Invoice>()

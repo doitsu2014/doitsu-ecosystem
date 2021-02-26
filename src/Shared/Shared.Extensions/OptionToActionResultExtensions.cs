@@ -11,7 +11,7 @@ namespace Shared.Extensions
                 Some: t => new OkObjectResult(t),
                 None: () => new NotFoundResult());
 
-        public static Task<IActionResult> ToActionResult<T>(this Task<Option<T>> option) =>
+        public static Task<IActionResult> ToActionResultAsync<T>(this Task<Option<T>> option) =>
             option.Map(ToActionResult);
     }
 }

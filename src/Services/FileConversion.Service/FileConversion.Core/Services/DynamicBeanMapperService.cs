@@ -14,7 +14,7 @@ namespace FileConversion.Core.Services
 {
     public class DynamicBeanMapperService : IDynamicBeanMapperService
     {
-        public Validation<Error, IEnumerable<object>> MapFromSource(IEnumerable<object> destinationData, string sourceCode)
+        public Either<Error, IEnumerable<object>> MapFromSource(IEnumerable<object> destinationData, string sourceCode)
             => (ShouldNotNull(destinationData), ShouldNotNullOrEmpty(sourceCode), Success<Error, Compiler>(new Compiler()))
                 .Apply((des, sc, compiler) =>
                 {

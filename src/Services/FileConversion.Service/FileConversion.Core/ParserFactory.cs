@@ -50,7 +50,7 @@ namespace FileConversion.Core
             throw new NotSupportedException($"Invalid model type: {type.FullName}");
         }
 
-        public async Task<Validation<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel
+        public async Task<Either<Error, IParser<T>>> GetParserAsync<T>(string key) where T : IStandardModel
         {
             return await ShouldNotNullOrEmpty(key)
                 .MatchAsync(async k =>
@@ -59,7 +59,7 @@ namespace FileConversion.Core
                     var parser = _customParsers?.OfType<ICustomParser<T>>().FirstOrDefault(p => p.Key == k);
                     if (parser != null)
                     {
-                        return Success<Error, IParser<T>>(parser);
+                        return Right<Error, IParser<T>>(parser);
                     }
                     else
                     {
@@ -70,18 +70,18 @@ namespace FileConversion.Core
                             .FirstOrDefault();
 
                         if (inputMapping == null)
-                            return Fail<Error, IParser<T>>($"No mapping by key: {k} & type: {inputType.ToString()}");
+                            return Left<Error, IParser<T>>($"No mapping by key: {k} & type: {inputType.ToString()}");
                         else if (inputMapping.XmlConfiguration.IsNullOrEmpty())
-                            return Fail<Error, IParser<T>>(
+                            return Left<Error, IParser<T>>(
                                 $"No xml configuration by key: {k} & type: {inputType.ToString()}");
 
                         return (await _mstEntityRepository.GetAsync(inputMapping.MapperSourceTextId))
-                            .Match(mapperSrcText => Success<Error, IParser<T>>(new BeanParser<T>(
+                            .Match(mapperSrcText => Right<Error, IParser<T>>(new BeanParser<T>(
                                     inputMapping.XmlConfiguration,
                                     _fileLoaderServices.SingleOrDefault(fl => fl.Type == inputMapping.StreamType),
                                     _beanMapperFactory.GetBeanMapper(inputMapping.Mapper),
                                     mapperSrcText)),
-                                () => Fail<Error, IParser<T>>(
+                                () => Left<Error, IParser<T>>(
                                     $"Mapper source text '{inputMapping.MapperSourceTextId}' does not exist."));
                     }
                 }, errors => errors.Join());

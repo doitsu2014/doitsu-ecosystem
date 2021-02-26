@@ -2,96 +2,109 @@
 using System.Threading.Tasks;
 using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
-using FileConversion.Infrastructure;
-using FileConversion.Infrastructure.Services;
+using FileConversion.Core.Interface;
+using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Optional;
-using Optional.Async;
+using Shared.Abstraction.Models.Types;
+using Shared.Extensions;
+using static Shared.Validations.GenericValidator;
+using static LanguageExt.Prelude;
 
 namespace FileConversion.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = Security.Scheme)]
-    [Authorize(Security.PolicyFileConversion)]
     public class OutputMappingController : ControllerBase
     {
-        private readonly IFileConversionEntityService<OutputMapping> _outputMappingEntityService;
-        private readonly FileConversionContext _db;
-        public OutputMappingController(IFileConversionEntityService<OutputMapping> outputMappingEntityService, FileConversionContext db)
-        {
-            _outputMappingEntityService = outputMappingEntityService;
-            _db = db;
+        private readonly IFileConversionRepository<OutputMapping> _outputMappingRepository;
 
+        public OutputMappingController(IFileConversionRepository<OutputMapping> outputMappingRepository)
+        {
+            _outputMappingRepository = outputMappingRepository;
         }
 
         [HttpGet]
+        [Authorize(PolicyConstants.PolicyFileConversionRead)]
         public async Task<IActionResult> GetAllOutputMappings()
         {
-            return Ok(await _outputMappingEntityService.ReadManyNoTracked().ToListAsync());
+            return Ok(await _outputMappingRepository.ListAllAsync());
         }
 
         [HttpGet("{key}")]
-        public async Task<IActionResult> FindOutputMapping([FromRoute]InputType key)
+        [Authorize(PolicyConstants.PolicyFileConversionRead)]
+        public async Task<IActionResult> FindOutputMapping([FromRoute] InputType key)
         {
-            return Ok(await _outputMappingEntityService.Set().FirstOrDefaultAsync(x => x.Key == key));
+            return await _outputMappingRepository.GetAsync(key)
+                .ToActionResultAsync();
         }
 
+        private Task<Validation<Error, OutputMapping>> OutputMappingMustExist(OutputMapping outputMapping)
+            => _outputMappingRepository.AnyAsync(e => e.Id == outputMapping.Id)
+                .Map(exist => exist
+                    ? Fail<Error, OutputMapping>(
+                        $"Output mapping {outputMapping.Id} does exist")
+                    : Success<Error, OutputMapping>(outputMapping));
+
+        private Task<Validation<Error, OutputMapping>> OutputMappingMustNotExist(OutputMapping outputMapping)
+            => _outputMappingRepository.AnyAsync(e => e.Id == outputMapping.Id)
+                .Map(exist => !exist
+                    ? Fail<Error, OutputMapping>(
+                        $"Output mapping {outputMapping.Id} does not exist")
+                    : Success<Error, OutputMapping>(outputMapping));
+
+        private Task<Validation<Error, OutputMapping>> ValidateCreateOutputMapping(
+            OutputMapping mapperSourceText)
+            => ShouldNotNull(mapperSourceText)
+                .AsTask()
+                .BindT(OutputMappingMustExist);
+
+        private Task<Validation<Error, OutputMapping>> ValidateEditOutputMapping(
+            OutputMapping mapperSourceText)
+            => ShouldNotNull(mapperSourceText)
+                .AsTask()
+                .BindT(OutputMappingMustNotExist);
+
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]OutputMapping data)
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
+        public async Task<IActionResult> Post([FromBody] OutputMapping data)
         {
-            return (await data.SomeNotNull()
-                    .WithException("Output Mapping data is empty")
-                    .FilterAsync(async d => !(await _outputMappingEntityService.Set().AnyAsync(im => im.Key == data.Key)), $"Output Mapping key {data.Key} does exist")
-                    .MapAsync(async d =>
-                    {
-                        var OutputMapping = await _db.AddAsync(d);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        return OutputMapping.Entity;
-                    }))
-                    .Match<IActionResult>(
-                        res => Ok(res),
-                        error => BadRequest(error)
-                    );
+            return await ValidateCreateOutputMapping(data)
+                .MapT(async d =>
+                {
+                    await _outputMappingRepository.AddAsync(d);
+                    return d;
+                })
+                .ToActionResultAsync();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]OutputMapping data)
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
+        public async Task<IActionResult> Put([FromBody] OutputMapping data)
         {
-            return (await data.SomeNotNull()
-                    .WithException("Output Mapping data is empty")
-                    .FilterAsync(async d => await _outputMappingEntityService.Set().AnyAsync(im => im.Key == data.Key), $"Output Mapping Key {data.Key} does not exist")
-                    .MapAsync(async d =>
-                    {
-                        var OutputMapping = _db.Update(d);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        return OutputMapping.Entity;
-                    }))
-                    .Match<IActionResult>(
-                        res => Ok(res),
-                        error => BadRequest(error)
-                    );
+            return await ValidateEditOutputMapping(data)
+                .MapT(async d =>
+                {
+                    await _outputMappingRepository.UpdateAsync(d);
+                    return d;
+                })
+                .ToActionResultAsync();
         }
 
         [HttpDelete("{key}")]
-        public async Task<IActionResult> Delete([FromRoute]InputType key)
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
+        public async Task<IActionResult> Delete([FromRoute] InputType key)
         {
-            return (await key.SomeNotNull()
-                    .WithException("Deleted key is empty")
-                    .FilterAsync(async d => (await _outputMappingEntityService.Set().AnyAsync(im => im.Key == key)), $"Output Mapping key {key} does not exist")
-                    .MapAsync(async d =>
-                    {
-                        var OutputMapping = await _outputMappingEntityService.Set().FirstOrDefaultAsync(im => im.Key == key);
-                        _db.Remove(OutputMapping);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        return $"Remove Output Mapping Key {key} successfully";
-                    }))
-                    .Match<IActionResult>(
-                        res => Ok(res),
-                        error => BadRequest(error)
-                    );
+            return await (await _outputMappingRepository.GetAsync(key))
+                .ToValidation(Error.New($"Output mapping {key} does not exist"))
+                .AsTask()
+                .MapT(async d =>
+                {
+                    await _outputMappingRepository.DeleteAsync(d);
+                    return $"Remove output mapping {key} successfully";
+                })
+                .ToActionResultAsync();
         }
     }
 }

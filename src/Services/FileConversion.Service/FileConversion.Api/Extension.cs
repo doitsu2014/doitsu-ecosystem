@@ -1,9 +1,5 @@
-﻿using ACOMSaaS.NetCore.Abstractions.Model;
-using ACOMSaaS.NetCore.EFCore.Abstractions.Interface;
-using FileConversion.Abstraction;
+﻿using FileConversion.Abstraction;
 using FileConversion.Infrastructure;
-using FileConversion.Core.Interface;
-using FileConversion.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -38,7 +33,7 @@ namespace FileConversion.Api
 
                         var serializerSettings = new JsonSerializerSettings();
                         serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        var content = JsonConvert.SerializeObject(new SimpleMessageResponse
+                        var content = JsonConvert.SerializeObject(new BaseMessageResponse()
                         {
                             Value = contextFeature.Error.Message
                         }, serializerSettings);

@@ -14,9 +14,7 @@ namespace FileConversion.Core
         {
             services.AddScoped<IBeanMapperService, BeanMapperService>();
             services.AddScoped<IBeanMapper, InvoiceMapper>();
-
             services.AddSingleton<ITransformer, ExcelTransformer>();
-
             services.AddScoped<IExportService, ExportService>();
             services.AddScoped<IParserFactory, ParserFactory>();
             services.AddScoped<ICustomParser, AccentWireVendorPaymentParser>();

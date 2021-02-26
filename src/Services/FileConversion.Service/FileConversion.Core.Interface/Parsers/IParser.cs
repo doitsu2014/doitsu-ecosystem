@@ -7,7 +7,7 @@ namespace FileConversion.Core.Interface.Parsers
 {
     public interface IParser<T> where T : IStandardModel
     {
-        Validation<Error, ImmutableList<T>> Parse(byte[] content);
+        Either<Error, ImmutableList<T>> Parse(byte[] content);
     }
 
     public interface ICustomParser

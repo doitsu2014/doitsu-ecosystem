@@ -12,5 +12,10 @@ namespace Identity.Service.OpenIdServer.Constants
         
         public const string ScopeIdentityServerAllServices = "services.identity.all";
         public const string ScopeIdentityServerUserInfo = "services.identity.userinfo";
+        
+        public const string ScopeFileConversionAll = "services.fileconversion.all";
+        public const string ScopeFileConversionRead = "services.fileconversion.read";
+        public const string ScopeFileConversionParse = "services.fileconversion.parse";
+        public const string ScopeFileConversionWrite = "services.fileconversion.write";
     }
 }

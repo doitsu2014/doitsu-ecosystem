@@ -1,110 +1,109 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FileConversion.Abstraction;
 using FileConversion.Abstraction.Model;
 using FileConversion.Core.Interface;
 using FileConversion.Infrastructure;
+using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Abstraction.Models.Types;
+using Shared.Extensions;
+using static Shared.Validations.GenericValidator;
+using static LanguageExt.Prelude;
 
 namespace FileConversion.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = Security.Scheme)]
-    [Authorize(Security.PolicyFileConversion)]
     public class InputMappingController : ControllerBase
     {
         private readonly IFileConversionRepository<InputMapping> _inputMappingRepository;
-        private readonly FileConversionContext _db;
 
-        public InputMappingController(IFileConversionRepository<InputMapping> inputMappingRepository,
-            FileConversionContext db)
+        public InputMappingController(IFileConversionRepository<InputMapping> inputMappingRepository)
         {
             _inputMappingRepository = inputMappingRepository;
-            _db = db;
         }
 
         [HttpGet]
+        [Authorize(PolicyConstants.PolicyFileConversionRead)]
         public async Task<IActionResult> GetAllInputMappings()
         {
             return Ok(await _inputMappingRepository.ListAllAsync());
         }
 
         [HttpGet("{key}/{inputType}")]
+        [Authorize(PolicyConstants.PolicyFileConversionRead)]
         public async Task<IActionResult> FindInputMapping([FromRoute] string key, [FromRoute] InputType inputType)
         {
-            return Ok(await _inputMappingRepository.ListAsync(q =>
-                q.Where(x => x.Key == key && x.InputType == inputType)));
+            return await _inputMappingRepository.SingleOrDefaultAsync(x =>
+                    x.Key == key && x.InputType == inputType)
+                .ToActionResultAsync();
         }
 
+        private Task<Validation<Error, InputMapping>> InputMappingMustNotExist(InputMapping inputMapping)
+            => _inputMappingRepository.AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
+                .Map(exist => exist
+                    ? Fail<Error, InputMapping>(
+                        $"Input mapping key {inputMapping.Key} and type {inputMapping.InputType} does exist")
+                    : Success<Error, InputMapping>(inputMapping));
+
+        private Task<Validation<Error, InputMapping>> InputMappingMustExist(InputMapping inputMapping)
+            => _inputMappingRepository.AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
+                .Map(exist => !exist
+                    ? Fail<Error, InputMapping>(
+                        $"Input mapping key {inputMapping.Key} and type {inputMapping.InputType} does not exist")
+                    : Success<Error, InputMapping>(inputMapping));
+
+        private Task<Validation<Error, InputMapping>> ValidateCreateInputMapping(InputMapping inputMapping)
+            => ShouldNotNull(inputMapping)
+                .AsTask()
+                .BindT(InputMappingMustNotExist);
+
+        private Task<Validation<Error, InputMapping>> ValidateEditInputMapping(InputMapping inputMapping)
+            => ShouldNotNull(inputMapping)
+                .AsTask()
+                .BindT(InputMappingMustExist);
+
         [HttpPost]
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
         public async Task<IActionResult> Post([FromBody] InputMapping data)
         {
-            return (await data.SomeNotNull()
-                    .WithException("Input mapping data is empty")
-                    .FilterAsync(
-                        async d => !(await _inputMappingRepository
-                            .AnyAsync(im => im.Key == data.Key && im.InputType == data.InputType)),
-                        $"Input mapping key {data.Key} and input type {data.InputType} does exist")
-                    .MapAsync(async d =>
-                    {
-                        var inputMapping = await _db.AddAsync(d);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        return inputMapping.Entity;
-                    }))
-                .Match<IActionResult>(
-                    res => Ok(res),
-                    error => BadRequest(error)
-                );
+            return await ValidateCreateInputMapping(data)
+                .MapT(async d =>
+                {
+                    await _inputMappingRepository.AddAsync(d);
+                    return d;
+                })
+                .ToActionResultAsync();
         }
 
         [HttpPut]
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
         public async Task<IActionResult> Put([FromBody] InputMapping data)
         {
-            return (await data.SomeNotNull()
-                    .WithException("Input mapping data is empty")
-                    .FilterAsync(
-                        async d => (await _inputMappingRepository.AnyAsync(im => im.Key == data.Key && im.InputType == data.InputType)),
-                        $"Input mapping key {data.Key} and input type {data.InputType} does not exist")
-                    .MapAsync(async d =>
-                    {
-                        var inputMapping = _db.Update(d);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        return inputMapping.Entity;
-                    }))
-                .Match<IActionResult>(
-                    res => Ok(res),
-                    error => BadRequest(error)
-                );
+            return (await ValidateEditInputMapping(data)
+                .MapT(async d =>
+                {
+                    await _inputMappingRepository.UpdateAsync(d);
+                    return d;
+                })
+                .ToActionResultAsync());
         }
 
         [HttpDelete("{key}/{inputType}")]
+        [Authorize(PolicyConstants.PolicyFileConversionWrite)]
         public async Task<IActionResult> Delete([FromRoute] string key, [FromRoute] InputType inputType)
         {
-            return (await key.SomeNotNull()
-                    .WithException("Deleted key is empty")
-                    .FilterAsync(
-                        async d => (await _inputMappingRepository
-                            .AnyAsync(im => im.Key == key && im.InputType == inputType)),
-                        $"Input mapping key {key} and input type {inputType} does not exist")
-                    .MapAsync(async d =>
-                    {
-                        var inputMapping = await _inputMappingRepository
-                            .SingleOrDefaultAsync(im => im.Key == key && im.InputType == inputType);
-                        
-                        _db.Remove(inputMapping);
-                        await _db.SaveChangesAsync(cancellationToken: CancellationToken.None);
-                        
-                        return $"Remove input mapping key {key} and input type {inputType} successfully";
-                    }))
-                .Match<IActionResult>(
-                    res => Ok(res),
-                    error => BadRequest(error)
-                );
+            return (await (await _inputMappingRepository.SingleOrDefaultAsync(e =>
+                    e.Key == key && e.InputType == inputType))
+                .ToValidation(Error.New($"Input mapping key {key} and type {inputType} does not exist"))
+                .AsTask()
+                .MapT(async im =>
+                {
+                    await _inputMappingRepository.DeleteAsync(im);
+                    return $"Remove input mapping key {key} and type {inputType} successfully";
+                })
+                .ToActionResultAsync());
         }
     }
 }

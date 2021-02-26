@@ -7,6 +7,6 @@ namespace FileConversion.Core.Interface
 {
     public interface IExportService
     {
-        Task<Validation<Error, byte[]>> ExportAsync(string inputType, ImmutableList<object> data);
+        Task<Either<Error, byte[]>> ExportAsync(string inputType, ImmutableList<object> data);
     }
 }

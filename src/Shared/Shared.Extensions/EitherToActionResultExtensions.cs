@@ -18,7 +18,7 @@ namespace Shared.Extensions
                 Left: l => new BadRequestObjectResult(l),
                 Right: r => new OkObjectResult(r));
 
-        private async static Task<IActionResult> MatchAsync(Either<Error, Task> either) =>
+        private static async Task<IActionResult> MatchAsync(Either<Error, Task> either) =>
             await either.MatchAsync<IActionResult>(
                 RightAsync: async t => { await t; return new OkResult(); },
                 Left: e => new BadRequestObjectResult(e));

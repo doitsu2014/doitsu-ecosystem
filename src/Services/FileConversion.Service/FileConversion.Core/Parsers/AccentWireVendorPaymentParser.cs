@@ -16,15 +16,15 @@ namespace FileConversion.Core.Parsers
     {
         public string Key => "accent.wire.custom";
 
-        public Validation<Error, ImmutableList<VendorPayment>> Parse(byte[] content)
+        public Either<Error, ImmutableList<VendorPayment>> Parse(byte[] content)
         {
             var stringContent = Encoding.UTF8.GetString(content);
             var result = AccentWireSpParser.VendorPaymentParser
                 .AtLeastOnceDelimitedBy(Common.NewLine.Repeat(3))
                 .TryParse(stringContent);
             return result.HasValue
-                ? Success<Error, ImmutableList<VendorPayment>>(result.Value.ToImmutableList())
-                : Fail<Error, ImmutableList<VendorPayment>>(
+                ? Right<Error, ImmutableList<VendorPayment>>(result.Value.ToImmutableList())
+                : Left<Error, ImmutableList<VendorPayment>>(
                     result.ToString().Replace("\r", "\\r").Replace("\n", "\\n"));
         }
 

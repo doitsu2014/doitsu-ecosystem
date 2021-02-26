@@ -31,7 +31,7 @@ namespace FileConversion.Core.Services
         /// <param name="mappingId">mapping id</param>
         /// <param name="data">list mapping object</param>
         /// <returns></returns>
-        public async Task<Validation<Error, byte[]>> ExportAsync(string inputType, ImmutableList<object> data)
+        public async Task<Either<Error, byte[]>> ExportAsync(string inputType, ImmutableList<object> data)
         {
             return await (ShouldNotNullOrEmpty(inputType), ShouldNotNullOrEmpty(data))
                 .Apply((inpt, d) => (inpt, d))
@@ -40,7 +40,7 @@ namespace FileConversion.Core.Services
                     if (!Enum.TryParse(d.inpt, true, out InputType inputTypeEnum) ||
                         inputTypeEnum == InputType.NotSupported)
                     {
-                        return Fail<Error, byte[]>(
+                        return Left<Error, byte[]>(
                             $"Not supported input type: {inputTypeEnum.ToString()}");
                     }
                     return (await _outputMappingRepository.GetAsync(inputTypeEnum))
@@ -74,9 +74,9 @@ namespace FileConversion.Core.Services
                                 writer.Flush();
 
                                 var result = Encoding.UTF8.GetBytes(text.ToString());
-                                return Success<Error, byte[]>(result);
+                                return Right<Error, byte[]>(result);
                             }
-                        }, () => Fail<Error, byte[]>($"Not supported output mapping: {inputTypeEnum.ToString()}"));
+                        }, () => Left<Error, byte[]>($"Not supported output mapping: {inputTypeEnum.ToString()}"));
                 }, errors => errors.Join());
         }
     }

@@ -1,10 +1,7 @@
-﻿using ACOMSaaS.NetCore.Abstractions.Model;
-using FileConversion.Abstraction;
+﻿using FileConversion.Abstraction;
 using FileConversion.Api.ModelBinders;
 using FileConversion.Api.Models;
 using FileConversion.Core;
-using FileConversion.Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,86 +11,111 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
-using System.Reactive.Linq;
+using FileConversion.Core.Interface;
+using FileConversion.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
+using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
+using Shared.Abstraction.Settings;
 
 namespace FileConversion.Api
 {
     public class Startup
     {
+        private const string OIDC_SETTINGS = "OidcSettings";
+        private readonly IConfiguration _configuration;
+        private readonly IConfigurationSection _oidcSection;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _oidcSection = _configuration.GetSection(OIDC_SETTINGS);
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
             // Config identity
-            var keyVaultOptionsKey = Environment.GetEnvironmentVariable(Constants.EnvironmentKeyVaultOption) ?? "KeyVault";
-            var securityOptionsKey = Environment.GetEnvironmentVariable(Constants.EnvironmentSecurityOption) ?? "Security";
+            var keyVaultOptionsKey =
+                Environment.GetEnvironmentVariable(Constants.EnvironmentKeyVaultOption) ?? "KeyVault";
+            var securityOptionsKey =
+                Environment.GetEnvironmentVariable(Constants.EnvironmentSecurityOption) ?? "Security";
 
-            services.Configure<ApplicationOptions>(Configuration);
-            services.Configure<ClientCredentialsSecurityOptions>(Configuration.GetSection(securityOptionsKey));
-            services.Configure<ClientCredentialKeyVaultOptions>(Configuration.GetSection(keyVaultOptionsKey));
+            services.Configure<ApplicationOptions>(_configuration);
+            services.Configure<OidcSettings>(_oidcSection);
 
-            services.AddAuthentication()
-                .AddIdentityServerAuthentication(Security.Scheme, options =>
+            services.AddOpenIddict()
+                .AddValidation(opt =>
                 {
-                    options.Authority = Configuration.GetValue<string>($"{securityOptionsKey}:Authority");
-                    options.ApiName = Configuration.GetValue<string>($"{securityOptionsKey}:ApiName");
-                    options.RequireHttpsMetadata = false;
+                    opt.SetIssuer(_oidcSection["Authority"]);
+                    opt.AddAudiences(_oidcSection["ResourceServerName"]);
+                    opt.UseSystemNetHttp();
+                    opt.UseAspNetCore();
                 });
 
             services.AddCors();
-            services.AddMvcCore(options =>
+            services.AddControllers();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyConstants.PolicyFileConversionRead, policy =>
                 {
-                    options.EnableEndpointRouting = false;
-                    options.ModelBinderProviders.Insert(0, new OptionModelBinderProvider());
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                    {
-                        var logger = context.HttpContext.RequestServices.GetService<ILogger<Startup>>();
-                        var validationErrors = context.ModelState.SelectMany(x => x.Value.Errors)
-                            .Select(error => error.ErrorMessage).Aggregate((x, y) => $"{x}\n{y}");
-                        logger.LogDebug("Validation error(s):\n{ValidationErrors}", validationErrors);
-                        return new BadRequestObjectResult(new ModelStateErrorResponse { Value = context.ModelState })
+                    policy.AuthenticationSchemes = new string[]
+                        {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                    policy.RequireClaim(OpenIddictConstants.Claims.Private.Scope,
+                        new[]
                         {
-                            ContentTypes = { "application/problem+json" }
-                        };
-                    };
-                })
-                .AddAuthorization(options =>
-                {
-                    options.AddPolicy(Security.PolicyFileConversion, builder =>
-                    {
-                        builder.RequireScope(Security.ScopeFileConversion);
-                    });
-                })
-                .AddApiExplorer()
-                .AddDataAnnotations();
+                            PolicyConstants.ScopeFileConversionAll,
+                            PolicyConstants.ScopeFileConversionRead
+                        });
+                });
 
-            #region DI Services 
-            services.AddScoped(typeof(IFileConversionEntityService<>), typeof(FileConversionRepository<>));
+                options.AddPolicy(PolicyConstants.PolicyFileConversionParse, policy =>
+                {
+                    policy.AuthenticationSchemes = new string[]
+                        {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                    policy.RequireClaim(OpenIddictConstants.Claims.Private.Scope,
+                        new[]
+                        {
+                            PolicyConstants.ScopeFileConversionAll,
+                            PolicyConstants.ScopeFileConversionRead
+                        });
+                });
+
+                options.AddPolicy(PolicyConstants.PolicyFileConversionWrite, policy =>
+                {
+                    policy.AuthenticationSchemes = new string[]
+                        {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+
+                    policy.RequireRole("Administrator");
+
+                    policy.RequireClaim(OpenIddictConstants.Claims.Private.Scope,
+                        new[]
+                        {
+                            PolicyConstants.ScopeFileConversionAll,
+                            PolicyConstants.ScopeFileConversionRead
+                        });
+                });
+            });
+
+            #region DI Services
+
+            services.AddScoped(typeof(IFileConversionRepository<>), typeof(FileConversionRepository<>));
             services.RegisterDefaultParserDependencies();
+
             #endregion
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "File Conversion Api Information", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "File Conversion Api Information", Version = "v1"});
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         [Obsolete]
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<ApplicationOptions> options)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
+            IOptions<ApplicationOptions> options)
         {
             if (env.EnvironmentName == "Development")
             {
@@ -118,7 +140,6 @@ namespace FileConversion.Api
 
             app.ConfigureGlobalExceptionHandler(loggerFactory.CreateLogger(GetType()));
             app.UseHttpsRedirection();
-            app.UseMvc();
         }
     }
 }

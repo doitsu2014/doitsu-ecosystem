@@ -6,6 +6,6 @@ namespace FileConversion.Core.Interface
 {
     public interface IDynamicBeanMapperService
     {
-        Validation<Error, IEnumerable<object>> MapFromSource(IEnumerable<object> data, string sourceCode);
+        Either<Error, IEnumerable<object>> MapFromSource(IEnumerable<object> data, string sourceCode);
     }
 }

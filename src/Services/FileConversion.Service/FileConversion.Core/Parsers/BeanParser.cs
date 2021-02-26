@@ -33,23 +33,24 @@ namespace FileConversion.Core.Parsers
             _mapperSrcText = mapperSrcText;
         }
 
-        private Validation<Error, ImmutableList<T>> CastToExpectedType(IEnumerable<object> src)
+        private Either<Error, ImmutableList<T>> CastToExpectedType(IEnumerable<object> src)
         {
             if (!src.All(mE => mE.GetType() == typeof(T)))
             {
                 var firstEle = src.FirstOrDefault();
                 var expectedType = firstEle != null ? firstEle.GetType().ToString() : "null";
-                return Fail<Error, ImmutableList<T>>(
+                return Left<Error, ImmutableList<T>>(
                     $"{typeof(T).GetType().ToString()} expected, but got {expectedType}.");
             }
 
             var casted = src.Cast<T>().ToImmutableList();
-            return Success<Error, ImmutableList<T>>(casted);
+            return Right<Error, ImmutableList<T>>(casted);
         }
 
-        public Validation<Error, ImmutableList<T>> Parse(byte[] content)
+        public Either<Error, ImmutableList<T>> Parse(byte[] content)
         {
             return ShouldNotNullOrEmpty(content)
+                .ToEither()
                 .Match(c =>
                 {
                     if (_fileLoaderService != null)
@@ -75,18 +76,18 @@ namespace FileConversion.Core.Parsers
                         {
                             return _beanMapper
                                 .Map(listResult.Cast<object>())
-                                .Match(m => CastToExpectedType(m), errors => errors.Join());
+                                .Match(CastToExpectedType, error => error);
                         }
                         else if (_mapperSrcText != null && _mapperSrcText.SourceText.IsNotNullOrEmpty())
                         {
                             var dynamicMapperService = new DynamicBeanMapperService();
                             return dynamicMapperService
                                 .MapFromSource(listResult.Cast<object>(), _mapperSrcText.SourceText)
-                                .Match(m => CastToExpectedType(m), errors => errors.Join());
+                                .Match(CastToExpectedType, error => error);
                         }
                         else
                         {
-                            return Success<Error, ImmutableList<T>>(listResult.Cast<T>().ToImmutableList());
+                            return Right<Error, ImmutableList<T>>(listResult.Cast<T>().ToImmutableList());
                         }
                     }
                 }, errors => errors.Join());
