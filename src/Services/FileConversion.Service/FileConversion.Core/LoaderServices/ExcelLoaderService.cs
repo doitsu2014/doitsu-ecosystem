@@ -96,6 +96,7 @@ namespace FileConversion.Core.LoaderServices
 
         private void AddCellValue(string s, List<string> record)
         {
+            s = s.Replace("\r\n", " ");
             record.Add(string.Format("{0}{1}{0}", '"', s));
         }
     }

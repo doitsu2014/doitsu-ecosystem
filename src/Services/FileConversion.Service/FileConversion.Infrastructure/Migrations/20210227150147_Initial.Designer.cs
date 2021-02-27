@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FileConversion.Infrastructure.Migrations
 {
     [DbContext(typeof(FileConversionContext))]
-    [Migration("20210225100024_Initial")]
+    [Migration("20210227150147_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace FileConversion.Infrastructure.Migrations
 
                     b.HasIndex("MapperSourceTextId");
 
-                    b.ToTable("InputMapping");
+                    b.ToTable("InputMappings");
                 });
 
             modelBuilder.Entity("FileConversion.Abstraction.Model.MapperSourceText", b =>
@@ -68,7 +68,7 @@ namespace FileConversion.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MapperSourceText");
+                    b.ToTable("MapperSourceTexts");
                 });
 
             modelBuilder.Entity("FileConversion.Abstraction.Model.OutputMapping", b =>
@@ -76,10 +76,13 @@ namespace FileConversion.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumberOfFooter")
+                    b.Property<bool>("IsXml")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("NumberOfFooter")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumberOfHeader")
+                    b.Property<int?>("NumberOfHeader")
                         .HasColumnType("integer");
 
                     b.Property<string>("XmlConfiguration")
@@ -88,7 +91,7 @@ namespace FileConversion.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutputMapping");
+                    b.ToTable("OutputMappings");
                 });
 
             modelBuilder.Entity("FileConversion.Abstraction.Model.InputMapping", b =>

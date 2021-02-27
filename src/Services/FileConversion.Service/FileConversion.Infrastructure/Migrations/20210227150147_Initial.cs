@@ -8,7 +8,7 @@ namespace FileConversion.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "MapperSourceText",
+                name: "MapperSourceTexts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -17,25 +17,26 @@ namespace FileConversion.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MapperSourceText", x => x.Id);
+                    table.PrimaryKey("PK_MapperSourceTexts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OutputMapping",
+                name: "OutputMappings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
+                    IsXml = table.Column<bool>(type: "boolean", nullable: false),
                     XmlConfiguration = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: true),
-                    NumberOfHeader = table.Column<int>(type: "integer", nullable: false),
-                    NumberOfFooter = table.Column<int>(type: "integer", nullable: false)
+                    NumberOfHeader = table.Column<int>(type: "integer", nullable: true),
+                    NumberOfFooter = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutputMapping", x => x.Id);
+                    table.PrimaryKey("PK_OutputMappings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "InputMapping",
+                name: "InputMappings",
                 columns: table => new
                 {
                     Key = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
@@ -48,31 +49,31 @@ namespace FileConversion.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InputMapping", x => new { x.Key, x.InputType });
+                    table.PrimaryKey("PK_InputMappings", x => new { x.Key, x.InputType });
                     table.ForeignKey(
-                        name: "FK_InputMapping_MapperSourceText_MapperSourceTextId",
+                        name: "FK_InputMappings_MapperSourceTexts_MapperSourceTextId",
                         column: x => x.MapperSourceTextId,
-                        principalTable: "MapperSourceText",
+                        principalTable: "MapperSourceTexts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InputMapping_MapperSourceTextId",
-                table: "InputMapping",
+                name: "IX_InputMappings_MapperSourceTextId",
+                table: "InputMappings",
                 column: "MapperSourceTextId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InputMapping");
+                name: "InputMappings");
 
             migrationBuilder.DropTable(
-                name: "OutputMapping");
+                name: "OutputMappings");
 
             migrationBuilder.DropTable(
-                name: "MapperSourceText");
+                name: "MapperSourceTexts");
         }
     }
 }

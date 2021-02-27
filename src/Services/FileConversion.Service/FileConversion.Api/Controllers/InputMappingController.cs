@@ -40,27 +40,29 @@ namespace FileConversion.Api.Controllers
                 .ToActionResultAsync();
         }
 
-        private Task<Validation<Error, InputMapping>> InputMappingMustNotExist(InputMapping inputMapping)
-            => _inputMappingRepository.AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
+        private async Task<Validation<Error, InputMapping>> InputMappingMustNotExist(InputMapping inputMapping)
+            => await _inputMappingRepository
+                .AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
                 .Map(exist => exist
                     ? Fail<Error, InputMapping>(
                         $"Input mapping key {inputMapping.Key} and type {inputMapping.InputType} does exist")
                     : Success<Error, InputMapping>(inputMapping));
 
-        private Task<Validation<Error, InputMapping>> InputMappingMustExist(InputMapping inputMapping)
-            => _inputMappingRepository.AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
+        private async Task<Validation<Error, InputMapping>> InputMappingMustExist(InputMapping inputMapping)
+            => await _inputMappingRepository
+                .AnyAsync(e => e.Key == inputMapping.Key && e.InputType == inputMapping.InputType)
                 .Map(exist => !exist
                     ? Fail<Error, InputMapping>(
                         $"Input mapping key {inputMapping.Key} and type {inputMapping.InputType} does not exist")
                     : Success<Error, InputMapping>(inputMapping));
 
-        private Task<Validation<Error, InputMapping>> ValidateCreateInputMapping(InputMapping inputMapping)
-            => ShouldNotNull(inputMapping)
+        private async Task<Validation<Error, InputMapping>> ValidateCreateInputMapping(InputMapping inputMapping)
+            => await ShouldNotNull(inputMapping)
                 .AsTask()
                 .BindT(InputMappingMustNotExist);
 
-        private Task<Validation<Error, InputMapping>> ValidateEditInputMapping(InputMapping inputMapping)
-            => ShouldNotNull(inputMapping)
+        private async Task<Validation<Error, InputMapping>> ValidateEditInputMapping(InputMapping inputMapping)
+            => await ShouldNotNull(inputMapping)
                 .AsTask()
                 .BindT(InputMappingMustExist);
 

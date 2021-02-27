@@ -4,10 +4,18 @@ using FileConversion.Core.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Collections.Immutable;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using LanguageExt;
+using Microsoft.AspNetCore.Authorization;
+using Shared.Abstraction.Models.Types;
+using Shared.Extensions;
+using static LanguageExt.Prelude;
+using static Shared.Validations.GenericValidator;
+using static Shared.Validations.StringValidator;
 
 namespace FileConversion.Api.Controllers
 {
@@ -25,35 +33,44 @@ namespace FileConversion.Api.Controllers
         }
 
         [HttpPost("{key}/{inputType}")]
-        public async Task<IActionResult> Post([FromForm] IFormFile file, [FromRoute] string key, [FromRoute] string inputType)
+        [Authorize(PolicyConstants.PolicyFileConversionParse)]
+        public async Task<IActionResult> Post([FromForm] IFormFile file, [FromRoute] string key,
+            [FromRoute] string inputType)
         {
-            async Task<Either<ImmutableList<object>, string>> Parse<T>(string k, IFormFile f) where T : IStandardModel
+            async Task<Either<Error, ImmutableList<object>>> Parse<T>(string k, IFormFile f) where T : IStandardModel
             {
-                return (await _parserFactory.GetParserAsync<T>(key))
+                return await (await _parserFactory.GetParserAsync<T>(k))
                     .Bind(p => p.Parse(LoadFileContent(f)))
                     .AsTask()
                     .MapT(p => p.Select(e => e as object).ToImmutableList());
             }
 
-            return (await (key, file, inputType).SomeNotNull().WithException(string.Empty)
-                .Filter(d => !string.IsNullOrEmpty(d.key), "Null or empty key")
-                .Filter(d => file != null && file.Length > 0, "No file or empty file was submitted")
-                .FlatMapAsync(async d => {
-                    if (!Enum.TryParse(d.inputType, true, out InputType value) || value == InputType.NotSupported)
+            return await (ShouldNotNull(file), ShouldNotNullOrEmpty(key), ShouldNotNullOrEmpty(inputType))
+                .Apply((f, k, t) => (f, k, t))
+                .MatchAsync(async d =>
+                {
+                    if (!Enum.TryParse(d.t, true, out InputType inputTypeEnum) ||
+                        inputTypeEnum == InputType.NotSupported)
                     {
-                        return Option.None<byte[], string>(
-                            $"Not supported input type: {value.ToString()}");
+                        return Left<Error, string>(
+                            $"Not supported input type: {inputTypeEnum.ToString()}");
                     }
 
-                    var parsedResult = value == InputType.VendorPayment
-                            ? await Parse<VendorPayment>(d.key, d.file)
-                            : value == InputType.PosPay
-                                ? await Parse<PosPay>(d.key, d.file)
-                                : await Parse<VendorMaster>(d.key, d.file);
+                    var parsedResult = inputTypeEnum switch
+                    {
+                        InputType.VendorPayment => await Parse<VendorPayment>(d.k, d.f),
+                        InputType.PosPay => await Parse<PosPay>(d.k, d.f),
+                        InputType.VendorMaster => await Parse<VendorMaster>(d.k, d.f),
+                        InputType.PackagingDocument => await Parse<PackagingDocument>(d.k, d.f),
+                        _ => Left<Error, ImmutableList<object>>(
+                            $"Not supported input type: {inputTypeEnum.ToString()}"),
+                    };
 
-                    return await parsedResult.FlatMapAsync(async pd => await _exportService.ExportAsync(d.inputType, pd));
-                }))
-                .Match(res => File(res, "application/octet-stream", Constants.DefaultExportFileName), err => (IActionResult)BadRequest(err));
+                    return await parsedResult
+                        .MatchAsync(async pd => (await _exportService.ExportAsync(d.t, pd)).Map(Encoding.UTF8.GetString)
+                            , Left<Error, string>);
+                }, errors => Left<Error, string>(errors.Join()))
+                .ToActionResultAsync();
         }
 
         private byte[] LoadFileContent(IFormFile file)

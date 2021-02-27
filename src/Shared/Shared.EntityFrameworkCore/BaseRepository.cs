@@ -45,12 +45,12 @@ namespace Shared.EntityFrameworkCore
 
         public async Task<Option<TEntity>> GetAsync<TKey>(TKey key, CancellationToken token = default)
         {
-            return await _context.Set<TEntity>().FindAsync(key, token);
+            return await _context.Set<TEntity>().FindAsync(key);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken token = default)
         {
-            return await _context.Set<TEntity>().AnyAsync(expression);
+            return await _context.Set<TEntity>().AnyAsync(expression, token);
         }
 
         public async Task<Option<TEntity>> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression, CancellationToken token = default)

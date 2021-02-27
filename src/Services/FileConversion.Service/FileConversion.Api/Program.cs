@@ -13,15 +13,12 @@ namespace FileConversion.Api
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-             WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging((hostingContext, builder) => builder.ClearProviders())
                 .UseSerilog((context, configuration) =>
                 {
                     configuration.ReadFrom.Configuration(context.Configuration);
                 })
-                //.UseKestrel(options => options.Limits.MaxRequestBodySize = null)
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .ConfigureServices(Extension.ConfigureFileConversionContext);
+                .UseStartup<Startup>();
     }
 }

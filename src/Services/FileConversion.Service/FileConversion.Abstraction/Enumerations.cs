@@ -13,7 +13,8 @@
         NotSupported = 0,
         VendorPayment,
         VendorMaster,
-        PosPay
+        PosPay,
+        PackagingDocument,
     }
 
     public enum VendorStatus

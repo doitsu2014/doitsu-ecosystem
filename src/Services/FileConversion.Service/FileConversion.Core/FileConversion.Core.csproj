@@ -20,5 +20,8 @@
     <Compile Update="BeanMappers\InvoiceMapper.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
+    <Compile Update="BeanMappers\PackagingProductDocumentMapper.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 </Project>

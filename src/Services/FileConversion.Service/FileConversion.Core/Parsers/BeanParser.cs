@@ -11,6 +11,8 @@ using FileConversion.Core.Interface;
 using FileConversion.Core.Interface.Parsers;
 using FileConversion.Core.Services;
 using LanguageExt;
+using LanguageExt.UnsafeValueAccess;
+using Microsoft.CodeAnalysis;
 using Shared.Abstraction.Models.Types;
 using static LanguageExt.Prelude;
 using static Shared.Validations.GenericValidator;
@@ -25,12 +27,13 @@ namespace FileConversion.Core.Parsers
         private readonly MapperSourceText _mapperSrcText;
 
         public BeanParser(string xmlConfiguration, ITransformer fileLoaderService, IBeanMapper beanMapper,
-            MapperSourceText mapperSrcText)
+            Option<MapperSourceText> mapperSrcText)
         {
             _xmlConfiguration = xmlConfiguration;
             _fileLoaderService = fileLoaderService;
             _beanMapper = beanMapper;
-            _mapperSrcText = mapperSrcText;
+            if (mapperSrcText.IsSome)
+                _mapperSrcText = mapperSrcText.ValueUnsafe();
         }
 
         private Either<Error, ImmutableList<T>> CastToExpectedType(IEnumerable<object> src)

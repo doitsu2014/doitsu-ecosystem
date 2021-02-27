@@ -46,6 +46,8 @@ namespace FileConversion.Core
                 return InputType.VendorMaster;
             else if (type == typeof(PosPay))
                 return InputType.PosPay;
+            else if (type == typeof(PackagingDocument))
+                return InputType.PackagingDocument;
 
             throw new NotSupportedException($"Invalid model type: {type.FullName}");
         }
@@ -75,14 +77,12 @@ namespace FileConversion.Core
                             return Left<Error, IParser<T>>(
                                 $"No xml configuration by key: {k} & type: {inputType.ToString()}");
 
-                        return (await _mstEntityRepository.GetAsync(inputMapping.MapperSourceTextId))
-                            .Match(mapperSrcText => Right<Error, IParser<T>>(new BeanParser<T>(
-                                    inputMapping.XmlConfiguration,
-                                    _fileLoaderServices.SingleOrDefault(fl => fl.Type == inputMapping.StreamType),
-                                    _beanMapperFactory.GetBeanMapper(inputMapping.Mapper),
-                                    mapperSrcText)),
-                                () => Left<Error, IParser<T>>(
-                                    $"Mapper source text '{inputMapping.MapperSourceTextId}' does not exist."));
+                        var mapperSourceText = await _mstEntityRepository.GetAsync(inputMapping.MapperSourceTextId);
+                        return Right<Error, IParser<T>>(new BeanParser<T>(
+                            inputMapping.XmlConfiguration,
+                            _fileLoaderServices.SingleOrDefault(fl => fl.Type == inputMapping.StreamType),
+                            _beanMapperFactory.GetBeanMapper(inputMapping.Mapper),
+                            mapperSourceText));
                     }
                 }, errors => errors.Join());
         }
