@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fileconverion-client-blazor:
+    image: doitsu2014/fileconverion-client-blazor:latest
+    build:
+      context: ../../
+      dockerfile: Web/Blazor.FileConversion/Blazor.FileConversion.Client/Dockerfile

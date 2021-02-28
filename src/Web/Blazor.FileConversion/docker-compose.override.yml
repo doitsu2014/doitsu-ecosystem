@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fileconverion-client-blazor:
+    ports:
+      - "10000:80"
+    volumes:
+      - ./volumes/appsettings.json:/app/wwwroot/appsettings.json
