@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.FileConversion.Client", "Blazor.FileConversion.Client\Blazor.FileConversion.Client.csproj", "{6FFC31A0-B1D8-4F95-8A30-CF265B97C5BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.FileConversion.Server", "Blazor.FileConversion.Server\Blazor.FileConversion.Server.csproj", "{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{6FFC31A0-B1D8-4F95-8A30-CF265B97C5BA}.Release|x64.Build.0 = Release|Any CPU
 		{6FFC31A0-B1D8-4F95-8A30-CF265B97C5BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{6FFC31A0-B1D8-4F95-8A30-CF265B97C5BA}.Release|x86.Build.0 = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|x64.Build.0 = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED37A70F-F285-4B3C-B2A7-3853191C9D7B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

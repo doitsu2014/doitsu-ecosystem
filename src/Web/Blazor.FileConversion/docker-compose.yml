@@ -5,4 +5,4 @@ services:
     image: doitsu2014/fileconversion-client-blazor:latest
     build:
       context: ../../
-      dockerfile: Web/Blazor.FileConversion/Blazor.FileConversion.Client/Dockerfile
+      dockerfile: Web/Blazor.FileConversion/Blazor.FileConversion.Server/Dockerfile
