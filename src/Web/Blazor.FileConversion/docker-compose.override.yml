@@ -5,4 +5,4 @@ services:
     ports:
       - "10000:80"
     volumes:
-      - ./volumes/appsettings.json:/app/wwwroot/appsettings.json
+      - ./volumes/appsettings.json:/usr/share/nginx/html/appsettings.json

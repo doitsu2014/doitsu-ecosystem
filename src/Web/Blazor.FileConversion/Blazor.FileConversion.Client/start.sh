@@ -10,4 +10,4 @@ sed -i -E "s/TO_REPLACE_PORT/${PORT:-80}/" /etc/nginx/nginx.conf
 # Below will replace the placeholder in the nginx congfiguration file  
 sed -i -e 's/TO_REPLACE_BLAZOR_ENVIRONMENT/'"$BLAZOR_ENVIRONMENT"'/g' /etc/nginx/nginx.conf   
 # Start nginx service in the container  
-nginx -g 'daemon off;' 
+nginx -g 'daemon off;'

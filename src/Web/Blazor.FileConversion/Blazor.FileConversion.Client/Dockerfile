@@ -14,12 +14,6 @@ RUN dotnet publish "Blazor.FileConversion.Client.csproj" -c Release -o /app/publ
 FROM nginx:alpine AS final
 # Set the working directory in the image
 WORKDIR /usr/share/nginx/html
-EXPOSE 80
 COPY --from=publish /app/publish/wwwroot ./
 COPY Web/Blazor.FileConversion/Blazor.FileConversion.Client/nginx.conf ./
-COPY Web/Blazor.FileConversion/Blazor.FileConversion.Client/start.sh ./start.sh
-# This command is optional,   
-# it is just used to make sure all the EOL unix compliant  
-RUN sed -i -e "s/\r$//" start.sh  
-# The command that will be executed when the container starts  
-CMD /bin/sh ./start.sh 
+COPY Web/Blazor.FileConversion/Blazor.FileConversion.Client/routes.json ./
