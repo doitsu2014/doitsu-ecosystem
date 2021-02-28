@@ -16,8 +16,8 @@
     public static class PolicyConstants
     {
         public const string PolicyFileConversionRead = "policy.read";
-        public const string PolicyFileConversionParse = "conversion";
-        public const string PolicyFileConversionWrite = "conversion";
+        public const string PolicyFileConversionParse = "policy.parse";
+        public const string PolicyFileConversionWrite = "policy.write";
         
         public const string ScopeFileConversionAll = "services.fileconversion.all";
         public const string ScopeFileConversionRead = "services.fileconversion.read";

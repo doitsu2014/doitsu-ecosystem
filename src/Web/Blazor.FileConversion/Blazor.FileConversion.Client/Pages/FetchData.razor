@@ -1,0 +1,185 @@
+﻿@page "/kiem-tra-du-lieu"
+@using Blazor.FileConversion.Client.HttpClients.FileConversion
+@using Blazor.FileConversion.Client.Models
+@using System.Net.Http.Headers
+@using System.Collections.Immutable
+@using System.Text.Json
+@using Microsoft.Extensions.Logging
+@inject IFileConversionHttpClient Client 
+@inject ILogger<FetchData> Logger 
+
+<h1>Khu vực trích xuất và kiểm tra dữ liệu</h1>
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <div class="col-md-12 p-lg-2 border-primary">
+                <p>Bước 1: chọn File phù hợp từ máy tính của bạn.</p>
+                <InputFile OnChange="@OnInputFileChange"/>
+            </div>
+            
+            <div class="col-md-6 p-lg-2 border-primary border-0">
+                <p>Bước 2: nhập thông tin đối soát dữ liệu</p>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="txtFilterOrderCode">Mã đơn: </label>
+                        <input class="form-control" id="txtFilterOrderCode" @bind="@FilterOrderCode"/>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="txtFilterShipingCode">Mã vận chuyển: </label>
+                        <input class="form-control" id="txtFilterShipingCode" @bind="@FilterShippingCode"/>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label for="txtNumberOfProduct">Số sản phẩm trong đơn: </label>
+                        <input class="form-control" id="txtNumberOfProduct" @oninput="OnNumberOfProductChange" value="@_numberOfProduct" min="0"/>
+                    </div>
+
+                    @if (_filterProducts != null && !_filterProducts.IsEmpty)
+                    {
+                        @for (var i = 0; i < _filterProducts.Count; ++i)
+                        {
+                            var localI = i;
+                            <div class="form-group col-md-10">
+                                <input class="form-control" @bind="_filterProducts[localI].FilterProductSku" placeholder="@($"SKU sản phẩm {i+1}")"/>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input class="form-control" @bind="_filterProducts[localI].FilterProductQuantity" type="number" min="0"/>
+                            </div>
+                        }
+                    }
+
+                    
+                    @if (string.IsNullOrEmpty(_error))
+                    {
+                        <p style="color: red">@_error</p>
+                    }
+                    
+                    <button type="button" class="btn btn-primary" @onclick="OnSubmitButtonClick">
+                        Xác nhận dữ liệu
+                    </button>
+                    
+                    <button type="button" class="btn btn-danger" @onclick="OnResetButtonClick">
+                       Làm lại 
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @if (_filteredData != null && !_filteredData.IsEmpty)
+        {
+            <div class="row">
+                @foreach (var item in _filteredData)
+                {
+                    <div class="col-sm-4 pb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Mã đơn: @item.OrderCode | Mã vận chuyển: @item.ShippingCode
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var product in @item.Products)
+                                    {
+                                        <li class="list-group-item">
+                                            <p>SKU sản phẩm: @product.Sku</p>
+                                            <p>Tên sản phẩm: @product.Name</p>
+                                            <p>Số lượng: @product.Quantity</p>
+                                            <p>Giá: @product.Price</p>
+                                            <p>Phân loại sản phẩm: @product.CategoryName</p>
+                                            <p>SKU phân loại sản phẩm: @product.CategorySku</p>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+
+                                <p>Phản hồi: @item.Feedback</p>
+                                <p>Ghi chú: @item.Note</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p style="color: red">Không tìm thấy thông tin phù hợp</p>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Bạn cần phải đăng nhập để sử dụng tính năng này</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    class FilterProduct
+    {
+        public string FilterProductSku { get; set; } = string.Empty;
+        public int FilterProductQuantity { get; set; } = 0;
+    }
+    private ImmutableList<PackagingDocument> _data = ImmutableList<PackagingDocument>.Empty;
+    private ImmutableList<PackagingDocument> _filteredData = ImmutableList<PackagingDocument>.Empty;
+    private ImmutableList<FilterProduct> _filterProducts = ImmutableList<FilterProduct>.Empty;
+    private int _numberOfProduct = 0;
+    private string FilterOrderCode { get; set; } = string.Empty;
+    private string FilterShippingCode { get; set; } = string.Empty;
+    private string _error;
+    
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            using (var ms = file.OpenReadStream(file.Size))
+            {
+                var content = new MultipartFormDataContent();
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                content.Add(new StreamContent(ms, Convert.ToInt32(file.Size)), "file", file.Name);
+                _data = await Client.ParsePackagingDocumentAsync(content);
+                _filteredData = _filteredData.AddRange(_data);
+            }
+        }
+    }
+   
+    private async Task OnSubmitButtonClick(MouseEventArgs e)
+    {
+        if (string.IsNullOrEmpty(FilterOrderCode) && string.IsNullOrEmpty(FilterOrderCode))
+        {
+            _error = "Phải nhập Mã vân chuyển hoặc Mã đơn";
+        }
+        else
+        {
+            _error = string.Empty;
+            _filteredData = _data
+                    .Where(pd => (pd.OrderCode.Equals(FilterOrderCode.Trim(), StringComparison.OrdinalIgnoreCase) || pd.ShippingCode.Equals(FilterShippingCode.Trim(), StringComparison.OrdinalIgnoreCase))
+                        && _numberOfProduct == pd.Products.Count
+                        && _filterProducts.All(fp => pd.Products
+                            .Any(p => fp.FilterProductSku.Trim().Equals(p.Sku, StringComparison.OrdinalIgnoreCase) && fp.FilterProductQuantity == p.Quantity))
+                    )
+                    .ToImmutableList();    
+        }
+    }
+    
+    private async Task OnNumberOfProductChange(ChangeEventArgs e)
+    {
+        int.TryParse(e.Value.ToString(), out _numberOfProduct);
+        _filterProducts = Enumerable.Range(0, _numberOfProduct).Select(x => new FilterProduct()
+        {
+           FilterProductSku = string.Empty,
+            FilterProductQuantity = 0
+        }).ToImmutableList();
+    }
+
+    private async Task OnResetButtonClick(MouseEventArgs e)
+    {
+        _error = string.Empty;
+        _filteredData = _data;
+        _filterProducts = ImmutableList<FilterProduct>.Empty;
+        _numberOfProduct = 0;
+        
+        FilterOrderCode = string.Empty;
+        FilterShippingCode = string.Empty;
+    }
+    
+}
