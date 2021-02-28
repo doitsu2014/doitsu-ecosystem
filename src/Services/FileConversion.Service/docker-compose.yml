@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  fileconversion-service:
+    image: doitsu2014/fileconversion-service:latest
+    build:
+      context: ../../
+      dockerfile: Services/FileConversion.Service/FileConversion.Api/Dockerfile
+
