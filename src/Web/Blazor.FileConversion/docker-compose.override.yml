@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  fileconverion-client-blazor:
+  fileconversion-client-blazor:
     ports:
       - "10000:80"
     volumes:
