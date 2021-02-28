@@ -1,0 +1,20 @@
+
+steps:
+- task: DockerCompose@0
+  displayName: Build FileConversion.Service.DockerImage
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Docker Hub doitsu2014'
+    dockerComposeFile: './src/Services/FileConversion.Service/docker-compose.yml'
+    action: 'Build services'
+    includeLatestTag: true
+    arguments: '--force-rm'
+
+- task: DockerCompose@0
+  displayName: Push FileConversion.Service.DockerImage
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Docker Hub doitsu2014'
+    dockerComposeFile: './src/Services/FileConversion.Service/docker-compose.yml'
+    action: 'Push services'
+    includeLatestTag: true

@@ -12,15 +12,27 @@ namespace Shared.Extensions
                 Succ: t => new OkObjectResult(t),
                 Fail: e => new BadRequestObjectResult(e));
 
-        public static Task<IActionResult> ToActionResultAsync<T>(this Task<Validation<Error, T>> validation) =>
-            validation.Map(ToActionResult);
+        public static async Task<IActionResult> ToActionResultAsync<T>(this Task<Validation<Error, T>> validation) =>
+            ToActionResult(await validation);
+
+        public static Task<IActionResult> ToActionResultAsync<T>(this Validation<Error, Task<T>> validation)
+        {
+            return validation.MatchAsync<IActionResult>(async x => new OkObjectResult(await x),
+                err => new BadRequestObjectResult(err));
+        }
+
+        public static async Task<IActionResult> ToActionResultAsync<T>(this Task<Validation<Error, Task<T>>> validation)
+        {
+            return await ToActionResultAsync(await validation);
+        }
 
         public static Task<IActionResult> ToActionResultAsync(this Task<Validation<Error, Task>> validation) =>
-            validation.Bind(ToActionResultAsync);
-        
-        private static Task<IActionResult> ToActionResultAsync(Validation<Error, Task> validation) =>
-            validation.MatchAsync<IActionResult>(
-                SuccAsync: async t => { await t; return new OkResult(); },
-                Fail: e => new BadRequestObjectResult(e));
+            validation.Bind(async v => await v.MatchAsync<IActionResult>(
+                async t =>
+                {
+                    await t;
+                    return new OkResult();
+                },
+                e => new BadRequestObjectResult(e)));
     }
 }

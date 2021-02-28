@@ -1,7 +1,5 @@
 using System.Net.Sockets;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,27 +60,8 @@ namespace Identity.Service.OpenIdServer
                     }
                 });
 
-            await funcCreateClientAsync(applicationSection["ServiceGateway:ClientId"],
-                "client.services.gateway",
-                new OpenIddictApplicationDescriptor
-                {
-                    ClientSecret = applicationSection["ServiceGateway:ClientSecret"],
-                    Requirements =
-                    {
-                        Requirements.Features.ProofKeyForCodeExchange
-                    },
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Token,
-                        Permissions.Endpoints.Introspection,
-                        Permissions.GrantTypes.ClientCredentials,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}"
-                    }
-                });
-
             await funcCreateClientAsync(applicationSection["Administrator:ClientId"],
-                "client.administrator",
+                "application.administrator",
                 new OpenIddictApplicationDescriptor
                 {
                     ClientSecret = applicationSection["Administrator:ClientSecret"],
@@ -96,27 +75,26 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Endpoints.Introspection,
                         Permissions.GrantTypes.Password,
                         Permissions.GrantTypes.RefreshToken,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostWrite}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionAll}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}",
                     }
                 });
 
-            await funcCreateClientAsync(applicationSection["BlazorClient:ClientId"],
-                "client.blazor",
+            await funcCreateClientAsync(applicationSection["FileConversion:ClientId"],
+                "application.fileconversion",
                 new OpenIddictApplicationDescriptor
                 {
                     ConsentType = ConsentTypes.Explicit,
                     Type = ClientTypes.Public,
                     PostLogoutRedirectUris =
                     {
-                        new Uri($"{applicationSection["BlazorClient:Uri"]}/authentication/logout-callback")
+                        new Uri($"{applicationSection["FileConversion:Uri"]}/authentication/logout-callback")
                     },
                     RedirectUris =
                     {
-                        new Uri($"{applicationSection["BlazorClient:Uri"]}/authentication/login-callback")
+                        new Uri($"{applicationSection["FileConversion:Uri"]}/authentication/login-callback")
                     },
                     Permissions =
                     {
@@ -129,47 +107,10 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Scopes.Email,
                         Permissions.Scopes.Profile,
                         Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
+                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionParse}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerUserInfo}"
-                    },
-                    Requirements =
-                    {
-                        Requirements.Features.ProofKeyForCodeExchange
-                    }
-                });
-
-            await funcCreateClientAsync(applicationSection["AdministratorAngularClient:ClientId"],
-                "client.administrator.angular",
-                new OpenIddictApplicationDescriptor
-                {
-                    ConsentType = ConsentTypes.Explicit,
-                    Type = ClientTypes.Public,
-                    PostLogoutRedirectUris =
-                    {
-                        new Uri(
-                            $"{applicationSection["AdministratorAngularClient:Uri"]}/authentication/logout-callback")
-                    },
-                    RedirectUris =
-                    {
-                        new Uri($"{applicationSection["AdministratorAngularClient:Uri"]}/authentication/login-callback")
-                    },
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Authorization,
-                        Permissions.Endpoints.Logout,
-                        Permissions.Endpoints.Token,
-                        Permissions.GrantTypes.AuthorizationCode,
-                        Permissions.GrantTypes.RefreshToken,
-                        Permissions.ResponseTypes.Code,
-                        Permissions.Scopes.Email,
-                        Permissions.Scopes.Profile,
-                        Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeBlogPostRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}"
                     },
                     Requirements =
                     {
@@ -193,29 +134,24 @@ namespace Identity.Service.OpenIdServer
                     }
                 });
 
-            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostWrite,
-                new OpenIddictScopeDescriptor()
-                {
-                    Resources =
+            var serviceFileConversionScopes = new string[]
+            {
+                ScopeNameConstants.ScopeFileConversionAll,
+                ScopeNameConstants.ScopeFileConversionRead,
+                ScopeNameConstants.ScopeFileConversionParse,
+                ScopeNameConstants.ScopeFileConversionWrite
+            };
+            foreach (var scope in serviceFileConversionScopes)
+            {
+                await funcCreateScopeDescriptorAsync(scope,
+                    new OpenIddictScopeDescriptor()
                     {
-                        ResourceNameConstants.ResourceBlogPost,
-                        ResourceNameConstants.ResourceBlogTag,
-                        ResourceNameConstants.ResourceBlogComment,
-                        ResourceNameConstants.ResourceBlogInteract
-                    }
-                });
-
-            await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeBlogPostRead,
-                new OpenIddictScopeDescriptor()
-                {
-                    Resources =
-                    {
-                        ResourceNameConstants.ResourceBlogPost,
-                        ResourceNameConstants.ResourceBlogTag,
-                        ResourceNameConstants.ResourceBlogComment,
-                        ResourceNameConstants.ResourceBlogInteract
-                    }
-                });
+                        Resources =
+                        {
+                            ResourceNameConstants.ResourceFileConversion
+                        }
+                    });
+            }
 
             await funcCreateScopeDescriptorAsync(ScopeNameConstants.ScopeImageServerRead,
                 new OpenIddictScopeDescriptor()

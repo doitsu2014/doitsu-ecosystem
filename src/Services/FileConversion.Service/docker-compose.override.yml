@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  fileconversion-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=zaQ@1234
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "7000:80"
+      - "7001:443"
+    volumes:
+      - ./volumes/secrets:/root/.microsoft/usersecrets:ro
+      - ./volumes/https:/root/.aspnet/https:ro
+      - ./volumes/appsettings.json:/app/appsettings.json
+      - ./volumes/logs:/app/logs
+

@@ -10,8 +10,4 @@
     <PackageReference Include="LanguageExt.Rx" Version="3.4.15" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces" />
-  </ItemGroup>
-
 </Project>

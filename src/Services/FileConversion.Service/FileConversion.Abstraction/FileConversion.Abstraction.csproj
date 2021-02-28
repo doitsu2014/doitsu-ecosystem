@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+    
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Abstraction\Shared.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.EntityFrameworkCore\Shared.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

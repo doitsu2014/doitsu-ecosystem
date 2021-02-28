@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+      <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="FubarDev.BeanIO" Version="4.1.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
+    <PackageReference Include="Superpower" Version="2.3.0" />
+    <PackageReference Include="System.Reactive" Version="4.1.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Abstraction\Shared.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Validations\Shared.Validations.csproj" />
+    <ProjectReference Include="..\FileConversion.Core.Interface\FileConversion.Core.Interface.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="BeanMappers\InvoiceMapper.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="BeanMappers\PackagingProductDocumentMapper.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+</Project>
