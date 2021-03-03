@@ -3,7 +3,6 @@
 @using Blazor.FileConversion.Client.Models
 @using System.Net.Http.Headers
 @using System.Collections.Immutable
-@using System.Text.Json
 @using Microsoft.Extensions.Logging
 @inject IFileConversionHttpClient Client 
 @inject ILogger<FetchData> Logger 
@@ -142,7 +141,7 @@
         }
     }
    
-    private async Task OnSubmitButtonClick(MouseEventArgs e)
+    private Task OnSubmitButtonClick(MouseEventArgs e)
     {
         if (string.IsNullOrEmpty(FilterOrderCode) && string.IsNullOrEmpty(FilterOrderCode))
         {
@@ -159,9 +158,11 @@
                     )
                     .ToImmutableList();    
         }
+
+        return Task.CompletedTask;
     }
     
-    private async Task OnNumberOfProductChange(ChangeEventArgs e)
+    private Task OnNumberOfProductChange(ChangeEventArgs e)
     {
         int.TryParse(e.Value.ToString(), out _numberOfProduct);
         _filterProducts = Enumerable.Range(0, _numberOfProduct).Select(x => new FilterProduct()
@@ -169,9 +170,11 @@
            FilterProductSku = string.Empty,
             FilterProductQuantity = 0
         }).ToImmutableList();
+
+        return Task.CompletedTask;
     }
 
-    private async Task OnResetButtonClick(MouseEventArgs e)
+    private Task OnResetButtonClick(MouseEventArgs e)
     {
         _error = string.Empty;
         _filteredData = _data;
@@ -180,6 +183,8 @@
         
         FilterOrderCode = string.Empty;
         FilterShippingCode = string.Empty;
+
+        return Task.CompletedTask;
     }
     
 }

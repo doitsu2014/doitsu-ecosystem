@@ -6,13 +6,13 @@ namespace Blazor.FileConversion.Client.HttpClients.FileConversion
 {
     public class FileConversionAuthorizationMessageHandler : AuthorizationMessageHandler
     {
-        private readonly FileConversionSettings _settings;
-
         public FileConversionAuthorizationMessageHandler(IAccessTokenProvider provider, NavigationManager navigation,
             IConfiguration configuration) :
             base(provider, navigation)
         {
-            ConfigureHandler(authorizedUrls: new[] {configuration[$"{FileConversionHttpClient.FileConversionHttpClientSettings}:BaseAddress"]},
+            ConfigureHandler(
+                authorizedUrls: new[]
+                    {configuration[$"{FileConversionHttpClient.FileConversionHttpClientSettings}:BaseAddress"]},
                 scopes: new[] {"services.fileconversion.parse"});
         }
     }
