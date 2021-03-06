@@ -1,0 +1,43 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+name: $(Build.SourceBranchName).$(date:yyyyMMdd).$(rev:r)
+pr: none
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+  paths:
+    include:
+    - /src/Services/FileConversion.Service
+    exclude:
+    - README.md
+
+stages:
+- stage: stage_publish_docker_images
+  displayName: "[Stage] Build And Push Docker Images"
+  jobs:  
+  - job: job_publish_docker_images
+    displayName: "[Job] Publish Services Docker Images"
+    pool:
+      name: "Doitsu Technology Linux Pipeplies"
+      vmImage: "Doitsu.Technology.Ubuntu.Agent"
+    steps:
+      - template: "./src/Services/FileConversion.Service/azure-pipeline-template-publish-docker-images-steps.yml"
+
+# - stage: unit_test
+  # displayName: Unit Test
+  # dependsOn: build
+  # condition: succeeded()
+  # jobs:  
+  # - template: azure-pipeline-template-unittest-jobs.yml
+  
+- stage: deploy
+  displayName: "[Stage] Deployment"
+  dependsOn: stage_publish_docker_images
+  condition: succeeded()
+  jobs:
+  - template: ./azure-pipeline-template-deploy-jobs.yml
