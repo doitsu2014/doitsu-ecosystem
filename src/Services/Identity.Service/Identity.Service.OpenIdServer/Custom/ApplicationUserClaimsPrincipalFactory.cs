@@ -18,23 +18,23 @@ namespace Identity.Service.OpenIdServer.Custom
         {
         }
 
-        public async override Task<ClaimsPrincipal> CreateAsync(ApplicationUser user)
+        public override async Task<ClaimsPrincipal> CreateAsync(ApplicationUser user)
         {
             var principal = await base.CreateAsync(user);
-            var listAdditionalClaims = new (string key, string value)[] {
-                (ClaimTypeConstants.Avatar, user.Avatar),
-                (ClaimTypeConstants.AddressStreet, user.Street),
-                (ClaimTypeConstants.AddressCountry, user.Country),
-                (ClaimTypeConstants.AddressState, user.State),
-                (ClaimTypeConstants.AddressCity, user.City),
-                (ClaimTypeConstants.AddressZipCode, user.ZipCode)
-            }
-            .Where(kv => !string.IsNullOrEmpty(kv.value))
-            .Select(kv => new Claim(kv.key, kv.value))
-            .ToArray();
-            ((ClaimsIdentity)principal.Identity).AddClaims(listAdditionalClaims);
+            var listAdditionalClaims = new (string key, string value)[]
+                {
+                    (ClaimTypeConstants.Avatar, user.Avatar),
+                    (ClaimTypeConstants.AddressStreet, user.Street),
+                    (ClaimTypeConstants.AddressCountry, user.Country),
+                    (ClaimTypeConstants.AddressState, user.State),
+                    (ClaimTypeConstants.AddressCity, user.City),
+                    (ClaimTypeConstants.AddressZipCode, user.ZipCode)
+                }
+                .Where(kv => !string.IsNullOrEmpty(kv.value))
+                .Select(kv => new Claim(kv.key, kv.value))
+                .ToArray();
+            ((ClaimsIdentity) principal.Identity)?.AddClaims(listAdditionalClaims);
             return principal;
         }
-
     }
 }

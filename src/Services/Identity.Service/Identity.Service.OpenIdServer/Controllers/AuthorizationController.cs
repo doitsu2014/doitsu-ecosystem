@@ -566,7 +566,7 @@ namespace Identity.Service.OpenIdServer
                     Destinations.AccessToken, Destinations.IdentityToken);
 
                 var principal = new ClaimsPrincipal();
-                principal.AddIdentity(identity); 
+                principal.AddIdentity(identity);
                 // Note: in this sample, the granted scopes match the requested scope
                 // but you may want to allow the user to uncheck specific scopes.
                 // For that, simply restrict the list of scopes before calling SetScopes.
@@ -590,29 +590,40 @@ namespace Identity.Service.OpenIdServer
             // Note: by default, claims are NOT automatically included in the access and identity tokens.
             // To allow OpenIddict to serialize them, you must attach them a destination, that specifies
             // whether they should be included in access tokens, in identity tokens or in both.
-
             switch (claim.Type)
             {
-                case Claims.Name:
-                case ClaimTypeConstants.Avatar:
                 case ClaimTypeConstants.AddressCity:
                 case ClaimTypeConstants.AddressCountry:
                 case ClaimTypeConstants.AddressState:
                 case ClaimTypeConstants.AddressStreet:
                 case ClaimTypeConstants.AddressZipCode:
-                    yield return Destinations.AccessToken;
-                    if (principal.HasScope(Scopes.Profile))
+                    if (principal.HasScope(Scopes.Address))
+                    {
+                        yield return Destinations.AccessToken;
                         yield return Destinations.IdentityToken;
+                    }
+                    yield break;
+                case Claims.Name:
+                case ClaimTypeConstants.Avatar:
+                    if (principal.HasScope(Scopes.Profile))
+                    {
+                        yield return Destinations.AccessToken;
+                        yield return Destinations.IdentityToken;
+                    }
                     yield break;
                 case Claims.Email:
-                    yield return Destinations.AccessToken;
                     if (principal.HasScope(Scopes.Email))
+                    {
+                        yield return Destinations.AccessToken;
                         yield return Destinations.IdentityToken;
+                    }
                     yield break;
                 case Claims.Role:
-                    yield return Destinations.AccessToken;
                     if (principal.HasScope(Scopes.Roles))
+                    {
+                        yield return Destinations.AccessToken;
                         yield return Destinations.IdentityToken;
+                    }
                     yield break;
                 // Never include the security stamp in the access and identity tokens, as it's a secret value.
                 case "AspNet.Identity.SecurityStamp": yield break;

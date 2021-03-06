@@ -75,6 +75,10 @@ namespace Identity.Service.OpenIdServer
                         Permissions.Endpoints.Introspection,
                         Permissions.GrantTypes.Password,
                         Permissions.GrantTypes.RefreshToken,
+                        Permissions.Scopes.Email,
+                        Permissions.Scopes.Profile,
+                        Permissions.Scopes.Address,
+                        Permissions.Scopes.Roles,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionAll}",
@@ -106,6 +110,7 @@ namespace Identity.Service.OpenIdServer
                         Permissions.ResponseTypes.Code,
                         Permissions.Scopes.Email,
                         Permissions.Scopes.Profile,
+                        Permissions.Scopes.Address,
                         Permissions.Scopes.Roles,
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
                         $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
@@ -213,7 +218,7 @@ namespace Identity.Service.OpenIdServer
                     PhoneNumber = "0946680600"
                 };
                 await userManager.CreateAsync(adminUser, adminUserSection["Password"]);
-
+                
                 var listRoleNames = (new string[]
                 {
                     IdentityRoleConstants.Admin,

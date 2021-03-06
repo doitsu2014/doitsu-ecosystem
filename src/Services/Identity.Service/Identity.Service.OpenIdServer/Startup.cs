@@ -44,15 +44,15 @@ namespace Identity.Service.OpenIdServer
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.
-                options.UseNpgsql(Configuration.GetConnectionString("IdentityDatabase"), options =>
-                    options.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
-                        .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),
-                            errorCodesToAdd: null));
-
+                options.UseNpgsql(Configuration.GetConnectionString("IdentityDatabase"), npgsqlOptions =>
+                    npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
+                    // .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),  errorCodesToAdd: null)
+                )
                 // Register the entity sets needed by OpenIddict.
                 // Note: use the generic overload if you need
                 // to replace the default OpenIddict entities.
-                options.UseOpenIddict();
+                .UseOpenIddict();
+
             });
 
             // Register the Identity services.
@@ -124,14 +124,10 @@ namespace Identity.Service.OpenIdServer
 
                     // Mark the "email", "profile", "roles" scopes as supported scopes.
                     options.RegisterScopes(Scopes.Email,
+                        Scopes.Phone,
+                        Scopes.Address,
                         Scopes.Profile,
-                        Scopes.Roles,
-                        ScopeNameConstants.ScopeBlogPostWrite,
-                        ScopeNameConstants.ScopeBlogPostRead,
-                        ScopeNameConstants.ScopeImageServerRead,
-                        ScopeNameConstants.ScopeImageServerWrite,
-                        ScopeNameConstants.ScopeIdentityServerAllServices,
-                        ScopeNameConstants.ScopeIdentityServerUserInfo);
+                        Scopes.Roles);
 
                     if (Environment.IsDevelopment())
                     {
