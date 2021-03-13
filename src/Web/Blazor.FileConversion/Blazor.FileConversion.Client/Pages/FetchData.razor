@@ -4,101 +4,116 @@
 @using System.Net.Http.Headers
 @using System.Collections.Immutable
 @using Microsoft.Extensions.Logging
-@inject IFileConversionHttpClient Client 
-@inject ILogger<FetchData> Logger 
+@using System.Reactive.Subjects
+@using System.Reactive.Linq
+@using System
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+@inject IFileConversionHttpClient Client
+@inject ILogger<FetchData> Logger
 
 <h1>Khu vực trích xuất và kiểm tra dữ liệu</h1>
 <AuthorizeView>
     <Authorized>
         <div class="row">
-            <div class="col-md-12 p-lg-2 border-primary">
-                <p>Bước 1: chọn File phù hợp từ máy tính của bạn.</p>
-                <InputFile OnChange="@OnInputFileChange"/>
-            </div>
-            
-            <div class="col-md-6 p-lg-2 border-primary border-0">
-                <p>Bước 2: nhập thông tin đối soát dữ liệu</p>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="txtFilterShipingCode">Mã vận chuyển: </label>
-                        <input class="form-control" id="txtFilterShipingCode" @bind="@FilterShippingCode"/>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        <label for="txtNumberOfProduct">Số sản phẩm trong đơn: </label>
-                        <input class="form-control" id="txtNumberOfProduct" @oninput="OnNumberOfProductChange" value="@_numberOfProduct" min="0"/>
-                    </div>
-
-                    @if (_filterProducts != null && !_filterProducts.IsEmpty)
-                    {
-                        @for (var i = 0; i < _filterProducts.Count; ++i)
-                        {
-                            var localI = i;
-                            <div class="form-group col-md-10">
-                                <input class="form-control" @bind="_filterProducts[localI].FilterProductSku" placeholder="@($"SKU phân loại sản phẩm {i+1}")"/>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <input class="form-control" @bind="_filterProducts[localI].FilterProductQuantity" type="number" min="0"/>
-                            </div>
-                        }
-                    }
-
-                    
-                    @if (string.IsNullOrEmpty(_error))
-                    {
-                        <p style="color: red">@_error</p>
-                    }
-                    
-                    <button type="button" class="btn btn-primary" @onclick="OnSubmitButtonClick">
-                        Xác nhận dữ liệu
-                    </button>
-                    
-                    <button type="button" class="btn btn-danger" @onclick="OnResetButtonClick">
-                       Làm lại 
-                    </button>
+            <div class="col-md-6 col-sm-12">
+                <div class="col-md-12 p-lg-2 border-primary">
+                    <p>Bước 1: chọn File phù hợp từ máy tính của bạn.</p>
+                    <InputFile OnChange="@OnInputFileChange"/>
                 </div>
+                <div class="col-md-12 p-lg-2 border-primary border-0">
+                    <p>Bước 2: nhập thông tin đối soát dữ liệu</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFilterShipingCode">Mã vận chuyển: </label>
+                            <input class="form-control" id="txtFilterShipingCode" @bind="@FilterShippingCode"/>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            <label for="txtMatchingSKU">SKU của sản phẩm: </label>
+                            <input class="form-control" @oninput="@TxtMatchingSKUSubject.OnNext" @bind="@TxtMatchingSkuValue" @ref="txtMatchingSku"/>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <button class="btn btn-primary" style="margin-top: 32px;" @ref="btnMatchingSkuEnter" @onclick="OnBtnMatchingProductSku">Nhập</button>
+                        </div>
+                        @if (_filterDictionaryProducts.Count > 0)
+                        {
+                            @foreach (var entry in _filterDictionaryProducts)
+                            {
+                                <div class="form-group col-md-10">
+                                    <input class="form-control" disabled="disabled" value="@entry.Key"/>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input class="form-control" disabled="disabled" type="number" value="@entry.Value.FilterProductQuantity"/>
+                                </div>
+                            }
+                        }
+                       
+                        @if (string.IsNullOrEmpty(_error))
+                        {
+                            <p style="color: #ff0000">@_error</p>
+                        }
+                        <div class="form-group col-md-12">
+                            <button type="button" class="btn btn-danger" @onclick="OnResetButtonClick">
+                                Làm lại
+                            </button>
+
+                            <button type="button" class="btn btn-primary" @onclick="OnSubmitButtonClick">
+                                Xác nhận dữ liệu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Show List Items *@
+            <div class="col-md-6 col-sm-12">
+                @if (_filteredData != null && !_filteredData.IsEmpty)
+                {
+                    @foreach (var item in _filteredData)
+                    {
+                        <div class="col-sm-12 pb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <p>Mã vận chuyển: @item.ShippingCode</p>
+                                    <p>Mã đơn: @item.OrderCode</p>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var product in @item.Products)
+                                        {
+                                            <li class="list-group-item">
+                                                <p>SKU sản phẩm: @product.Sku</p>
+                                                <p>Tên sản phẩm: @product.Name</p>
+                                                <p>Số lượng: @product.Quantity</p>
+                                                <p>Giá: @product.Price</p>
+                                                <p>Phân loại sản phẩm: @product.CategoryName</p>
+                                                <p>SKU phân loại sản phẩm: @product.CategorySku</p>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="card-footer">
+
+                                    <p>Phản hồi: @item.Feedback</p>
+                                    <p>Ghi chú: @item.Note</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                    }
+                }
+                else
+                {
+                    <p style="color: red">Không tìm thấy thông tin phù hợp</p>
+                }
+
             </div>
         </div>
 
-        @if (_filteredData != null && !_filteredData.IsEmpty)
-        {
-            <div class="row">
-                @foreach (var item in _filteredData)
-                {
-                    <div class="col-sm-4 pb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                Mã đơn: @item.OrderCode | Mã vận chuyển: @item.ShippingCode
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var product in @item.Products)
-                                    {
-                                        <li class="list-group-item">
-                                            <p>SKU sản phẩm: @product.Sku</p>
-                                            <p>Tên sản phẩm: @product.Name</p>
-                                            <p>Số lượng: @product.Quantity</p>
-                                            <p>Giá: @product.Price</p>
-                                            <p>Phân loại sản phẩm: @product.CategoryName</p>
-                                            <p>SKU phân loại sản phẩm: @product.CategorySku</p>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                            <div class="card-footer">
 
-                                <p>Phản hồi: @item.Feedback</p>
-                                <p>Ghi chú: @item.Note</p>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <p style="color: red">Không tìm thấy thông tin phù hợp</p>
-        }
     </Authorized>
     <NotAuthorized>
         <p>Bạn cần phải đăng nhập để sử dụng tính năng này</p>
@@ -106,20 +121,39 @@
 </AuthorizeView>
 
 @code {
+    private Subject<ChangeEventArgs> TxtMatchingSKUSubject = new();
+    public string TxtMatchingSkuValue { get; set; }
+    private ElementReference btnMatchingSkuEnter;
+    private ElementReference txtMatchingSku;
 
     class FilterProduct
     {
-        public string FilterProductSku { get; set; } = string.Empty;
+        public string FilterCategorySku { get; set; } = string.Empty;
         public int FilterProductQuantity { get; set; } = 0;
     }
+
     private ImmutableList<PackagingDocument> _data = ImmutableList<PackagingDocument>.Empty;
     private ImmutableList<PackagingDocument> _filteredData = ImmutableList<PackagingDocument>.Empty;
-    private ImmutableList<FilterProduct> _filterProducts = ImmutableList<FilterProduct>.Empty;
+    private Dictionary<string, FilterProduct> _filterDictionaryProducts = new Dictionary<string, FilterProduct>();
+
     private int _numberOfProduct = 0;
-    private string FilterOrderCode { get; set; } = string.Empty;
     private string FilterShippingCode { get; set; } = string.Empty;
     private string _error;
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        TxtMatchingSKUSubject
+            .Throttle(TimeSpan.FromMilliseconds(200))
+            .Select(e => (string?) e.Value)
+            .Select(v => v?.Trim())
+            .Subscribe(async ts =>
+            {
+                Logger.LogInformation(ts);
+                await btnMatchingSkuEnter.FocusAsync();
+                StateHasChanged();
+            });
+    }
+
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         var files = e.GetMultipleFiles();
@@ -135,51 +169,59 @@
             }
         }
     }
-   
+
     private Task OnSubmitButtonClick(MouseEventArgs e)
     {
-        if (string.IsNullOrEmpty(FilterOrderCode) && string.IsNullOrEmpty(FilterOrderCode))
+        if (string.IsNullOrEmpty(FilterShippingCode))
         {
-            _error = "Phải nhập Mã vân chuyển hoặc Mã đơn";
+            _error = "Phải nhập Mã vân chuyển";
         }
         else
         {
+            var filterProducts = _filterDictionaryProducts.Select(e => e.Value).ToList();
             _error = string.Empty;
             _filteredData = _data
-                    .Where(pd => (pd.OrderCode.Equals(FilterOrderCode.Trim(), StringComparison.OrdinalIgnoreCase) || pd.ShippingCode.Equals(FilterShippingCode.Trim(), StringComparison.OrdinalIgnoreCase))
-                        && _numberOfProduct == pd.Products.Count
-                        && _filterProducts.All(fp => pd.Products
-                            .Any(p => fp.FilterProductSku.Trim().Equals(p.CategorySku, StringComparison.OrdinalIgnoreCase) && fp.FilterProductQuantity == p.Quantity))
-                    )
-                    .ToImmutableList();    
+                .Where(pd => (pd.ShippingCode.Equals(FilterShippingCode.Trim(), StringComparison.OrdinalIgnoreCase))
+                             && filterProducts.All(fp => pd.Products.Any(p 
+                                 => fp.FilterCategorySku
+                                     .Trim()
+                                     .Equals(p.CategorySku, StringComparison.OrdinalIgnoreCase) 
+                                    && fp.FilterProductQuantity == p.Quantity))
+                )
+                .ToImmutableList();
         }
 
         return Task.CompletedTask;
     }
-    
-    private Task OnNumberOfProductChange(ChangeEventArgs e)
-    {
-        int.TryParse(e.Value.ToString(), out _numberOfProduct);
-        _filterProducts = Enumerable.Range(0, _numberOfProduct).Select(x => new FilterProduct()
-        {
-           FilterProductSku = string.Empty,
-            FilterProductQuantity = 0
-        }).ToImmutableList();
 
-        return Task.CompletedTask;
+    private async Task OnBtnMatchingProductSku(MouseEventArgs e)
+    {
+        if (!_filterDictionaryProducts.ContainsKey(TxtMatchingSkuValue))
+        {
+            _filterDictionaryProducts.Add(TxtMatchingSkuValue, new FilterProduct()
+            {
+                FilterCategorySku = TxtMatchingSkuValue,
+                FilterProductQuantity = 1
+            });
+        }
+        else
+        {
+            _filterDictionaryProducts[TxtMatchingSkuValue].FilterProductQuantity += 1;
+        }
+
+        TxtMatchingSkuValue = string.Empty;
+        await txtMatchingSku.FocusAsync();
+        StateHasChanged();
     }
 
     private Task OnResetButtonClick(MouseEventArgs e)
     {
         _error = string.Empty;
         _filteredData = _data;
-        _filterProducts = ImmutableList<FilterProduct>.Empty;
+        _filterDictionaryProducts = new Dictionary<string, FilterProduct>();
         _numberOfProduct = 0;
-        
-        FilterOrderCode = string.Empty;
         FilterShippingCode = string.Empty;
-
         return Task.CompletedTask;
     }
-    
+
 }
