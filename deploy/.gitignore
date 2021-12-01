@@ -1,0 +1,8 @@
+**/swarm/kafka/**/*.crt
+**/swarm/kafka/**/*.jks
+**/swarm/kafka/**/*_creds
+**/swarm/kafka/**/*.key
+**/swarm/kafka/**/*.pem
+**/swarm/kafka/**/*.csr
+**/swarm/kafka/**/*.srl
+**/swarm/kafka/**/*.req
