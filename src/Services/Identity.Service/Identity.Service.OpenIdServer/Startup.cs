@@ -27,8 +27,8 @@ namespace Identity.Service.OpenIdServer
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public IHostEnvironment Environment { get; }
+        private IConfiguration Configuration { get; }
+        private IHostEnvironment Environment { get; }
 
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {

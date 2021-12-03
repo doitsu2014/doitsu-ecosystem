@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
@@ -80,14 +79,12 @@ namespace Identity.Service.OpenIdServer.Controllers
         {
             var permValueMustUnique = fun((OpenIddictEntityFrameworkCoreApplication app, string permValue) =>
             {
-                var listPermissions =
-                    JsonConvert.DeserializeObject<System.Collections.Generic.HashSet<string>>(app.Permissions);
+                var listPermissions = JsonConvert.DeserializeObject<System.Collections.Generic.HashSet<string>>(app.Permissions);
                 if (listPermissions.Any(x => x == permValue))
                 {
                     return Fail<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>(
                         $"Permission {permValue} does exist in application");
                 }
-
                 listPermissions.Add(permValue);
                 return Success<Error, (OpenIddictEntityFrameworkCoreApplication application, string availListP)>((app,
                     JsonConvert.SerializeObject(listPermissions)));
