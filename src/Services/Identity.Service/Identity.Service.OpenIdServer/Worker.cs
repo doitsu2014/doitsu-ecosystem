@@ -1,4 +1,3 @@
-using System.Net.Sockets;
 using System;
 using System.Linq;
 using System.Threading;
@@ -31,9 +30,9 @@ namespace Identity.Service.OpenIdServer
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             await context.Database.MigrateAsync(cancellationToken);
 
-            await RegisterApplicationsAsync(scope.ServiceProvider);
-            await RegisterScopesAsync(scope.ServiceProvider);
-            await RegisterDefaultUsersAsync(scope.ServiceProvider);
+            // await RegisterApplicationsAsync(scope.ServiceProvider);
+            // await RegisterScopesAsync(scope.ServiceProvider);
+            // await RegisterDefaultUsersAsync(scope.ServiceProvider);
         }
 
         private async Task RegisterApplicationsAsync(IServiceProvider provider)
@@ -41,87 +40,8 @@ namespace Identity.Service.OpenIdServer
             var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
             var logger = provider.GetRequiredService<ILogger<Worker>>();
             var configuration = provider.GetRequiredService<IConfiguration>();
-            var applicationSection = configuration.GetSection("Initial:Application");
+            var applicationSection = configuration.GetSection("InitialSetting:Application");
 
-            var funcCreateClientAsync = new Func<string, string, OpenIddictApplicationDescriptor, Task>(
-                async (clientId, clientDisplayName, data) =>
-                {
-                    if (await manager.FindByClientIdAsync(clientId) is null)
-                    {
-                        data.ClientId = clientId;
-                        data.DisplayName = clientDisplayName;
-                        await manager.CreateAsync(data);
-                        logger.LogInformation("Created Application Client Id {clientId}.", clientId);
-                    }
-                    else
-                    {
-                        logger.LogInformation("Application Client Id {clientId} does exist, so bypass this case.",
-                            clientId);
-                    }
-                });
-
-            await funcCreateClientAsync(applicationSection["Administrator:ClientId"],
-                "application.administrator",
-                new OpenIddictApplicationDescriptor
-                {
-                    ClientSecret = applicationSection["Administrator:ClientSecret"],
-                    Requirements =
-                    {
-                        Requirements.Features.ProofKeyForCodeExchange
-                    },
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Token,
-                        Permissions.Endpoints.Introspection,
-                        Permissions.GrantTypes.Password,
-                        Permissions.GrantTypes.RefreshToken,
-                        Permissions.Scopes.Email,
-                        Permissions.Scopes.Profile,
-                        Permissions.Scopes.Address,
-                        Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionAll}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}",
-                    }
-                });
-
-            await funcCreateClientAsync(applicationSection["FileConversion:ClientId"],
-                "application.fileconversion",
-                new OpenIddictApplicationDescriptor
-                {
-                    ConsentType = ConsentTypes.Explicit,
-                    Type = ClientTypes.Public,
-                    PostLogoutRedirectUris =
-                    {
-                        new Uri($"{applicationSection["FileConversion:Uri"]}/authentication/logout-callback")
-                    },
-                    RedirectUris =
-                    {
-                        new Uri($"{applicationSection["FileConversion:Uri"]}/authentication/login-callback")
-                    },
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Authorization,
-                        Permissions.Endpoints.Logout,
-                        Permissions.Endpoints.Token,
-                        Permissions.GrantTypes.AuthorizationCode,
-                        Permissions.GrantTypes.RefreshToken,
-                        Permissions.ResponseTypes.Code,
-                        Permissions.Scopes.Email,
-                        Permissions.Scopes.Profile,
-                        Permissions.Scopes.Address,
-                        Permissions.Scopes.Roles,
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionParse}",
-                        $"{Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerUserInfo}"
-                    },
-                    Requirements =
-                    {
-                        Requirements.Features.ProofKeyForCodeExchange
-                    }
-                });
         }
 
         private async Task RegisterScopesAsync(IServiceProvider provider)
@@ -200,7 +120,7 @@ namespace Identity.Service.OpenIdServer
             var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
             var configuration = provider.GetRequiredService<IConfiguration>();
-            var adminUserSection = configuration.GetSection("Initial:AdminUser");
+            var adminUserSection = configuration.GetSection("InitialSetting:AdminUser");
 
             if (!userManager.Users.Any())
             {

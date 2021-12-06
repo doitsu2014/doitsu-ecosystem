@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Custom;
 using Identity.Service.OpenIdServer.Data;
@@ -17,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
 using Quartz;
@@ -38,6 +35,18 @@ namespace Identity.Service.OpenIdServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSetting>(Configuration);
+            services.Configure<InitialSetting>(Configuration.GetSection("Initial"));
+            services.Configure<MinIOSetting>(Configuration.GetSection("MinIOSetting"));
+
+            services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<IMinIOService, MinIOService>();
+            services.AddHostedService<InitializeDataService>();
+
+            // Register the worker responsible of seeding the database with the sample clients.
+            // Note: in a real world application, this step should be part of a setup script.
+            // services.AddHostedService<Worker>();
+
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();
 
@@ -45,14 +54,14 @@ namespace Identity.Service.OpenIdServer
             {
                 // Configure the context to use Microsoft SQL Server.
                 options.UseNpgsql(Configuration.GetConnectionString("IdentityDatabase"), npgsqlOptions =>
-                    npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
-                    // .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),  errorCodesToAdd: null)
-                )
-                // Register the entity sets needed by OpenIddict.
-                // Note: use the generic overload if you need
-                // to replace the default OpenIddict entities.
-                .UseOpenIddict();
-
+                            npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.FullName)
+                                .SetPostgresVersion(new Version(9, 6))
+                        // .EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30),  errorCodesToAdd: null)
+                    )
+                    // Register the entity sets needed by OpenIddict.
+                    // Note: use the generic overload if you need
+                    // to replace the default OpenIddict entities.
+                    .UseOpenIddict();
             });
 
             // Register the Identity services.
@@ -206,9 +215,6 @@ namespace Identity.Service.OpenIdServer
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            // Register the worker responsible of seeding the database with the sample clients.
-            // Note: in a real world application, this step should be part of a setup script.
-            services.AddHostedService<Worker>();
 
             services.AddAuthentication()
                 .AddGoogle(options =>
@@ -223,7 +229,7 @@ namespace Identity.Service.OpenIdServer
                     b =>
                     {
                         b.AuthenticationSchemes = new string[]
-                            {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                            { OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme };
 
                         b.RequireRole(IdentityRoleConstants.Admin);
                         b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
@@ -236,7 +242,7 @@ namespace Identity.Service.OpenIdServer
                     b =>
                     {
                         b.AuthenticationSchemes = new string[]
-                            {OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme};
+                            { OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme };
 
                         b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
                         {
@@ -249,12 +255,8 @@ namespace Identity.Service.OpenIdServer
 
             if (IsCluster())
             {
-                services.Configure<ForwardedHeadersOptions>(options =>
-                {
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                });
+                services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
             }
-            
         }
 
         public void Configure(IApplicationBuilder app)
@@ -286,8 +288,8 @@ namespace Identity.Service.OpenIdServer
             app.UseRouting();
             app.UseRequestLocalization(options =>
             {
-                options.AddSupportedCultures("en-US", "fr-FR");
-                options.AddSupportedUICultures("en-US", "fr-FR");
+                options.AddSupportedCultures("en-US", "vi-VN");
+                options.AddSupportedUICultures("en-US", "vi-VN");
                 options.SetDefaultCulture("en-US");
             });
 

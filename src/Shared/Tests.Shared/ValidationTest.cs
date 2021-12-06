@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Text;
 using LanguageExt;
+using Shared.Extensions;
 using Shared.Validations;
 using Xunit;
 using static LanguageExt.Prelude;
@@ -40,6 +42,21 @@ namespace Tests.Shared
             Assert.True(case1(emptyStr).IsFail);
             Assert.True(case2(str3).IsFail);
             Assert.True((case1(str2) | case2(str2)).IsSuccess);
+        }
+
+        [Fact]
+        public void TestRandomString()
+        {
+            var randomString = new StringBuilder();
+            randomString.AddRandomSpecialString(2);
+            randomString.AddRandomNumber(1000, 9999);
+            randomString.AddRandomAlphabet(5);
+            randomString.AddRandomSpecialString(2);
+            randomString.AddRandomAlphabet(5, lowerCase: true);
+
+            var toStr = randomString.ToString();
+            Assert.True(randomString.Length == 18);
+
         }
     }
 }

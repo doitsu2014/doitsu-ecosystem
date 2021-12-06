@@ -1,13 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
+using Amazon.S3;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
+using RollingInterval = Serilog.Sinks.AmazonS3.RollingInterval;
 
 namespace Identity.Service.OpenIdServer
 {
@@ -15,6 +18,7 @@ namespace Identity.Service.OpenIdServer
     {
         public static readonly string Namespace = typeof(Program).Namespace;
         public static readonly string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+
         public static int Main(string[] args)
         {
             var configuration = GetConfiguration();
@@ -42,15 +46,14 @@ namespace Identity.Service.OpenIdServer
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 
-        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        private static ILogger CreateSerilogLogger(IConfiguration configuration)
         {
-            return new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
+            var builder = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration);
+            // builder.WriteTo.MinIO(setting => configuration.GetSection("SerilogMinIOSetting").Bind(setting));
+            return builder
                 .CreateLogger();
         }
 
@@ -61,8 +64,8 @@ namespace Identity.Service.OpenIdServer
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets<Startup>()
                 .AddEnvironmentVariables();
-            var config = builder.Build();
             return builder.Build();
         }
     }

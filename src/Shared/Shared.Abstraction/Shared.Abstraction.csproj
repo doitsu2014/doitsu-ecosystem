@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
     <PackageReference Include="LanguageExt.Core" Version="4.0.3" />
-    <PackageReference Include="LanguageExt.Rx" Version="3.4.15" />
+    <PackageReference Include="LanguageExt.Rx" Version="4.0.3" />
   </ItemGroup>
 
 </Project>
