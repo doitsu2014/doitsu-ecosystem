@@ -28,6 +28,7 @@ public class InitializeDataService : IHostedService
     private readonly IApplicationService _applicationService;
     private readonly IMinIOService _minIOService;
     private readonly ApplicationDbContext _dbContext;
+    private readonly IScopeService _scopeService;
 
     public InitializeDataService(IServiceProvider sp)
     {
@@ -36,6 +37,7 @@ public class InitializeDataService : IHostedService
         _logger = scope.ServiceProvider.GetService<ILogger<InitializeDataService>>();
         _initialSetting = scope.ServiceProvider.GetService<IOptions<InitialSetting>>().Value;
         _applicationService = scope.ServiceProvider.GetService<IApplicationService>();
+        _scopeService = scope.ServiceProvider.GetService<IScopeService>();
         _minIOService = scope.ServiceProvider.GetService<IMinIOService>();
     }
 
@@ -48,7 +50,7 @@ public class InitializeDataService : IHostedService
         var newSettingContent = new[] { addApplicationsResult, addScopesResult }
             .Somes()
             .Join("\r\n\r\n");
-        
+
         if (!newSettingContent.IsNullOrEmpty())
         {
             var dateTimeString = DateTime.UtcNow.ToString("yyyyMMddHHmm");
@@ -131,7 +133,7 @@ public class InitializeDataService : IHostedService
 
         foreach (var s in scopes)
         {
-            listResult = listResult.Add(await _applicationService.CreateScopeAsync(s));
+            listResult = listResult.Add(await _scopeService.CreateScopeAsync(s));
         }
 
         if (listResult.Somes().Any())
@@ -142,6 +144,50 @@ public class InitializeDataService : IHostedService
         }
 
         return Option<string>.None;
+    }
+
+    private async Task AddUsersAsync()
+    {
+        // var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
+        // var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+        // var configuration = provider.GetRequiredService<IConfiguration>();
+        // var adminUserSection = configuration.GetSection("InitialSetting:AdminUser");
+        //
+        // if (!userManager.Users.Any())
+        // {
+        //     var adminUser = new ApplicationUser()
+        //     {
+        //         Id = Guid.NewGuid().ToString(),
+        //         Email = adminUserSection["EmailAddress"],
+        //         NormalizedEmail = adminUserSection["EmailAddress"].ToUpper(),
+        //         UserName = adminUserSection["EmailAddress"],
+        //         NormalizedUserName = adminUserSection["EmailAddress"].ToUpper(),
+        //         City = "HCM",
+        //         State = "HCM",
+        //         Country = "VN",
+        //         Name = "TRAN HUU DUC",
+        //         PhoneNumber = "0946680600"
+        //     };
+        //     await userManager.CreateAsync(adminUser, adminUserSection["Password"]);
+        //
+        //     var listRoleNames = (new string[]
+        //     {
+        //         IdentityRoleConstants.Admin,
+        //         IdentityRoleConstants.Customer,
+        //         IdentityRoleConstants.BlogManager,
+        //         IdentityRoleConstants.BlogPublisher,
+        //         IdentityRoleConstants.BlogWriter
+        //     });
+        //
+        //     if (!roleManager.Roles.Any())
+        //     {
+        //         var roles = listRoleNames.Select(r => new IdentityRole()
+        //             { Id = Guid.NewGuid().ToString(), Name = r, NormalizedName = r.ToUpper() });
+        //         foreach (var role in roles) await roleManager.CreateAsync(role);
+        //     }
+        //
+        //     await userManager.AddToRolesAsync(adminUser, listRoleNames);
+        }
     }
 
 

@@ -11,21 +11,17 @@ namespace Identity.Service.OpenIdServer.Services;
 public interface IApplicationService
 {
     Task<Option<(string clientId, string displayName, string secret)>> CreateApplicationAsync(OpenIddictApplicationDescriptor descriptor);
-    Task<Option<(string scopeName, string resources)>> CreateScopeAsync(OpenIddictScopeDescriptor descriptor);
 }
 
 public class ApplicationService : IApplicationService
 {
     private readonly IOpenIddictApplicationManager _applicationManager;
-    private readonly IOpenIddictScopeManager _scopeManager;
     private readonly ILogger<ApplicationService> _logger;
 
-    public ApplicationService(IOpenIddictApplicationManager applicationManager, 
-        IOpenIddictScopeManager scopeManager, 
+    public ApplicationService(IOpenIddictApplicationManager applicationManager,
         ILogger<ApplicationService> logger)
     {
         _applicationManager = applicationManager;
-        _scopeManager = scopeManager;
         _logger = logger;
     }
 
@@ -48,20 +44,6 @@ public class ApplicationService : IApplicationService
         else
         {
             return Option<(string clientId, string displayName, string rawSecret)>.None;
-        }
-    }
-
-    public async Task<Option<(string scopeName, string resources)>> CreateScopeAsync(OpenIddictScopeDescriptor descriptor)
-    {
-        if (await _scopeManager.FindByNameAsync(descriptor.Name) is null)
-        {
-            await _scopeManager.CreateAsync(descriptor);
-            _logger.LogInformation("Created Scope {scopeName}.", descriptor.Name);
-            return Option<(string scopeName, string resources)>.Some((descriptor.Name, descriptor.Resources.ToList().Join(", ")));
-        }
-        else
-        {
-            return Option<(string scopeName, string resources)>.None;
         }
     }
 }
