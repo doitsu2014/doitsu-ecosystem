@@ -54,9 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Shared.Abstraction\Shared.Abstraction.csproj" />
-    <ProjectReference Include="..\..\..\Shared\Shared.Extensions\Shared.Extensions.csproj" />
-    <ProjectReference Include="..\..\..\Shared\Shared.Validations\Shared.Validations.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.LanguageExt\Shared.LanguageExt.csproj" />
   </ItemGroup>
 
 </Project>

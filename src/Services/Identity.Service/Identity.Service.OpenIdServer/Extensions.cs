@@ -3,7 +3,7 @@ using Amazon.S3;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Formatting.Compact;
-using Shared.Extensions;
+using Shared.LanguageExt.Common;
 
 namespace Identity.Service.OpenIdServer;
 

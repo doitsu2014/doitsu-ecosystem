@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
-using Shared.Extensions;
+using Shared.LanguageExt.Common;
 
 namespace Identity.Service.OpenIdServer.Services;
 
@@ -40,14 +41,23 @@ public class InitializeDataService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await _dbContext.Database.MigrateAsync(cancellationToken: cancellationToken);
+        await _dbContext.Database.MigrateAsync(cancellationToken);
 
         var addApplicationsResult = await AddApplicationsAsync();
-        addApplicationsResult.IfSome(async result =>
+        var addScopesResult = await AddScopesAsync();
+        var newSettingContent = new[] { addApplicationsResult, addScopesResult }
+            .Somes()
+            .Join("\r\n\r\n");
+        
+        if (!newSettingContent.IsNullOrEmpty())
         {
             var dateTimeString = DateTime.UtcNow.ToString("yyyyMMddHHmm");
-            await _minIOService.UploadFileAsync(Path.Combine(MinIOExportFolder, $"new-settings-{dateTimeString}.txt"), result.ToBytes());
-        });
+            await _minIOService.UploadFileAsync(Path.Combine(MinIOExportFolder, $"new-settings-{dateTimeString}.txt"), newSettingContent.ToBytes());
+        }
+        else
+        {
+            _logger.LogInformation("No obtain any new setting");
+        }
     }
 
     /// <summary>
@@ -75,10 +85,8 @@ public class InitializeDataService : IHostedService
                 OpenIddictConstants.Permissions.Scopes.Profile,
                 OpenIddictConstants.Permissions.Scopes.Address,
                 OpenIddictConstants.Permissions.Scopes.Roles,
-                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerRead}",
-                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerWrite}",
-                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeFileConversionAll}",
-                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAllServices}",
+                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeImageServerAll}",
+                $"{OpenIddictConstants.Permissions.Prefixes.Scope}{ScopeNameConstants.ScopeIdentityServerAll}",
             }
         }));
 
@@ -87,6 +95,50 @@ public class InitializeDataService : IHostedService
             return Option<string>.Some(listResult.Somes()
                 .Select(s => $"Added client {s.displayName}, clientId: {s.clientId}, clientSecret: {s.secret}")
                 .Aggregate((a, b) => $"- {a}\n- {b}"));
+        }
+
+        return Option<string>.None;
+    }
+
+    private async Task<Option<string>> AddScopesAsync()
+    {
+        var listResult = ImmutableList<Option<(string scopeName, string resources)>>.Empty;
+
+        var resources = new Dictionary<string, string[]>();
+        resources.Add(ResourceNameConstants.ResourceImageServer, new[]
+        {
+            ScopeNameConstants.ScopeImageServerRead, ScopeNameConstants.ScopeImageServerWrite, ScopeNameConstants.ScopeImageServerAll
+        });
+        resources.Add(ResourceNameConstants.ResourceIdentityServer, new[]
+        {
+            ScopeNameConstants.ScopeIdentityServerAll, ScopeNameConstants.ScopeIdentityServerUserInfo
+        });
+        resources.Add(ResourceNameConstants.ResourcePosts, new[]
+        {
+            ScopeNameConstants.ScopePostsAll, ScopeNameConstants.ScopePostsRead, ScopeNameConstants.ScopePostsWrite
+        });
+        resources.Add(ResourceNameConstants.ResourceFileConversion, new[]
+        {
+            ScopeNameConstants.ScopeFileConversionAll, ScopeNameConstants.ScopeFileConversionRead, ScopeNameConstants.ScopeFileConversionWrite, ScopeNameConstants.ScopeFileConversionParse
+        });
+
+        var scopes = resources.SelectMany(kv => kv.Value.Select(s => new OpenIddictScopeDescriptor()
+        {
+            Name = s,
+            DisplayName = s,
+            Resources = { kv.Key }
+        }));
+
+        foreach (var s in scopes)
+        {
+            listResult = listResult.Add(await _applicationService.CreateScopeAsync(s));
+        }
+
+        if (listResult.Somes().Any())
+        {
+            return Option<string>.Some(listResult.Somes()
+                .Select(s => $"Added scope {s.scopeName} to resources [{s.resources}]")
+                .Join("\r\n"));
         }
 
         return Option<string>.None;

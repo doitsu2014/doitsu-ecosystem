@@ -215,7 +215,6 @@ namespace Identity.Service.OpenIdServer
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -234,7 +233,7 @@ namespace Identity.Service.OpenIdServer
                         b.RequireRole(IdentityRoleConstants.Admin);
                         b.RequireClaim(OpenIddictConstants.Claims.Private.Scope, new string[]
                         {
-                            ScopeNameConstants.ScopeIdentityServerAllServices
+                            ScopeNameConstants.ScopeIdentityServerAll
                         });
                     });
 
