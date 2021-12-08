@@ -1,5 +1,9 @@
 {
   "root": true,
+  "env": {
+    "es6": false,
+    "jquery": true
+  },
   "parserOptions": {
     "ecmaVersion": 5,
     "sourceType": "script"
@@ -24,11 +28,6 @@
         "SwitchCase": 1
       }
     ],
-    "multiline-ternary": [
-      "error",
-      "always-multiline"
-    ],
-    "no-new": "off",
     "no-var": "off",
     "object-curly-spacing": [
       "error",
@@ -46,14 +45,17 @@
       "never"
     ],
     "strict": "error",
-    "unicorn/no-array-for-each": "off",
     "unicorn/no-array-method-this-argument": "off",
     "unicorn/no-for-loop": "off",
     "unicorn/no-null": "off",
     "unicorn/numeric-separators-style": "off",
+    "unicorn/prefer-array-find": "off",
     "unicorn/prefer-array-flat": "off",
+    "unicorn/prefer-dom-node-append": "off",
     "unicorn/prefer-dom-node-dataset": "off",
+    "unicorn/prefer-includes": "off",
     "unicorn/prefer-module": "off",
+    "unicorn/prefer-number-properties": "off",
     "unicorn/prefer-prototype-methods": "off",
     "unicorn/prefer-query-selector": "off",
     "unicorn/prevent-abbreviations": "off"
