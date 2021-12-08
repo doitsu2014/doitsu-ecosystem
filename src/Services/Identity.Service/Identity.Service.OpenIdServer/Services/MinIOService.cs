@@ -2,6 +2,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Identity.Service.OpenIdServer.Settings;
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

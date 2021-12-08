@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text.Json;
+using Identity.Service.OpenIdServer.Models.DataTransferObjects;
+using OpenIddict.Abstractions;
 using Serilog.Events;
 
-namespace Identity.Service.OpenIdServer;
+namespace Identity.Service.OpenIdServer.Settings;
 
 public class AppSetting
 {
@@ -12,21 +17,38 @@ public class AppSetting
 
 public class InitialSetting
 {
-    public InitialApplication Administrator { get; set; }
-    public InitialUser AdminUser { get; set; }
-    
-    public class InitialApplication
+    public InitialApplication[] Applications { get; set; }
+    public InitialUser[] Users { get; set; }
+    public InitialResource[] Resources { get; set; }
+
+    public class InitialUser : CreateUserWithRolesDto
     {
-        public string ClientId { get; set; }
-        public string DisplayName { get; set; }
-        public string Uri { get; set; }
     }
 
-    public class InitialUser
+    public class InitialResource
     {
-        public string EmailAddress { get; set; }
-        public string Password { get; set; }
-        public string[] Roles { get; set; }
+        public string AudienceName { get; set; }
+        public string[] Scopes { get; set; }
+    }
+
+    public class InitialApplication
+    {
+        public string? ClientId { get; set; }
+        public string? DisplayName { get; set; }
+
+        public string? ClientSecret { get; set; }
+
+        public string? ConsentType { get; set; }
+
+        public string[] Permissions { get; set; }
+
+        public Uri[] PostLogoutRedirectUris { get; set; }
+
+        public Uri[] RedirectUris { get; set; }
+
+        public string[] Requirements { get; set; }
+
+        public string? Type { get; set; }
     }
 }
 
@@ -72,7 +94,7 @@ public class SerilogMinIOSetting : MinIOSetting
 
     public string Path { get; set; }
     public string BucketPath { get; set; } = "";
-    public LogEventLevel LogEventLevel { get; set; } = Serilog.Events.LogEventLevel.Verbose;
+    public LogEventLevel LogEventLevel { get; set; } = LogEventLevel.Verbose;
     public string OutputTemplate { get; set; } = "[{Timestamp:HH:mm:ss}-{Level}-{ThreadId}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}";
     public Serilog.Sinks.AmazonS3.RollingInterval RollingInterval { get; set; } = Serilog.Sinks.AmazonS3.RollingInterval.Day;
 }

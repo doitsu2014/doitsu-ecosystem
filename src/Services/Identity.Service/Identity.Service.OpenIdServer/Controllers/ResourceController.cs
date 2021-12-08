@@ -4,6 +4,7 @@ using AutoMapper;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
 using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 using Identity.Service.OpenIdServer.ViewModels.Resource;
 using LanguageExt;
 using Microsoft.AspNetCore.Authorization;

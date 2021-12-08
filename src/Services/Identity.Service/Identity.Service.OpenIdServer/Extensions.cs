@@ -1,5 +1,6 @@
 using System;
 using Amazon.S3;
+using Identity.Service.OpenIdServer.Settings;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Formatting.Compact;

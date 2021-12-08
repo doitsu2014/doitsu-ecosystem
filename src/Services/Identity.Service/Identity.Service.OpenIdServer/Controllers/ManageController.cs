@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 using Identity.Service.OpenIdServer.Services;
 using Identity.Service.OpenIdServer.ViewModels.Manage;
 using Microsoft.AspNetCore.Authorization;

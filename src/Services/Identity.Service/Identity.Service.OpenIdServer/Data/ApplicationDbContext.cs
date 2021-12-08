@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 
 namespace Identity.Service.OpenIdServer.Data
 {

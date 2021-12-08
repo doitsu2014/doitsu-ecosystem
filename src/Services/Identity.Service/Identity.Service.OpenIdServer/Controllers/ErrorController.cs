@@ -8,7 +8,7 @@ using Identity.Service.OpenIdServer.ViewModels;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Identity.Service.OpenIdServer
+namespace Identity.Service.OpenIdServer.Controllers
 {
     public class ErrorController : Controller
     {

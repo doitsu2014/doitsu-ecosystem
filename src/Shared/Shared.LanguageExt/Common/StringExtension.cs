@@ -44,6 +44,7 @@ namespace Shared.LanguageExt.Common
                 {
                     charCode = Convert.ToInt32(Math.Floor(13 * random.NextDouble() + 33));
                 } while (charCode == 34 || charCode == 39);
+
                 ch = Convert.ToChar(charCode);
                 builder.Append(ch);
             }
@@ -55,6 +56,7 @@ namespace Shared.LanguageExt.Common
             => Encoding.UTF8.GetBytes(stringValue);
 
         public static bool IsNullOrEmpty(this string value) => string.IsNullOrEmpty(value);
+        
         public static bool IsNullOrWhitespace(this string value) => string.IsNullOrWhiteSpace(value);
 
         public static string ComposeStrings(this IEnumerable<string> value, string blur)

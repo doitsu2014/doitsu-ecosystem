@@ -7,7 +7,9 @@ using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Custom;
 using Identity.Service.OpenIdServer.Data;
 using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 using Identity.Service.OpenIdServer.Services;
+using Identity.Service.OpenIdServer.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -40,6 +42,8 @@ namespace Identity.Service.OpenIdServer
             services.Configure<MinIOSetting>(Configuration.GetSection("MinIOSetting"));
 
             services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<IScopeService, ScopeService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMinIOService, MinIOService>();
             services.AddHostedService<InitializeDataService>();
 

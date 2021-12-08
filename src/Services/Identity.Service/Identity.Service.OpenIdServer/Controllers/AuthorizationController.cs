@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Helpers;
-using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 using Identity.Service.OpenIdServer.ViewModels.Authorization;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
@@ -25,7 +25,7 @@ using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Identity.Service.OpenIdServer
+namespace Identity.Service.OpenIdServer.Controllers
 {
     public class AuthorizationController : Controller
     {

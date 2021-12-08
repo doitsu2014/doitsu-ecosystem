@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.Service.OpenIdServer.Constants;
 using Identity.Service.OpenIdServer.Models;
+using Identity.Service.OpenIdServer.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 

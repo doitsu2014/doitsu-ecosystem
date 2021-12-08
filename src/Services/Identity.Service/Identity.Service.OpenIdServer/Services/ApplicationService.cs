@@ -29,13 +29,17 @@ public class ApplicationService : IApplicationService
     {
         if (await _applicationManager.FindByClientIdAsync(descriptor.ClientId) is null)
         {
-            descriptor.ClientSecret = (new StringBuilder())
-                .AddRandomAlphabet(3)
-                .AddRandomSpecialString(3)
-                .AddRandomAlphabet(3, true)
-                .AddRandomNumber(10, 99)
-                .AddRandomSpecialString(3)
-                .ToString();
+            descriptor.ClientSecret = descriptor.Type != OpenIddictConstants.ClientTypes.Public 
+                ? descriptor.ClientSecret.IsNullOrEmpty()
+                    ? new StringBuilder()
+                        .AddRandomAlphabet(3)
+                        .AddRandomSpecialString(3)
+                        .AddRandomAlphabet(3, true)
+                        .AddRandomNumber(10, 99)
+                        .AddRandomSpecialString(3)
+                        .ToString()
+                    : descriptor.ClientSecret
+                : null;
 
             await _applicationManager.CreateAsync(descriptor);
             _logger.LogInformation("Created Application Client Id {clientId}.", descriptor.ClientId);
