@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Identity.Service.OpenIdServer.Services;
 public interface IUserService
 {
     Task<Option<(string id, string email, string password, string roles)>> CreateUserWithRolesAsync(CreateUserWithRolesDto dto);
+    Task<Option<string[]>> CreateUserRolesAsync(string[] roles);
 }
 
 public class UserService : IUserService
@@ -69,5 +71,30 @@ public class UserService : IUserService
 
         await _userManager.AddToRolesAsync(applicationUser, dto.Roles);
         return (applicationUser.Id, applicationUser.Email, password, dto.Roles.Join(", "));
+    }
+
+    public async Task<Option<string[]>> CreateUserRolesAsync(string[] roles)
+    {
+        roles = roles == null ? Array.Empty<string>() : roles.ToArray();
+        if (!roles.Any()) return Option<string[]>.None;
+
+        var existingRoles = _roleManager.Roles.Where(dr => roles.Contains(dr.Name)).Select(r => r.Name).ToList();
+        var available = roles.Except(existingRoles).ToArray();
+        if (available.Any())
+        {
+            foreach (var role in available)
+            {
+                await _roleManager.CreateAsync(new IdentityRole()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = role,
+                    NormalizedName = role.ToUpper()
+                });
+            }
+
+            return Option<string[]>.Some(available);
+        }
+
+        return Option<string[]>.None;
     }
 }

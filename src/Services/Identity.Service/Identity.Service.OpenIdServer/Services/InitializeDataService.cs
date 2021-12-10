@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OpenIddict.Abstractions;
 using Shared.LanguageExt.Common;
 
@@ -52,7 +53,9 @@ public class InitializeDataService : IHostedService
         var addApplicationsResult = await AddApplicationsAsync();
         var addScopesResult = await AddScopesAsync();
         var addUsersResult = await AddUsersAsync();
-        var newSettingContent = new[] { addApplicationsResult, addScopesResult, addUsersResult }
+        var addUserRolesResult = await AddUserRolesAsync();
+
+        var newSettingContent = new[] { addApplicationsResult, addScopesResult, addUsersResult, addUserRolesResult }
             .Somes()
             .Join("\r\n\r\n");
         if (!newSettingContent.IsNullOrEmpty())
@@ -126,6 +129,31 @@ public class InitializeDataService : IHostedService
             return Option<string>.Some(listResult
                 .Somes()
                 .Select(u => $"- Added user [{u.email} | {u.id}] with password {u.password}, and assigned her/him to roles [{u.roles}]")
+                .Join("\r\n"));
+        }
+
+        return Option<string>.None;
+    }
+
+    private async Task<Option<string>> AddUserRolesAsync()
+    {
+        var listResult = ImmutableList<Option<string[]>>.Empty;
+        foreach (var user in _initialSetting.Users)
+        {
+            listResult = listResult.Add(await _userService.CreateUserRolesAsync(new[]
+            {
+                IdentityRoleConstants.Admin,
+                IdentityRoleConstants.Basic,
+                IdentityRoleConstants.PostsManager,
+                IdentityRoleConstants.PostsReader
+            }));
+        }
+
+        if (listResult.Somes().Any())
+        {
+            return Option<string>.Some(listResult
+                .Somes()
+                .Select(listOfRoles => $"- Added roles {JsonConvert.SerializeObject(listOfRoles)}")
                 .Join("\r\n"));
         }
 

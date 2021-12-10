@@ -5,21 +5,40 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User)) {
+@if (SignInManager.IsSignedIn(User))
+{
+    var links = new List<((string controller, string action) route, string display)> { (("Manage", "Index"), $"Hello {@UserManager.GetUserName(User)}") };
     <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="navbar-nav navbar-right">
-            <li>
-                <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
+            @foreach (var link in links)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @Context.MatchRouteData(link.route.controller, link.route.action)"
+                       asp-controller="@link.route.controller"
+                       asp-action="@link.route.action" title="Manage">
+                        @link.display
+                    </a>
+                </li>
+            }
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
             </li>
         </ul>
     </form>
 }
-else {
+else
+{
+    var links = new List<((string controller, string action) route, string display)> { (("Account", "Register"), "Register"), (("Account", "Login"), "Login") };
     <ul class="navbar-nav">
-        <li><a class="nav-link" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a class="nav-link" asp-controller="Account" asp-action="Login">Log in</a></li>
+        @foreach (var link in links)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(Context.MatchRouteData(link.route.controller, link.route.action) ? "active" : "")"
+                   asp-controller="@link.route.controller"
+                   asp-action="@link.route.action">
+                    @link.display
+                </a>
+            </li>
+        }
     </ul>
 }
