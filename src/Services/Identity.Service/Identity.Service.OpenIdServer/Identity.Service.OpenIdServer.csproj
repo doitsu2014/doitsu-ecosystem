@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations" />
+    <Folder Include="wwwroot\images\doitsu-tech-logos" />
   </ItemGroup>
 
   <ItemGroup>

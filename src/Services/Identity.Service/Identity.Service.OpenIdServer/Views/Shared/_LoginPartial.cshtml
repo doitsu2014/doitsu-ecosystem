@@ -7,7 +7,7 @@
 
 @if (SignInManager.IsSignedIn(User)) {
     <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="navbar-nav navbar-right">
             <li>
                 <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
@@ -18,8 +18,8 @@
     </form>
 }
 else {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
+    <ul class="navbar-nav">
+        <li><a class="nav-link" asp-controller="Account" asp-action="Register">Register</a></li>
+        <li><a class="nav-link" asp-controller="Account" asp-action="Login">Log in</a></li>
     </ul>
 }

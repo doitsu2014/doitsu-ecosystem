@@ -1,20 +1,15 @@
 using System;
-using System.Globalization;
 using System.IO;
-using System.Text;
-using Amazon.S3;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Events;
 using ILogger = Serilog.ILogger;
-using RollingInterval = Serilog.Sinks.AmazonS3.RollingInterval;
 
 namespace Identity.Service.OpenIdServer
 {
-    public class Program
+	public class Program
     {
         public static readonly string Namespace = typeof(Program).Namespace;
         public static readonly string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
