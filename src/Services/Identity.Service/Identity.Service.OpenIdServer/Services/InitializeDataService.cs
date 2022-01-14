@@ -23,11 +23,11 @@ namespace Identity.Service.OpenIdServer.Services;
 
 public class InitializeDataService : IHostedService
 {
-    private readonly string MinIOExportFolder = "secret-data";
+    private readonly string InitializeDataFolder = "settings";
     private readonly ILogger<InitializeDataService> _logger;
     private readonly InitialSetting _initialSetting;
     private readonly IApplicationService _applicationService;
-    private readonly IMinIOService _minIOService;
+    private readonly IAwsS3Service _awsS3Service;
     private readonly ApplicationDbContext _dbContext;
     private readonly IScopeService _scopeService;
     private readonly IUserService _userService;
@@ -42,7 +42,7 @@ public class InitializeDataService : IHostedService
         _applicationService = scope.ServiceProvider.GetService<IApplicationService>();
         _scopeService = scope.ServiceProvider.GetService<IScopeService>();
         _userService = scope.ServiceProvider.GetService<IUserService>();
-        _minIOService = scope.ServiceProvider.GetService<IMinIOService>();
+        _awsS3Service = scope.ServiceProvider.GetService<IAwsS3Service>();
         _mapper = scope.ServiceProvider.GetService<IMapper>();
     }
 
@@ -58,10 +58,11 @@ public class InitializeDataService : IHostedService
         var newSettingContent = new[] { addApplicationsResult, addScopesResult, addUsersResult, addUserRolesResult }
             .Somes()
             .Join("\r\n\r\n");
+
         if (!newSettingContent.IsNullOrEmpty())
         {
             var dateTimeString = DateTime.UtcNow.ToString("yyyyMMddHHmm");
-            await _minIOService.UploadFileAsync(Path.Combine(MinIOExportFolder, $"new-settings-{dateTimeString}.txt"), newSettingContent.ToBytes());
+            await _awsS3Service.UploadFileAsync(Path.Combine(InitializeDataFolder, $"new-settings-{dateTimeString}.txt"), newSettingContent.ToBytes());
         }
         else
         {
