@@ -47,10 +47,11 @@ public class UserService : IUserService
         var password = dto.Password.IsNullOrEmpty()
             ? new StringBuilder("rand")
                 .AddRandomNumber(10, 99)
+                .AddRandomSpecialString(3, new[] { (int)'+' })
                 .AddRandomAlphabet(3)
-                .AddRandomSpecialString(3)
+                .AddRandomNumber(10, 99)
+                .AddRandomSpecialString(3, new[] { (int)'+' })
                 .AddRandomAlphabet(3, true)
-                .AddRandomSpecialString(3)
                 .ToString()
             : dto.Password;
 

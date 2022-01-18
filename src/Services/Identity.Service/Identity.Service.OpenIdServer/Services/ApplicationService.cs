@@ -32,10 +32,10 @@ public class ApplicationService : IApplicationService
                 ? descriptor.ClientSecret.IsNullOrEmpty()
                     ? new StringBuilder()
                         .AddRandomAlphabet(3)
-                        .AddRandomSpecialString(3)
                         .AddRandomAlphabet(3, true)
+                        .AddRandomSpecialString(3, new []{ (int)'+' })
                         .AddRandomNumber(10, 99)
-                        .AddRandomSpecialString(3)
+                        .AddRandomSpecialString(3, new []{ (int)'+' })
                         .ToString()
                     : descriptor.ClientSecret
                 : null;

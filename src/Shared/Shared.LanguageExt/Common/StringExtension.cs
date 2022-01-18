@@ -33,11 +33,12 @@ namespace Shared.LanguageExt.Common
             return builder;
         }
 
-        public static StringBuilder AddRandomSpecialString(this StringBuilder builder, int size)
+        public static StringBuilder AddRandomSpecialString(this StringBuilder builder, int size, int[] ignored = null)
         {
             Random random = new Random();
-            char ch;
-            for (int i = 0; i < size; i++)
+            ignored = ignored ?? new int[] { };
+
+            for (var i = 0; i < size; i++)
             {
                 var charCode = int.MinValue;
                 do
@@ -45,7 +46,8 @@ namespace Shared.LanguageExt.Common
                     charCode = Convert.ToInt32(Math.Floor(13 * random.NextDouble() + 33));
                 } while (charCode == 34 || charCode == 39);
 
-                ch = Convert.ToChar(charCode);
+                if (ignored.Contains(charCode)) continue;
+                var ch = Convert.ToChar(charCode);
                 builder.Append(ch);
             }
 
@@ -56,7 +58,7 @@ namespace Shared.LanguageExt.Common
             => Encoding.UTF8.GetBytes(stringValue);
 
         public static bool IsNullOrEmpty(this string value) => string.IsNullOrEmpty(value);
-        
+
         public static bool IsNullOrWhitespace(this string value) => string.IsNullOrWhiteSpace(value);
 
         public static string ComposeStrings(this IEnumerable<string> value, string blur)

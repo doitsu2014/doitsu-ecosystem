@@ -100,9 +100,7 @@ namespace Identity.Service.OpenIdServer
                 services.AddQuartzHostedService(options => { options.WaitForJobsToComplete = true; });
             }
 
-
             services.AddOpenIddict()
-
                 // Register the OpenIddict core components.
                 .AddCore(options =>
                 {
