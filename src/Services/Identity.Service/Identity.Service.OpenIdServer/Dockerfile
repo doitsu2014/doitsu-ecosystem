@@ -7,11 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY Shared/Shared.Abstraction/Shared.Abstraction.csproj Shared/Shared.Abstraction/
-COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
-COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
-COPY Shared/Shared.Services/Shared.Services.csproj Shared/Shared.Services/
-COPY Shared/Shared.Validations/Shared.Validations.csproj Shared/Shared.Validations/
+
+COPY Shared/* Shared/
+
+# COPY Shared/Shared.Abstraction/Shared.Abstraction.csproj Shared/Shared.Abstraction/
+# COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
+# COPY Shared/Shared.Extensions/Shared.Extensions.csproj Shared/Shared.Extensions/
+# COPY Shared/Shared.Services/Shared.Services.csproj Shared/Shared.Services/
 
 COPY Services/Identity.Service/Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj Services/Identity.Service/Identity.Service.OpenIdServer/
 RUN dotnet restore "Services/Identity.Service/Identity.Service.OpenIdServer/Identity.Service.OpenIdServer.csproj"

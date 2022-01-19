@@ -1,9 +1,14 @@
-version: '3.4'
+version: '3.8'
 
 services:
-  identity-server:
-    image: doitsu2014/identity-service:latest
-    build:
-      context: ../../
-      dockerfile: Services/Identity.Service/Identity.Service.OpenIdServer/Dockerfile
+  doitsu.tech.services.identity:
+    image: docker-hub.doitsu.tech/services.identity:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:80"
+    volumes:
+      - ./Volumes/appsettings.json:/app/appsettings.json
+      - ./Volumes/logs:/app/logs
 
